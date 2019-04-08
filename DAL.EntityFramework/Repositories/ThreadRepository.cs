@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using DAL.Domain.Entities;
 using DAL.EntityFramework.Repositories.Generic;
 using DAL.Interfaces.Repositories;
@@ -20,7 +17,8 @@ namespace DAL.EntityFramework.Repositories
             return DbSet
                 .Include(p => p.Posts)
                 .Include(p => p.Topic)
-                .Include(p => p.UserProfile);
+                .Include(p => p.UserProfile)
+                .ThenInclude(up => up.ApplicationUser);
         }
     }
 }

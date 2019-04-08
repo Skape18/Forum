@@ -36,6 +36,24 @@ namespace BLL.Infrastructure.Services
             return false;
         }
 
+        public async Task<bool> IsUserInRole(string userName, string role)
+        {
+            ApplicationUser user = null;
+
+            var userProfiles = await UnitOfWork.UserProfiles.GetAllAsync();
+            
+            foreach (var userProfile in userProfiles)
+            {
+                if (userProfile.ApplicationUser.UserName == userName)
+                    user = userProfile.ApplicationUser;
+            }
+
+            if (user != null)
+                return await _userManager.IsInRoleAsync(user, role);
+
+            return false;
+        }
+
         public async Task<ICollection<string>> GetRoles(int userId)
         {
             var user = await UnitOfWork.UserProfiles.GetByIdAsync(userId);

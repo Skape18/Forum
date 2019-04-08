@@ -19,7 +19,8 @@ namespace DAL.EntityFramework.Repositories
                 .Include(p => p.RepliedPost)
                 .Include(p => p.Notifications)
                 .Include(p => p.Thread)
-                .Include(p => p.UserProfile);
+                .Include(p => p.UserProfile)
+                .ThenInclude(up => up.ApplicationUser);
         }
     }
 }

@@ -21,7 +21,7 @@ namespace DAL.EntityFramework.Repositories.Generic
         public async Task<T> GetByIdAsync(int id)
         {
             var entity = await DbSetWithAllProperties().FirstOrDefaultAsync(p => p.Id == id);
-               
+
             return entity;
         }
 
@@ -47,7 +47,7 @@ namespace DAL.EntityFramework.Repositories.Generic
             var entities = await DbSetWithAllProperties()
                 .AsNoTracking()
                 .ToListAsync();
-
+            
             return entities;
         }
 
@@ -59,13 +59,6 @@ namespace DAL.EntityFramework.Repositories.Generic
 
         public void Remove(T entity)
         {
-            if (entity != null)
-                DbSet.Remove(entity);
-        }
-
-        public async Task RemoveAsync(int id)
-        {
-            var entity = await DbSet.FindAsync(id);
             if (entity != null)
                 DbSet.Remove(entity);
         }
@@ -85,7 +78,7 @@ namespace DAL.EntityFramework.Repositories.Generic
 
         protected IQueryable<T> IncludeProperties(params Expression<Func<T, object>>[] includeProperties)
         {
-            IQueryable<T> query = DbSet.AsNoTracking();
+            IQueryable<T> query = DbSet;
 
             foreach (var includeProperty in includeProperties)
             {

@@ -26,8 +26,11 @@ namespace BLL.Infrastructure.Services
         {
             var posts = await UnitOfWork.Posts.GetWithPredicatesAsync(n => n.PostDate);
 
-            return Mapper.Map<IEnumerable<Post>, List<PostDto>>(posts);
+            var postDtos = Mapper.Map<IEnumerable<Post>, List<PostDto>>(posts);
+
+            return postDtos;
         }
+
 
         public async Task<PostDto> GetByIdAsync(int id)
         {
@@ -68,6 +71,17 @@ namespace BLL.Infrastructure.Services
                 return;
 
             var post = Mapper.Map<PostDto, Post>(postDto);
+
+            UnitOfWork.Posts.Remove(post);
+            await UnitOfWork.SaveChangesAsync();
+        }
+
+        public async Task RemoveAsync(int id)
+        {
+            var post = await UnitOfWork.Posts.GetByIdAsync(id);
+
+            if (post == null)
+                return;
 
             UnitOfWork.Posts.Remove(post);
             await UnitOfWork.SaveChangesAsync();

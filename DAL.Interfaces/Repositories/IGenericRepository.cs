@@ -13,7 +13,6 @@ namespace DAL.Interfaces.Repositories
         Task<IEnumerable<T>> GetWithIncludesAsync(params Expression<Func<T, object>>[] includeProperties);
         Task CreateAsync(T entity);
         void Remove(T entity);
-        Task RemoveAsync(int id);
         void Update(T entity);
     }
 }

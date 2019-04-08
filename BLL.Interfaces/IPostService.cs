@@ -15,7 +15,7 @@ namespace BLL.Interfaces
         Task CreateAsync(PostDto postDto);
 
         Task UpdateAsync(PostDto postDto);
-
+        Task RemoveAsync(int id);
         Task RemoveAsync(PostDto postDto);
     }
 }

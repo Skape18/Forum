@@ -1,8 +1,14 @@
 using System;
 using System.Text;
 using AutoMapper;
+using BLL.Infrastructure.Services;
+using BLL.Interfaces;
 using DAL.Domain.Entities;
+using DAL.EntityFramework;
 using DAL.EntityFramework.Contexts;
+using DAL.EntityFramework.Repositories;
+using DAL.Interfaces;
+using DAL.Interfaces.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -30,11 +36,26 @@ namespace Forum
 
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Application")));
-
+            
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationContext>();
 
             services.AddAutoMapper();
+
+            services.AddScoped<DbContext, ApplicationContext>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddScoped<INotificationRepository, NotificationRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<IThreadRepository, ThreadRepository>();
+            services.AddScoped<ITopicRepository, TopicRepository>();
+            services.AddScoped<IUserProfileRepository, UserProfileRepository>();
+            
+            services.AddScoped<IPostService, PostService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IThreadService, ThreadService>();
+            services.AddScoped<ITopicService, TopicService>();
+            services.AddScoped<INotificationService, NotificationService>();
 
             services.AddAuthentication(options => {
                     options.DefaultAuthenticateScheme = "JwtBearer";

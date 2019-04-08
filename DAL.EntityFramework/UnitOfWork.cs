@@ -1,18 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using DAL.EntityFramework.Contexts;
 using DAL.Interfaces;
 using DAL.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL.EntityFramework
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly ApplicationContext _context; 
+        private readonly DbContext _context; 
 
-        public UnitOfWork(ApplicationContext context, IPostRepository postRepository,
+        public UnitOfWork(DbContext context, IPostRepository postRepository,
             IThreadRepository threadRepository, INotificationRepository notificationRepository,
             IUserProfileRepository userProfileRepository, ITopicRepository topicRepository)
         {

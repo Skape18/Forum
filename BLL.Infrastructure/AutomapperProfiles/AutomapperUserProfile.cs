@@ -9,7 +9,8 @@ namespace BLL.Infrastructure.AutomapperProfiles
         public AutomapperUserProfile()
         {
             CreateMap<UserProfile, UserDto>()
-                .ForMember(dest => dest.UserName, opt => opt.MapFrom(up => up.ApplicationUser.UserName));
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(up => up.ApplicationUser.UserName))
+                .ReverseMap();
         }
     }
 }

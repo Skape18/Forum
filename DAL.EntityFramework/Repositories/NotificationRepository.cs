@@ -17,7 +17,8 @@ namespace DAL.EntityFramework.Repositories
         {
             return DbSet
                 .Include(p => p.Post)
-                .Include(p => p.UserProfile);
+                .Include(p => p.UserProfile)
+                .ThenInclude(up => up.ApplicationUser);
         }
     }
 }
