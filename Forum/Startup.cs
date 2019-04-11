@@ -9,6 +9,7 @@ using DAL.EntityFramework.Contexts;
 using DAL.EntityFramework.Repositories;
 using DAL.Interfaces;
 using DAL.Interfaces.Repositories;
+using Forum.AutomapperProfiles;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -72,9 +73,20 @@ namespace Forum
                         ValidateAudience = true,
                         ValidAudience = Configuration["Tokens:Audience"],
                         ValidateLifetime = true, 
-                        ClockSkew = TimeSpan.FromMinutes(5)
+                        ClockSkew = TimeSpan.FromMinutes(15)
                     };
                 });
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Default Password settings.
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 1;
+                options.Password.RequiredUniqueChars = 1;
+            });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 

@@ -1,8 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using AutoMapper;
+using BLL.DTO.DTOs;
+using BLL.Interfaces;
+using Forum.ViewModels.PostViewModels;
+using Forum.ViewModels.ThreadViewModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Forum.Controllers
@@ -11,36 +13,76 @@ namespace Forum.Controllers
     [ApiController]
     public class ThreadsController : ControllerBase
     {
-        // GET: api/Threads
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly IThreadService _threadService;
+        private readonly IMapper _mapper;
+
+        public ThreadsController(IThreadService threadService, IMapper mapper)
         {
-            return new string[] { "value1", "value2" };
+            _threadService = threadService;
+            _mapper = mapper;
+        }
+        
+        [HttpGet("{threadId}/posts")]
+        public async Task<ActionResult<IEnumerable<PostDisplayViewModel>>> GetThreadPosts(int threadId)
+        {
+            var threadDto = await _threadService.GetByIdAsync(threadId);
+
+            if (threadDto == null)
+                return BadRequest();
+
+            var postViewModels = _mapper.Map<IEnumerable<PostDto>, List<PostDisplayViewModel>>(threadDto.Posts);
+
+            return Ok(postViewModels);
         }
 
+        // GET: api/Threads
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ThreadDisplayViewModel>>> Get()
+        {
+            var threadDtos = await _threadService.GetAllAsync();
+
+            var threadViewModels = _mapper.Map<IEnumerable<ThreadDto>, List<ThreadDisplayViewModel>>(threadDtos);
+
+            return Ok(threadViewModels);
+        }
+        
         // GET: api/Threads/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult<ThreadDisplayViewModel>> Get(int id)
         {
-            return "value";
+            var threadDto = await _threadService.GetByIdAsync(id);
+
+            if (threadDto == null)
+                return BadRequest();
+
+            var threadViewModel = _mapper.Map<ThreadDto, ThreadDisplayViewModel>(threadDto);
+
+            return Ok(threadViewModel);
         }
 
         // POST: api/Threads
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult> Post([FromBody] CreateThreadViewModel threadViewModel)
         {
+            var threadDto = _mapper.Map<CreateThreadViewModel, ThreadDto>(threadViewModel);
+
+            await _threadService.CreateAsync(threadDto);
+
+            return Ok();
         }
 
-        // PUT: api/Threads/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE: api/ApiWithActions/5
+        // DELETE: api/Threads/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            var threadDto = await _threadService.GetByIdAsync(id);
+
+            if (threadDto == null)
+                return BadRequest();
+
+            await _threadService.RemoveAsync(threadDto);
+
+            return Ok();
         }
     }
 }

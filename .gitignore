@@ -9,7 +9,6 @@ _ReSharper*/
 
 # Output folder used by Webpack or other FE stuff
 **/node_modules/*
-**/wwwroot/*
 
 # Build results
 [Dd]ebug/

@@ -15,6 +15,8 @@ namespace DAL.EntityFramework.Configurations
             builder.Property(t => t.Content)
                 .IsRequired()
                 .HasMaxLength(3000);
+
+
         }
     }
 }

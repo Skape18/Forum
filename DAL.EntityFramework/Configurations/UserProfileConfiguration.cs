@@ -17,11 +17,6 @@ namespace DAL.EntityFramework.Configurations
                 .WithOne()
                 .HasForeignKey<UserProfile>(up => up.ApplicationUserId)
                 .IsRequired();
-                
-            builder
-                .Property(up => up.Id)
-                .ValueGeneratedNever();
-
         }
     }
 }

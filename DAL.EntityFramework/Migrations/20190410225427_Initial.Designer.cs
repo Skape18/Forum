@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.EntityFramework.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20190408183448_Initial")]
+    [Migration("20190410225427_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -72,7 +72,7 @@ namespace DAL.EntityFramework.Migrations
                     b.ToTable("AspNetUsers");
 
                     b.HasData(
-                        new { Id = "c759ced1-9be3-4de4-aa79-53893f3abb67", AccessFailedCount = 0, ConcurrencyStamp = "258dbc56-e60e-4665-9f34-cd151e6059fb", Email = "andrei.marinich@gmail.com", EmailConfirmed = true, LockoutEnabled = false, NormalizedEmail = "ANDREI.MARINICH@GMAIL.COM", NormalizedUserName = "ADMIN", PasswordHash = "AQAAAAEAACcQAAAAEO2mFXRq9FnaKx/Ju8IyLCtD5QWwe6ihlflYP6bmIVrJrccQgwwUvWkx7l4XkWgQBw==", PhoneNumberConfirmed = false, SecurityStamp = "bb414fa9-aac9-4984-bdda-4ddd941ffe5e", TwoFactorEnabled = false, UserName = "admin" }
+                        new { Id = "8bb132e3-ff79-4191-9ba9-1d021d848cc9", AccessFailedCount = 0, ConcurrencyStamp = "a99c52b4-685c-484b-8fae-99825e2efad1", Email = "andrei.marinich@gmail.com", EmailConfirmed = true, LockoutEnabled = false, NormalizedEmail = "ANDREI.MARINICH@GMAIL.COM", NormalizedUserName = "ADMIN", PasswordHash = "AQAAAAEAACcQAAAAEGhjwvTDvs2w+4XDem6QDLFTBryxmvYkbbvjqu2rrdySl/JwnLd0SCr1oE6re/07QQ==", PhoneNumberConfirmed = false, SecurityStamp = "565f802e-f2c6-4e70-a078-70563a83d534", TwoFactorEnabled = false, UserName = "admin" }
                     );
                 });
 
@@ -126,9 +126,9 @@ namespace DAL.EntityFramework.Migrations
                     b.ToTable("Posts");
 
                     b.HasData(
-                        new { Id = 1, Content = "First reply to thread", PostDate = new DateTime(2019, 4, 8, 21, 34, 48, 471, DateTimeKind.Local), ThreadId = 1, UserProfileId = 1 },
-                        new { Id = 2, Content = "Reply to first reply to thread", PostDate = new DateTime(2019, 4, 8, 21, 34, 48, 471, DateTimeKind.Local), RepliedPostId = 1, ThreadId = 1, UserProfileId = 1 },
-                        new { Id = 3, Content = "Reply to second thread", PostDate = new DateTime(2019, 4, 8, 21, 34, 48, 471, DateTimeKind.Local), ThreadId = 2, UserProfileId = 1 }
+                        new { Id = 1, Content = "First reply to thread", PostDate = new DateTime(2019, 4, 11, 1, 54, 26, 852, DateTimeKind.Local), ThreadId = 1, UserProfileId = 1 },
+                        new { Id = 2, Content = "Reply to first reply to thread", PostDate = new DateTime(2019, 4, 11, 1, 54, 26, 853, DateTimeKind.Local), RepliedPostId = 1, ThreadId = 1, UserProfileId = 1 },
+                        new { Id = 3, Content = "Reply to second thread", PostDate = new DateTime(2019, 4, 11, 1, 54, 26, 853, DateTimeKind.Local), ThreadId = 2, UserProfileId = 1 }
                     );
                 });
 
@@ -165,8 +165,8 @@ namespace DAL.EntityFramework.Migrations
                     b.ToTable("Threads");
 
                     b.HasData(
-                        new { Id = 1, Content = "Some content one", IsOpen = true, ThreadOpenedDate = new DateTime(2019, 4, 8, 21, 34, 48, 470, DateTimeKind.Local), Title = "Test thread one", TopicId = 1, UserProfileId = 1 },
-                        new { Id = 2, Content = "Some content two", IsOpen = true, ThreadOpenedDate = new DateTime(2019, 4, 8, 21, 34, 48, 471, DateTimeKind.Local), Title = "Test thread two", TopicId = 1, UserProfileId = 1 }
+                        new { Id = 1, Content = "Some content one", IsOpen = true, ThreadOpenedDate = new DateTime(2019, 4, 11, 1, 54, 26, 852, DateTimeKind.Local), Title = "Test thread one", TopicId = 1, UserProfileId = 1 },
+                        new { Id = 2, Content = "Some content two", IsOpen = true, ThreadOpenedDate = new DateTime(2019, 4, 11, 1, 54, 26, 852, DateTimeKind.Local), Title = "Test thread two", TopicId = 1, UserProfileId = 1 }
                     );
                 });
 
@@ -199,7 +199,9 @@ namespace DAL.EntityFramework.Migrations
 
             modelBuilder.Entity("DAL.Domain.Entities.UserProfile", b =>
                 {
-                    b.Property<int>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ApplicationUserId")
                         .IsRequired();
@@ -220,7 +222,7 @@ namespace DAL.EntityFramework.Migrations
                     b.ToTable("UserProfiles");
 
                     b.HasData(
-                        new { Id = 1, ApplicationUserId = "c759ced1-9be3-4de4-aa79-53893f3abb67", IsActive = true, ProfileImagePath = "profile_images/default_profile_image.png", Rating = 0, RegistrationDate = new DateTime(2019, 4, 8, 21, 34, 48, 468, DateTimeKind.Local) }
+                        new { Id = 1, ApplicationUserId = "8bb132e3-ff79-4191-9ba9-1d021d848cc9", IsActive = true, ProfileImagePath = "profile_images/default_profile_image.png", Rating = 0, RegistrationDate = new DateTime(2019, 4, 11, 1, 54, 26, 849, DateTimeKind.Local) }
                     );
                 });
 
@@ -248,7 +250,7 @@ namespace DAL.EntityFramework.Migrations
                     b.ToTable("AspNetRoles");
 
                     b.HasData(
-                        new { Id = "603eaa51-2ded-47b0-a4b6-7e4d852e5dbc", Name = "Admin", NormalizedName = "ADMIN" }
+                        new { Id = "791c487a-01de-4503-a057-046d0daeeae2", Name = "Admin", NormalizedName = "ADMIN" }
                     );
                 });
 
@@ -323,7 +325,7 @@ namespace DAL.EntityFramework.Migrations
                     b.ToTable("AspNetUserRoles");
 
                     b.HasData(
-                        new { UserId = "c759ced1-9be3-4de4-aa79-53893f3abb67", RoleId = "603eaa51-2ded-47b0-a4b6-7e4d852e5dbc" }
+                        new { UserId = "8bb132e3-ff79-4191-9ba9-1d021d848cc9", RoleId = "791c487a-01de-4503-a057-046d0daeeae2" }
                     );
                 });
 

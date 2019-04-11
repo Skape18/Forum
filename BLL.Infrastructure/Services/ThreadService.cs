@@ -78,5 +78,18 @@ namespace BLL.Infrastructure.Services
             UnitOfWork.Threads.Remove(thread);
             await UnitOfWork.SaveChangesAsync();
         }
+
+        public async Task CloseThread(int threadId)
+        {
+            var thread = await UnitOfWork.Threads.GetByIdAsync(threadId);
+
+            if (thread == null)
+                return;
+
+            thread.IsOpen = false;
+
+            UnitOfWork.Threads.Update(thread);
+            await UnitOfWork.SaveChangesAsync();
+        }
     }
 }

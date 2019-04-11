@@ -76,15 +76,5 @@ namespace BLL.Infrastructure.Services
             await UnitOfWork.SaveChangesAsync();
         }
 
-        public async Task RemoveAsync(int id)
-        {
-            var post = await UnitOfWork.Posts.GetByIdAsync(id);
-
-            if (post == null)
-                return;
-
-            UnitOfWork.Posts.Remove(post);
-            await UnitOfWork.SaveChangesAsync();
-        }
     }
 }

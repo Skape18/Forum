@@ -16,6 +16,8 @@ namespace DAL.EntityFramework.Configurations
                 .HasOne(p => p.UserProfile)
                 .WithMany(up => up.Posts)
                 .OnDelete(DeleteBehavior.Restrict);
+
+
         }
     }
 }

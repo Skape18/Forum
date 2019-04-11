@@ -10,8 +10,11 @@ namespace BLL.Infrastructure.Services
 {
     public class TopicService : BaseService, ITopicService
     {
+        private string _defaultTopicImagePath;
+
         public TopicService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
+            _defaultTopicImagePath = "topic_images/default_topic_image.jpg";  
         }
 
         public async Task<IEnumerable<TopicDto>> GetAllAsync()
@@ -36,7 +39,13 @@ namespace BLL.Infrastructure.Services
             if (topicDto == null)
                 return;
 
+            if (topicDto.ImagePath == null)
+                topicDto.ImagePath = _defaultTopicImagePath;
+
+
             var topic = Mapper.Map<TopicDto, Topic>(topicDto);
+
+            
 
             await UnitOfWork.Topics.CreateAsync(topic);
             await UnitOfWork.SaveChangesAsync();

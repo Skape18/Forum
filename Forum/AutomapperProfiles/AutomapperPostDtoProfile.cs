@@ -9,7 +9,10 @@ namespace Forum.AutomapperProfiles
     {
         public AutomapperPostDtoProfile()
         {
-            CreateMap<PostDto, DisplayPostViewModel>();
+            CreateMap<PostDto, PostDisplayViewModel>();
+
+            CreateMap<PostDto, RepliedPostViewModel>();
+
             CreateMap<CreatePostViewModel, PostDto>()
                 .ForMember(dest => dest.PostDate, opt => opt.MapFrom(cpd => DateTime.Now));
         }

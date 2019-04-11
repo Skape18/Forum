@@ -1,9 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using AutoMapper;
+using BLL.DTO.DTOs;
+using BLL.Interfaces;
+using Forum.ViewModels.AccountViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace Forum.Controllers
 {
@@ -11,36 +13,54 @@ namespace Forum.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        // GET: api/Account
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        private readonly IUserService _userService;
+        private readonly IMapper _mapper;
+        private readonly IConfiguration _configuration;
 
-        // GET: api/Account/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        public AccountController(IUserService userService, IMapper mapper, IConfiguration configuration)
         {
-            return "value";
+            _userService = userService;
+            _mapper = mapper;
+            _configuration = configuration;
         }
-
-        // POST: api/Account
-        [HttpPost]
-        public void Post([FromBody] string value)
+        
+        [HttpPost("login")]
+        public async Task<ActionResult<SignedInUserViewModel>> Login([FromBody]LoginViewModel loginViewModel)
         {
+            var loginDto = _mapper.Map<LoginViewModel, LoginDto>(loginViewModel);
+
+            var signedInUser = await _userService.SignIn(loginDto, _configuration["Tokens:Key"],
+                int.Parse(_configuration["Tokens:ExpiryMinutes"]),
+                _configuration["Token:Audience"], _configuration["Tokens:Issuer"]
+            );
+
+            var signedInUserViewModel = _mapper.Map<SignedInUserDto, SignedInUserViewModel>(signedInUser);
+
+
+            return Ok(signedInUserViewModel);
         }
-
-        // PUT: api/Account/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        
+        [HttpPost("registration")]
+        public async Task<ActionResult<SignedInUserViewModel>> Register([FromBody]RegistrationViewModel registrationViewModel)
         {
+            var registrationDto = _mapper.Map<RegistrationViewModel, RegistrationDto>(registrationViewModel);
+
+            var signedInUser = await _userService.SignUp(registrationDto, _configuration["Tokens:Key"],
+                int.Parse(_configuration["Tokens:ExpiryMinutes"]),
+                _configuration["Token:Audience"], _configuration["Tokens:Issuer"]
+            );
+
+            var signedInUserViewModel = _mapper.Map<SignedInUserDto, SignedInUserViewModel>(signedInUser);
+
+            return Ok(signedInUserViewModel);
         }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        
+        [HttpGet("logout")]
+        public async Task<IActionResult> Logout()
         {
+            await _userService.SignOut();
+
+            return Ok();
         }
     }
 }

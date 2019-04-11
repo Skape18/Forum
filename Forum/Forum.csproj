@@ -33,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ClientApp\src\app\guards\" />
     <Folder Include="wwwroot\topic_images\" />
     <Folder Include="wwwroot\profile_images\" />
   </ItemGroup>

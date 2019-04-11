@@ -12,75 +12,63 @@ namespace Forum.Controllers
     [ApiController]
     public class PostsController : ControllerBase
     {
-        public IPostService PostService { get; }
-        public IUserService UserService { get; }
-        public IMapper Mapper { get; }
+        private readonly IPostService _postService;
+        private readonly IUserService _userService;
+        private readonly IMapper _mapper;
         
         public PostsController(IPostService postService, IUserService userService, IMapper mapper)
         {
-            PostService = postService;
-            Mapper = mapper;
-            UserService = userService;
+            _postService = postService;
+            _mapper = mapper;
+            _userService = userService;
         }
 
         // GET: api/Posts
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DisplayPostViewModel>>> Get()
+        public async Task<ActionResult<IEnumerable<PostDisplayViewModel>>> Get()
         {
-            var postsDto  = await PostService.GetAllAsync();
-            var postViewModels = Mapper.Map<IEnumerable<PostDto>, List<DisplayPostViewModel>>(postsDto);
-
-            foreach (var postViewModel in postViewModels)
-            {
-                postViewModel.UserProfile.IsAdmin =
-                    await UserService.IsUserInRole(postViewModel.UserProfile.UserName, "admin");
-            }
+            var postDtos  = await _postService.GetAllAsync();
+            var postViewModels = _mapper.Map<IEnumerable<PostDto>, List<PostDisplayViewModel>>(postDtos);
 
             return Ok(postViewModels);
         }
 
         // GET: api/Posts/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<DisplayPostViewModel>> Get(int id)
+        public async Task<ActionResult<PostDisplayViewModel>> Get(int id)
         {
-            var postDto = await PostService.GetByIdAsync(id);
+            var postDto = await _postService.GetByIdAsync(id);
 
             if (postDto == null)
                 return BadRequest();
 
-            var postViewModel = Mapper.Map<PostDto, DisplayPostViewModel>(postDto);
-            postViewModel.UserProfile.IsAdmin =
-                await UserService.IsUserInRole(postViewModel.UserProfile.UserName, "admin");
+            var postViewModel = _mapper.Map<PostDto, PostDisplayViewModel>(postDto);
             
             return Ok(postViewModel);
         }
 
         // POST: api/Posts
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] CreatePostViewModel createPostView)
+        public async Task<IActionResult> Post([FromBody] CreatePostViewModel createPostView)
         {
-            var postDto = Mapper.Map<CreatePostViewModel, PostDto>(createPostView);
-            await PostService.CreateAsync(postDto);
+            var postDto = _mapper.Map<CreatePostViewModel, PostDto>(createPostView);
+            await _postService.CreateAsync(postDto);
 
             return Ok();
         }
+        
 
-        // PUT: api/Posts/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
+        //DELETE: api/Posts/5
         //[Authorize(Roles = "admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var postDto = await PostService.GetByIdAsync(id);
+            var postDto = await _postService.GetByIdAsync(id);
 
             if (postDto == null)
                 return BadRequest();
 
-            await PostService.RemoveAsync(id);
+            await _postService.RemoveAsync(postDto);
 
             return Ok();
         }

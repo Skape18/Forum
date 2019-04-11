@@ -1,8 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using AutoMapper;
+using BLL.DTO.DTOs;
+using BLL.Interfaces;
+using Forum.ViewModels;
+using Forum.ViewModels.ThreadViewModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Forum.Controllers
@@ -11,36 +13,76 @@ namespace Forum.Controllers
     [ApiController]
     public class TopicsController : ControllerBase
     {
-        // GET: api/Topics
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly ITopicService _topicService;
+        private readonly IMapper _mapper;        
+
+        public TopicsController(ITopicService topicService, IMapper mapper)
         {
-            return new string[] { "value1", "value2" };
+            _topicService = topicService;
+            _mapper = mapper;
+        }
+        
+        [HttpGet("{topicId}/threads")]
+        public async Task<ActionResult<IEnumerable<ThreadDisplayViewModel>>> GetTopicThreads(int topicId)
+        {
+            var topicDto = await _topicService.GetByIdAsync(topicId);
+
+            if (topicDto == null)
+                return BadRequest();
+
+            var threadViewModels = _mapper.Map<IEnumerable<ThreadDto>, List<ThreadDisplayViewModel>>(topicDto.Threads);
+
+            return Ok(threadViewModels);
         }
 
-        // GET: api/Topics/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        // GET: api/Topics
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<TopicViewModel>>> Get()
         {
-            return "value";
+            var topicDtos = await _topicService.GetAllAsync();
+            var topicViewModels = _mapper.Map<IEnumerable<TopicDto>, List<TopicViewModel>>(topicDtos);
+
+            return Ok(topicViewModels);
         }
 
         // POST: api/Topics
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromBody] TopicViewModel topicViewModel)
         {
+            var topicDto = _mapper.Map<TopicViewModel, TopicDto>(topicViewModel);
+
+            await _topicService.CreateAsync(topicDto);
+
+            return Ok();
         }
 
         // PUT: api/Topics/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put(int id, [FromBody] TopicViewModel topicViewModel)
         {
+            var topicDto = await _topicService.GetByIdAsync(id);
+
+            if (topicDto == null)
+                return BadRequest();
+
+            topicDto = _mapper.Map<TopicViewModel, TopicDto>(topicViewModel);
+
+            await _topicService.UpdateAsync(topicDto);
+            return Ok();
         }
 
-        // DELETE: api/ApiWithActions/5
+        // DELETE: api/Topics/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            var topicDto = await _topicService.GetByIdAsync(id);
+
+            if (topicDto == null)
+                return BadRequest();
+
+            await _topicService.RemoveAsync(topicDto);
+
+            return Ok();
         }
     }
 }

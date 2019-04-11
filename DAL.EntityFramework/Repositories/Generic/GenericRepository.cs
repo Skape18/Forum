@@ -20,7 +20,7 @@ namespace DAL.EntityFramework.Repositories.Generic
 
         public async Task<T> GetByIdAsync(int id)
         {
-            var entity = await DbSetWithAllProperties().FirstOrDefaultAsync(p => p.Id == id);
+            var entity = await DbSetWithAllProperties().AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
 
             return entity;
         }

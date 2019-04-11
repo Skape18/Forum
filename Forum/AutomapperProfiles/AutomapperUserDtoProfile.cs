@@ -10,7 +10,8 @@ namespace Forum.AutomapperProfiles
     {
         public AutomapperUserDtoProfile()
         {
-            CreateMap<UserDto, PostAuthorViewModel>();
+            CreateMap<UserDto, AuthorViewModel>();
+            CreateMap<UserDto, UserViewModel>();
         }
     }
 }

@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using AutoMapper;
+using BLL.DTO.DTOs;
+using BLL.Interfaces;
+using Forum.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Forum.Controllers
@@ -11,36 +12,53 @@ namespace Forum.Controllers
     [ApiController]
     public class NotificationsController : ControllerBase
     {
+        private readonly INotificationService _notificationService;
+        private readonly IMapper _mapper;
+        public NotificationsController(INotificationService notificationService, IMapper mapper)
+        {
+            _notificationService = notificationService;
+            _mapper = mapper;
+        }
+
+
         // GET: api/Notifications
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<ActionResult<IEnumerable<NotificationViewModel>>> Get()
         {
-            return new string[] { "value1", "value2" };
-        }
+            var notificationDtos = await _notificationService.GetAllAsync();
 
-        // GET: api/Notifications/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+            var notificationViewModels = _mapper.Map<IEnumerable<NotificationDto>, List<NotificationViewModel>>
+                (notificationDtos);
 
+            return Ok(notificationViewModels);
+        }
+        
         // POST: api/Notifications
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult> Post([FromBody] NotificationViewModel notificationViewModel)
         {
-        }
+            if (notificationViewModel == null)
+                return BadRequest();
 
-        // PUT: api/Notifications/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
+            var notificationDto = _mapper.Map<NotificationViewModel, NotificationDto>(notificationViewModel);
+
+            await _notificationService.CreateAsync(notificationDto);
+
+            return Ok();
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            var notificationDto = await _notificationService.GetByIdAsync(id);
+
+            if (notificationDto == null)
+                return BadRequest();
+
+            await _notificationService.RemoveAsync(notificationDto);
+
+            return Ok();
         }
     }
 }
