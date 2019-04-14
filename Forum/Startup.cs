@@ -9,7 +9,6 @@ using DAL.EntityFramework.Contexts;
 using DAL.EntityFramework.Repositories;
 using DAL.Interfaces;
 using DAL.Interfaces.Repositories;
-using Forum.AutomapperProfiles;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;

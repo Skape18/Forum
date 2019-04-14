@@ -1,1 +1,36 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~bootstrap/dist/css/bootstrap.css';
+
+body{
+    padding: 50px 0 20px 0;
+    background-color: #EEE;
+    background-image: url("media/images/background.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+.section-header{
+    background-color: rgba(0,0,0,0.9);
+    padding: 8px 0 24px 24px;
+}
+
+
+.section-heading{
+    color: white;
+    font-size: 1.3em;
+    font-family: 'Roboto';
+    padding: 16px 0 16px 0;
+    border-bottom: 1px solid #335;
+    margin-bottom: 12px;
+}
+
+.section-description {
+    color: #eee;
+}
+
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}

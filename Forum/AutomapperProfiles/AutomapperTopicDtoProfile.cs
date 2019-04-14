@@ -9,6 +9,7 @@ namespace Forum.AutomapperProfiles
         public AutomapperTopicDtoProfile()
         {
             CreateMap<TopicDto, TopicViewModel>()
+                .ForMember(dest => dest.NumberOfThreads, opt => opt.MapFrom(tdto => tdto.Threads.Count))
                 .ReverseMap();
         }
     }

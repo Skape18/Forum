@@ -1,0 +1,11 @@
+#registration-content{
+    background-color: white;
+    padding: 16px 0 24px 40px;
+}
+
+#registration-form-wrapper{
+    background-color: #fff;
+    padding: 16px 0 24px 0;
+    margin: auto;
+    width: 30%;
+}

@@ -11,7 +11,14 @@ namespace Forum.AutomapperProfiles
         {
             CreateMap<LoginViewModel, LoginDto>();
             CreateMap<RegistrationViewModel, RegistrationDto>();
-            CreateMap<SignedInUserDto, SignedInUserViewModel>();
+
+            CreateMap<SignedInUserDto, SignedInUserViewModel>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(siudto => siudto.User.UserName))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(siudto => siudto.User.Email))
+                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(siudto => siudto.User.IsActive))
+                .ForMember(dest => dest.ProfileImagePath, opt => opt.MapFrom(siudto => siudto.User.ProfileImagePath))
+                .ForMember(dest => dest.Rating, opt => opt.MapFrom(siudto => siudto.User.Rating))
+                .ForMember(dest => dest.ProfileImagePath, opt => opt.MapFrom(siudto => siudto.User.ProfileImagePath));
         }
     }
 }

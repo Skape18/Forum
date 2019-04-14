@@ -1,0 +1,44 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand nav-logo" routerLink="/"></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a routerLink="/">Forums</a></li>
+
+                <li class="dropdown" *ngIf="currentUser">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Profile</li>
+                        <li><a routerLink="/userProfile">My Profile</a></li>
+                        <ng-container *ngIf="isAdmin">
+                            <li role="separator" class="divider"></li>
+                            <li class="dropdown-header">Admin</li>
+                            <li><a routerLink="admin/forum">Create Forum</a></li>
+                            <li><a routerLink="admin/users">Users</a></li>
+                        </ng-container>
+                    </ul>
+                </li>
+            </ul>
+       
+        <ul class="nav navbar-nav navbar-right" *ngIf="currentUser; else isNotSignedIn">
+            <li>
+                <a routerLink="/userprofile">Hello {{currentUser.userName}}</a>
+            </li>
+            <li>
+                <button (click)="logout()" class="btn btn-link navbar-btn navbar-link">Log out</button>
+            </li>
+        </ul>
+
+        <ng-template #isNotSignedIn>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a routerLink="/login">Sign In</a></li>
+                <li class="active"><a routerLink="/registration">Register</a></li>
+            </ul>
+        </ng-template>
+    </div>
+    </div>
+</nav>
+
+

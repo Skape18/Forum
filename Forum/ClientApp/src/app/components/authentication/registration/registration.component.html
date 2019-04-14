@@ -1,0 +1,41 @@
+<div class="container body-content">
+    <div class="row section-header">
+        <div class="section-heading">
+            Register  
+        </div>
+        <div class="section-description">
+            <p>Create an account to post in the forums.</p>
+        </div>
+    </div>
+    <div class="row" id="registration-content">
+        <div id="registration-form-wrapper">
+            <form  [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+                  <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && formControls.username.errors }" />
+                    <div *ngIf="submitted && formControls.username.errors" class="invalid-feedback">
+                        <div *ngIf="formControls.username.errors.required">Username is required</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && formControls.password.errors }" />
+                    <div *ngIf="submitted && formControls.password.errors" class="invalid-feedback">
+                        <div *ngIf="formControls.password.errors.required">Password is required</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && formControls.email.errors }" />
+                    <div *ngIf="submitted && formControls.email.errors" class="invalid-feedback">
+                        <div *ngIf="formControls.email.errors.required">Email is required</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button [disabled]="loading" class="btn btn-primary">Register</button>
+                </div>
+               <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+            </form>
+        </div>
+    </div>
+  </div>

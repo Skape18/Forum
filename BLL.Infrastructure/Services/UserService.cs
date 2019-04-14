@@ -29,15 +29,7 @@ namespace BLL.Infrastructure.Services
             _defaultProfileImagePath = "profile_images/default_profile_image.png";
         }
 
-        public async Task<bool> IsUserInRole(int userId, string role)
-        {
-            var user = await UnitOfWork.UserProfiles.GetByIdAsync(userId);
-
-            if (user != null)
-                return await _userManager.IsInRoleAsync(user.ApplicationUser, role);
-
-            return false;
-        }
+        
 
         public async Task<bool> IsUserInRole(string userName, string role)
         {
@@ -48,7 +40,10 @@ namespace BLL.Infrastructure.Services
             foreach (var userProfile in userProfiles)
             {
                 if (userProfile.ApplicationUser.UserName == userName)
+                {
                     user = userProfile.ApplicationUser;
+                    break;
+                }
             }
 
             if (user != null)
@@ -88,9 +83,8 @@ namespace BLL.Infrastructure.Services
                 return null;
             
             var userDto = Mapper.Map<UserProfile, UserDto>(userProfile);
-            var isAdmin = await _userManager.IsInRoleAsync(userProfile.ApplicationUser, "admin");
 
-            return new SignedInUserDto(userDto, token, isAdmin);
+            return new SignedInUserDto(userDto, token);
         }
 
         public async Task<SignedInUserDto> SignUp(RegistrationDto registrationDto, string tokenKey, int tokenLifetime, string tokenAudience, string tokenIssuer)
@@ -133,9 +127,8 @@ namespace BLL.Infrastructure.Services
           
             string token = GenerateJWTToken(applicationUser, tokenKey, tokenLifetime, tokenAudience, tokenIssuer);
             var userDto = Mapper.Map<UserProfile, UserDto>(userProfile);
-            var isAdmin = await _userManager.IsInRoleAsync(applicationUser, "admin");
 
-            return new SignedInUserDto(userDto, token, isAdmin);
+            return new SignedInUserDto(userDto, token);
         }
 
         public async Task SignOut()

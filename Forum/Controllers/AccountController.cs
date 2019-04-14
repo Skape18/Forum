@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using BLL.DTO.DTOs;
 using BLL.Interfaces;
@@ -61,6 +60,14 @@ namespace Forum.Controllers
             await _userService.SignOut();
 
             return Ok();
+        }
+
+        [HttpGet("isAdmin")]
+        public async Task<ActionResult<bool>> IsAdmin(string userName)
+        {
+            var isAdmin = await _userService.IsUserInRole(userName, "admin");
+
+            return Ok(isAdmin);
         }
     }
 }

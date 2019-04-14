@@ -6,7 +6,6 @@ namespace BLL.Interfaces
 {
     public interface IUserService
     {
-        Task<bool> IsUserInRole(int userId, string role);
 
         Task<bool> IsUserInRole(string userName, string role);
 

@@ -8,14 +8,10 @@ namespace BLL.DTO.DTOs
     {
         public UserDto User { get; set; }
         public string Token { get; set; }
-        public bool IsAdmin { get; set; }
-
-
-        public SignedInUserDto(UserDto user, string token, bool isAdmin)
+        public SignedInUserDto(UserDto user, string token)
         {
             User = user;
             Token = token;
-            IsAdmin = isAdmin;
         }
     }
 }

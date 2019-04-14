@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using BLL.Interfaces;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Forum.Controllers
@@ -11,20 +11,18 @@ namespace Forum.Controllers
     [ApiController]
     public class ImageController : ControllerBase
     {
-        // GET: api/Image
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private IHostingEnvironment _hostingEnvironment;
+        private IUserService _userService;
+        private ITopicService _topicService;
+
+        public ImageController(IHostingEnvironment hostingEnvironment, IUserService userService, ITopicService topicService)
         {
-            return new string[] { "value1", "value2" };
+            _hostingEnvironment = hostingEnvironment;
+            _userService = userService;
+            _topicService = topicService;
         }
 
-        // GET: api/Image/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
+       
         // POST: api/Image
         [HttpPost]
         public void Post([FromBody] string value)
@@ -36,7 +34,7 @@ namespace Forum.Controllers
         public void Put(int id, [FromBody] string value)
         {
         }
-
+         
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public void Delete(int id)
