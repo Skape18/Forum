@@ -7,17 +7,11 @@ import { Observable, BehaviorSubject } from 'rxjs';
 })
 export class RoleCheckService {
 
+  isAdmin: boolean;
   constructor(private http: HttpClient) {}
+ 
 
-  private isAdminSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public isAdmin: Observable<boolean> = this.isAdminSubject.asObservable();
-
-  isAdminValue(){
-    return this.isAdminSubject.value;
-  }
-
-  isAdminByUsername(username: string) {
-      this.http.get<boolean>('api/account/isadmin?userName=' + username).subscribe(isAdm => this.isAdminSubject.next(isAdm));
-      return this.isAdmin;
+  isAdminByUsername(username: string){
+      return this.http.get<boolean>('api/account/isadmin?userName=' + username);
   }
 }

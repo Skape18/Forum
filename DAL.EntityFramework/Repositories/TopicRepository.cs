@@ -16,7 +16,9 @@ namespace DAL.EntityFramework.Repositories
         protected override IQueryable<Topic> DbSetWithAllProperties()
         {
             return DbSet
-                .Include(p => p.Threads);
+                .Include(p => p.Threads)
+                .ThenInclude(t => t.UserProfile)
+                .ThenInclude(up => up.ApplicationUser);
         }
     }
 }

@@ -13,7 +13,7 @@ body{
 
 .section-header{
     background-color: rgba(0,0,0,0.9);
-    padding: 8px 0 24px 24px;
+    padding: 8px 0 24px 24px;  
 }
 
 
@@ -33,4 +33,51 @@ body{
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+}
+
+.no-border{
+    border: none;
+}
+
+.forum-logo {
+    border-radius: 3px;
+    float:left;
+    margin-right: 20px;
+    height: 40px;
+    width: 40px;
+    background-color: #ddd;
+    border: 1px solid #555;
+}
+
+
+#forum-index-content{
+    padding-bottom: 60px;
+    background-color: white;
+}
+
+#forum-index-table td {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+#forum-index-table tr:hover {
+    background-color: rgba(0, 116, 238, 1);
+}
+
+.forum-subtitle {
+    color: #888;
+    font-family: 'Roboto Mono';
+    font-size: 0.8em;
+}
+
+
+.is-admin {
+    display: inline-block;
+    padding: 3px;
+    background-color: #FFEB3B;
+    color: black;
+    font-family: 'Roboto Mono';
+}
+
+.smaller {
+    font-size: 0.8em;
 }

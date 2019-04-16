@@ -1,0 +1,46 @@
+<div class="container body-content">
+  <div class="row section-header">
+      <div class="section-heading no-border">
+          User Profile
+      </div>
+      <ng-container *ngIf="isCurrentUserAdmin">
+          <form method="post" asp-controller="Profile" asp-action="Deactivate" asp-route-id="user.id">
+              <div>
+                  <button class="btn btn-danger" active="user.IsActive">Deactivate User</button>
+              </div>
+          </form>
+        </ng-container>
+  </div>  
+    <div class="row user-profile" *ngIf="user">
+        <div class="col-md-4">
+            <img id="user-profile-image" [src]="user.profileImagePath">
+            <ng-container *ngIf="isSameUser">
+                <form method="post" enctype="multipart/form-data" asp-controller="Profile" asp-action="UploadProfileImage">
+                    <div id="upload">
+                        <label class="btn btn-default btn-file">
+                            Browse <input type="file" name="file" style="display: none;">
+                        </label>
+                    </div>
+                    <button type="submit" id="btn-profile" class="btn btn-default">Submit</button>
+                </form>
+            </ng-container>
+        </div>
+        <div class="col-md-8">
+            <span id="user-name">{{user.userName}}</span> 
+            <ng-container *ngIf="isAdmin">
+                <span class="is-admin">Admin</span>
+            </ng-container>
+            <span id="user-rating">Current Rating: {{user.rating}}</span>
+            <span id="user-email-label">Email: {{user.email}}</span>
+            <span id="user-created-label">Member Since: {{user.registrationDate | date }}</span>
+            <span id="user-active-label">Status: 
+                <ng-container *ngIf="!user.isActive; else active">
+                    <span class="inactive-user">Inactive</span>
+                </ng-container>
+                <ng-template #active>
+                    <span>Active</span>
+                </ng-template>
+            </span>
+        </div>
+    </div>
+</div>

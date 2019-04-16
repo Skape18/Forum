@@ -25,23 +25,6 @@ namespace DAL.EntityFramework.Repositories.Generic
             return entity;
         }
 
-
-        public async Task<IEnumerable<T>> GetWithPredicatesAsync(Expression<Func<T, object>> orderByPredicate = null, params Expression<Func<T, bool>>[] predicates)
-        {
-            IQueryable<T> query = DbSetWithAllProperties().AsNoTracking();
-
-            foreach (var predicate in predicates)
-            {
-                if (predicate != null)
-                    query = query.Where(predicate);
-            }
-
-            if (orderByPredicate != null)
-                query = query.OrderBy(orderByPredicate);
-            
-            return await query.ToListAsync();
-        }
-
         public async Task<IEnumerable<T>> GetAllAsync()
         {
             var entities = await DbSetWithAllProperties()

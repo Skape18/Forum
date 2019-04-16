@@ -54,7 +54,10 @@ export class RegistrationComponent implements OnInit {
           .pipe(first())
           .subscribe(
               data => {
-                  this.router.navigate([this.returnUrl]);
+                if (!data.isActive)
+                    this.authenticationService.logout();
+                    
+                this.router.navigate([this.returnUrl]);
               },
               error => {
                   this.error = error;

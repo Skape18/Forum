@@ -45,8 +45,8 @@ namespace DAL.EntityFramework.Seeder
             {
                 Id = 1,
                 ProfileImagePath = "profile_images/default_profile_image.png",
-                Rating = 0,
                 IsActive = true,
+                Rating = 3,
                 RegistrationDate = DateTime.Now,
                 ApplicationUserId = adminId
             });

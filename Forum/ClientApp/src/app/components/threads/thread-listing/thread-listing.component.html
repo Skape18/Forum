@@ -1,0 +1,62 @@
+<div class="container body-content">
+  <div class="row section-header" *ngIf="topic">
+      <div class="section-heading" >
+          <span id="results">{{topic.title}} Forum</span>
+          <div id="heading-btn" *ngIf="currentUser"><a routerLink="/" class="btn btn-new-post">Create Post</a></div>
+      </div>
+      <div class="section-description">
+          <img class="forum-logo" [src]="topic.imagePath">
+          <p>Welcome to the <strong>{{topic.title}}</strong> forum. Please keep posts friendly and on-topic.</p>
+          <p>
+              <ng-container *ngIf="!currentUser">
+                  <span>You must be a <a routeLink="registration">registered member</a> to create a new post.</span>
+              </ng-container>
+          </p>
+      </div>
+    </div>
+  <div class="row" id="forum-index-content" *ngIf="threads">
+          <table class="table table-hover table-bordered" id="forum-index-table">
+              <tbody>
+                      <tr *ngFor="let thread of threads">
+                          <td>
+                              <div class="post-data">
+                                  <div class="post-title">
+                                      <a routerLink="/posts/{{thread.id}}">{{thread.title}}</a>
+                                  </div>
+                                  <div class="forum-subtitle">
+                                      <div>
+                                          <span class="post-author">
+                                              <a routerLink="/userprofile/{{thread.userProfile.id}}">
+                                                  {{thread.userProfile.userName}}
+                                              </a>
+                                          </span>
+                                          ({{thread.userProfile.rating}}) on
+                                          <span class="post-date">
+                                              {{thread.threadOpenedDate | date:'medium'}}
+                                          </span>
+                                      </div>
+                                  </div>
+                              </div>
+                          </td>
+                          <td>
+                              <div class="forum-post-count">
+                                  Replies: {{thread.postsNumber}}
+                              </div>
+                          </td>
+                          <td>
+                              <div class="post-date"> {{thread.threadOpenedDate | date:'medium'}} </div>
+                          </td>
+                      </tr>
+              </tbody>
+          </table>
+          <ng-container *ngIf="threads.length === 0">
+              <div class="no-posts">
+                  <i class="material-icons md-72">question_answer</i>
+                  <h3>
+                      It looks like there are no {{topic.title}} posts yet. <br />
+                      Why not <a routerLink="/"><span>Create One?</span></a>
+                  </h3>
+              </div>
+           </ng-container>
+  </div>
+</div>

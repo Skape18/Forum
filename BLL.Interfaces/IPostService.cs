@@ -8,8 +8,6 @@ namespace BLL.Interfaces
     {
         Task<IEnumerable<PostDto>> GetAllAsync();
 
-        Task<IEnumerable<PostDto>> GetAllSortedByDate();
-
         Task<PostDto> GetByIdAsync(int id);
 
         Task CreateAsync(PostDto postDto);
@@ -17,5 +15,7 @@ namespace BLL.Interfaces
         Task UpdateAsync(PostDto postDto);
 
         Task RemoveAsync(PostDto postDto);
+
+        Task<IEnumerable<PostDto>> GetPostsByThreadTitle(int threadId);
     }
 }

@@ -70,7 +70,7 @@ namespace DAL.EntityFramework.Migrations
                     b.ToTable("AspNetUsers");
 
                     b.HasData(
-                        new { Id = "8bb132e3-ff79-4191-9ba9-1d021d848cc9", AccessFailedCount = 0, ConcurrencyStamp = "a99c52b4-685c-484b-8fae-99825e2efad1", Email = "andrei.marinich@gmail.com", EmailConfirmed = true, LockoutEnabled = false, NormalizedEmail = "ANDREI.MARINICH@GMAIL.COM", NormalizedUserName = "ADMIN", PasswordHash = "AQAAAAEAACcQAAAAEGhjwvTDvs2w+4XDem6QDLFTBryxmvYkbbvjqu2rrdySl/JwnLd0SCr1oE6re/07QQ==", PhoneNumberConfirmed = false, SecurityStamp = "565f802e-f2c6-4e70-a078-70563a83d534", TwoFactorEnabled = false, UserName = "admin" }
+                        new { Id = "7deb5400-a0f3-4725-88a1-214b7e0851bd", AccessFailedCount = 0, ConcurrencyStamp = "a2c4e98b-b781-43f9-bdb0-fcbb775ac97b", Email = "andrei.marinich@gmail.com", EmailConfirmed = true, LockoutEnabled = false, NormalizedEmail = "ANDREI.MARINICH@GMAIL.COM", NormalizedUserName = "ADMIN", PasswordHash = "AQAAAAEAACcQAAAAELS0DO3Z/bQnHk3qi5k+b0nUAgTUozlV54mQravmKQCTGQ2Ca5GJMVO8vhMQOeyERA==", PhoneNumberConfirmed = false, SecurityStamp = "3c5490eb-e954-4853-9513-f0e8636f0f39", TwoFactorEnabled = false, UserName = "admin" }
                     );
                 });
 
@@ -124,9 +124,9 @@ namespace DAL.EntityFramework.Migrations
                     b.ToTable("Posts");
 
                     b.HasData(
-                        new { Id = 1, Content = "First reply to thread", PostDate = new DateTime(2019, 4, 11, 1, 54, 26, 852, DateTimeKind.Local), ThreadId = 1, UserProfileId = 1 },
-                        new { Id = 2, Content = "Reply to first reply to thread", PostDate = new DateTime(2019, 4, 11, 1, 54, 26, 853, DateTimeKind.Local), RepliedPostId = 1, ThreadId = 1, UserProfileId = 1 },
-                        new { Id = 3, Content = "Reply to second thread", PostDate = new DateTime(2019, 4, 11, 1, 54, 26, 853, DateTimeKind.Local), ThreadId = 2, UserProfileId = 1 }
+                        new { Id = 1, Content = "First reply to thread", PostDate = new DateTime(2019, 4, 15, 17, 40, 49, 199, DateTimeKind.Local), ThreadId = 1, UserProfileId = 1 },
+                        new { Id = 2, Content = "Reply to first reply to thread", PostDate = new DateTime(2019, 4, 15, 17, 40, 49, 199, DateTimeKind.Local), RepliedPostId = 1, ThreadId = 1, UserProfileId = 1 },
+                        new { Id = 3, Content = "Reply to second thread", PostDate = new DateTime(2019, 4, 15, 17, 40, 49, 199, DateTimeKind.Local), ThreadId = 2, UserProfileId = 1 }
                     );
                 });
 
@@ -163,8 +163,8 @@ namespace DAL.EntityFramework.Migrations
                     b.ToTable("Threads");
 
                     b.HasData(
-                        new { Id = 1, Content = "Some content one", IsOpen = true, ThreadOpenedDate = new DateTime(2019, 4, 11, 1, 54, 26, 852, DateTimeKind.Local), Title = "Test thread one", TopicId = 1, UserProfileId = 1 },
-                        new { Id = 2, Content = "Some content two", IsOpen = true, ThreadOpenedDate = new DateTime(2019, 4, 11, 1, 54, 26, 852, DateTimeKind.Local), Title = "Test thread two", TopicId = 1, UserProfileId = 1 }
+                        new { Id = 1, Content = "Some content one", IsOpen = true, ThreadOpenedDate = new DateTime(2019, 4, 15, 17, 40, 49, 199, DateTimeKind.Local), Title = "Test thread one", TopicId = 1, UserProfileId = 1 },
+                        new { Id = 2, Content = "Some content two", IsOpen = true, ThreadOpenedDate = new DateTime(2019, 4, 15, 17, 40, 49, 199, DateTimeKind.Local), Title = "Test thread two", TopicId = 1, UserProfileId = 1 }
                     );
                 });
 
@@ -220,7 +220,7 @@ namespace DAL.EntityFramework.Migrations
                     b.ToTable("UserProfiles");
 
                     b.HasData(
-                        new { Id = 1, ApplicationUserId = "8bb132e3-ff79-4191-9ba9-1d021d848cc9", IsActive = true, ProfileImagePath = "profile_images/default_profile_image.png", Rating = 0, RegistrationDate = new DateTime(2019, 4, 11, 1, 54, 26, 849, DateTimeKind.Local) }
+                        new { Id = 1, ApplicationUserId = "7deb5400-a0f3-4725-88a1-214b7e0851bd", IsActive = true, ProfileImagePath = "profile_images/default_profile_image.png", Rating = 3, RegistrationDate = new DateTime(2019, 4, 15, 17, 40, 49, 196, DateTimeKind.Local) }
                     );
                 });
 
@@ -248,7 +248,7 @@ namespace DAL.EntityFramework.Migrations
                     b.ToTable("AspNetRoles");
 
                     b.HasData(
-                        new { Id = "791c487a-01de-4503-a057-046d0daeeae2", Name = "Admin", NormalizedName = "ADMIN" }
+                        new { Id = "3b981062-249d-410e-9215-73c63cc2416d", Name = "Admin", NormalizedName = "ADMIN" }
                     );
                 });
 
@@ -323,7 +323,7 @@ namespace DAL.EntityFramework.Migrations
                     b.ToTable("AspNetUserRoles");
 
                     b.HasData(
-                        new { UserId = "8bb132e3-ff79-4191-9ba9-1d021d848cc9", RoleId = "791c487a-01de-4503-a057-046d0daeeae2" }
+                        new { UserId = "7deb5400-a0f3-4725-88a1-214b7e0851bd", RoleId = "3b981062-249d-410e-9215-73c63cc2416d" }
                     );
                 });
 

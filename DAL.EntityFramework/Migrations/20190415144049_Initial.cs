@@ -287,12 +287,12 @@ namespace DAL.EntityFramework.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "791c487a-01de-4503-a057-046d0daeeae2", null, "Admin", "ADMIN" });
+                values: new object[] { "3b981062-249d-410e-9215-73c63cc2416d", null, "Admin", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "8bb132e3-ff79-4191-9ba9-1d021d848cc9", 0, "a99c52b4-685c-484b-8fae-99825e2efad1", "andrei.marinich@gmail.com", true, false, null, "ANDREI.MARINICH@GMAIL.COM", "ADMIN", "AQAAAAEAACcQAAAAEGhjwvTDvs2w+4XDem6QDLFTBryxmvYkbbvjqu2rrdySl/JwnLd0SCr1oE6re/07QQ==", null, false, "565f802e-f2c6-4e70-a078-70563a83d534", false, "admin" });
+                values: new object[] { "7deb5400-a0f3-4725-88a1-214b7e0851bd", 0, "a2c4e98b-b781-43f9-bdb0-fcbb775ac97b", "andrei.marinich@gmail.com", true, false, null, "ANDREI.MARINICH@GMAIL.COM", "ADMIN", "AQAAAAEAACcQAAAAELS0DO3Z/bQnHk3qi5k+b0nUAgTUozlV54mQravmKQCTGQ2Ca5GJMVO8vhMQOeyERA==", null, false, "3c5490eb-e954-4853-9513-f0e8636f0f39", false, "admin" });
 
             migrationBuilder.InsertData(
                 table: "Topics",
@@ -302,37 +302,37 @@ namespace DAL.EntityFramework.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "UserId", "RoleId" },
-                values: new object[] { "8bb132e3-ff79-4191-9ba9-1d021d848cc9", "791c487a-01de-4503-a057-046d0daeeae2" });
+                values: new object[] { "7deb5400-a0f3-4725-88a1-214b7e0851bd", "3b981062-249d-410e-9215-73c63cc2416d" });
 
             migrationBuilder.InsertData(
                 table: "UserProfiles",
                 columns: new[] { "Id", "ApplicationUserId", "IsActive", "ProfileImagePath", "Rating", "RegistrationDate" },
-                values: new object[] { 1, "8bb132e3-ff79-4191-9ba9-1d021d848cc9", true, "profile_images/default_profile_image.png", 0, new DateTime(2019, 4, 11, 1, 54, 26, 849, DateTimeKind.Local) });
+                values: new object[] { 1, "7deb5400-a0f3-4725-88a1-214b7e0851bd", true, "profile_images/default_profile_image.png", 3, new DateTime(2019, 4, 15, 17, 40, 49, 196, DateTimeKind.Local) });
 
             migrationBuilder.InsertData(
                 table: "Threads",
                 columns: new[] { "Id", "Content", "IsOpen", "ThreadClosedDate", "ThreadOpenedDate", "Title", "TopicId", "UserProfileId" },
-                values: new object[] { 1, "Some content one", true, null, new DateTime(2019, 4, 11, 1, 54, 26, 852, DateTimeKind.Local), "Test thread one", 1, 1 });
+                values: new object[] { 1, "Some content one", true, null, new DateTime(2019, 4, 15, 17, 40, 49, 199, DateTimeKind.Local), "Test thread one", 1, 1 });
 
             migrationBuilder.InsertData(
                 table: "Threads",
                 columns: new[] { "Id", "Content", "IsOpen", "ThreadClosedDate", "ThreadOpenedDate", "Title", "TopicId", "UserProfileId" },
-                values: new object[] { 2, "Some content two", true, null, new DateTime(2019, 4, 11, 1, 54, 26, 852, DateTimeKind.Local), "Test thread two", 1, 1 });
+                values: new object[] { 2, "Some content two", true, null, new DateTime(2019, 4, 15, 17, 40, 49, 199, DateTimeKind.Local), "Test thread two", 1, 1 });
 
             migrationBuilder.InsertData(
                 table: "Posts",
                 columns: new[] { "Id", "Content", "PostDate", "RepliedPostId", "ThreadId", "UserProfileId" },
-                values: new object[] { 1, "First reply to thread", new DateTime(2019, 4, 11, 1, 54, 26, 852, DateTimeKind.Local), null, 1, 1 });
+                values: new object[] { 1, "First reply to thread", new DateTime(2019, 4, 15, 17, 40, 49, 199, DateTimeKind.Local), null, 1, 1 });
 
             migrationBuilder.InsertData(
                 table: "Posts",
                 columns: new[] { "Id", "Content", "PostDate", "RepliedPostId", "ThreadId", "UserProfileId" },
-                values: new object[] { 3, "Reply to second thread", new DateTime(2019, 4, 11, 1, 54, 26, 853, DateTimeKind.Local), null, 2, 1 });
+                values: new object[] { 3, "Reply to second thread", new DateTime(2019, 4, 15, 17, 40, 49, 199, DateTimeKind.Local), null, 2, 1 });
 
             migrationBuilder.InsertData(
                 table: "Posts",
                 columns: new[] { "Id", "Content", "PostDate", "RepliedPostId", "ThreadId", "UserProfileId" },
-                values: new object[] { 2, "Reply to first reply to thread", new DateTime(2019, 4, 11, 1, 54, 26, 853, DateTimeKind.Local), 1, 1, 1 });
+                values: new object[] { 2, "Reply to first reply to thread", new DateTime(2019, 4, 15, 17, 40, 49, 199, DateTimeKind.Local), 1, 1, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

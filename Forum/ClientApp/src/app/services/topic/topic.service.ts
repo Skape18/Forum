@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Topic } from "../../models/topic/Topic";
 
 @Injectable({
@@ -12,5 +12,9 @@ export class TopicService {
 
   getAllTopics(){
     return this.http.get<Topic[]>('api/topics');
+  }
+
+  getTopic(id: number){
+    return this.http.get<Topic>('api/topics/' + id);
   }
 }

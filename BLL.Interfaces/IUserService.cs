@@ -6,17 +6,16 @@ namespace BLL.Interfaces
 {
     public interface IUserService
     {
+        Task<bool> IsUserInRoleAsync(string userName, string role);
 
-        Task<bool> IsUserInRole(string userName, string role);
+        Task<ICollection<string>> GetRolesAsync(int userId);
 
-        Task<ICollection<string>> GetRoles(int userId);
+        Task<SignedInUserDto> SignInAsync(LoginDto loginDto, string tokenKey, int tokenLifetime, string tokenAudience, string tokenIssuer);
 
-        Task<SignedInUserDto> SignIn(LoginDto loginDto, string tokenKey, int tokenLifetime, string tokenAudience, string tokenIssuer);
+        Task SignOutAsync();
 
-        Task SignOut();
+        Task<SignedInUserDto> SignUpAsync(RegistrationDto registrationDto, string tokenKey, int tokenLifetime,string tokenAudience, string tokenIssuer);
 
-        Task<SignedInUserDto> SignUp(RegistrationDto registrationDto, string tokenKey, int tokenLifetime,string tokenAudience, string tokenIssuer);
-
-        Task<UserDto> GetUserDetails(int userId);
+        Task<UserDto> GetUserDetailsAsync(int userId);
     }
 }

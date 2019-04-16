@@ -1,0 +1,82 @@
+<div class="container body-content">
+    <ng-container *ngIf="thread">
+        <div class="row thread-header ">
+            <div class="thread-heading">
+
+                <div id="close-thread-btn" class="btn" *ngIf="isAdmin"><a class="close-thread">Close thread</a></div>
+                <span class="thread-index-title">
+                    {{thread.title}}
+                </span>
+                <br>
+                <ng-container *ngIf="!thread.isOpen"><span>Thread is closed</span></ng-container>
+            </div>
+        </div>
+
+        <div class="row" id="thread-index-content">
+            <div class="col-md-3 author-container">
+                <img class="thread-author-image" [src]="thread.userProfile.profileImagePath">
+                <a routerLink="/userprofile/{{thread.userProfile.id}}">
+                    <strong>{{thread.userProfile.userName}}</strong>
+                </a> (<span class="thread-author-rating">{{thread.userProfile.rating}}</span>) <br />
+                <span class="thread-date">{{thread.threadOpenedDate | date:"medium"}}</span>
+                <ng-container *ngIf="isUserAdmin(thread.userProfile.userName) | async">
+                    <span class="is-admin smaller">Admin</span>
+                </ng-container>
+                <ng-container *ngIf="currentUser">
+                    <div class="reply-to-post">
+                        <span><a class="btn btn-new-reply">Thread Reply</a></span>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="col-md-9 content-container">
+                <div class="thread-content">
+                    {{thread.content}}
+                </div>
+            </div>
+        </div>
+    </ng-container>
+
+
+
+    <ng-container *ngIf="posts; else noPosts">
+        <div class="row post-content" *ngFor="let post of posts">
+            <div class="col-md-3 author-container">
+                <img class="thread-author-image" [src]="post.userProfile.profileImagePath">
+                <a routerLink="/userprofile/{{post.userProfile.id}}">
+                    <strong>{{post.userProfile.userName}}</strong>
+                </a> (<span class="thread-author-rating">{{post.userProfile.rating}}</span>) <br />
+                <ng-container *ngIf="isUserAdmin(post.userProfile.userName) | async">
+
+                    <div class="is-admin profile-label smaller">Admin</div>
+                    <br />
+                </ng-container>
+                <span class="thread-date">{{post.postDate | date:'medium'}}</span>
+                <ng-container *ngIf="currentUser">
+                    <div class="reply-to-post">
+                        <span><a class="btn btn-new-reply">Post Reply</a></span>
+                    </div>
+                </ng-container>
+            </div>
+            <img src="" class="delete-post">
+            <div class="col-md-9 content-container replied-content" *ngIf="post.repliedPost">
+                <div class="thread-content" *ngIf="post.repliedPost">
+                    <span class="replied-to">Replied to: </span>{{post.repliedPost.content}}
+                </div>
+            </div>
+            <div class="col-md-9 content-container">
+                <div class="thread-content">
+                    {{post.content}}
+                </div>
+            </div>
+        </div>
+
+    </ng-container>
+    <ng-template #noPosts>
+        <div class="no-posts">
+            <h3>
+                There are no replies to this post.<br />
+            </h3>
+        </div>
+    </ng-template>
+
+</div>

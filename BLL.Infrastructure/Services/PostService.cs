@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BLL.DTO.DTOs;
@@ -22,16 +23,6 @@ namespace BLL.Infrastructure.Services
             return Mapper.Map<IEnumerable<Post>, List<PostDto>>(posts);
         }
 
-        public async Task<IEnumerable<PostDto>> GetAllSortedByDate()
-        {
-            var posts = await UnitOfWork.Posts.GetWithPredicatesAsync(n => n.PostDate);
-
-            var postDtos = Mapper.Map<IEnumerable<Post>, List<PostDto>>(posts);
-
-            return postDtos;
-        }
-
-
         public async Task<PostDto> GetByIdAsync(int id)
         {
             var post = await UnitOfWork.Posts.GetByIdAsync(id);
@@ -49,6 +40,11 @@ namespace BLL.Infrastructure.Services
 
             var post = Mapper.Map<PostDto, Post>(postDto);
 
+            var author = await UnitOfWork.UserProfiles.GetByIdAsync(postDto.UserProfileId);
+            author.Rating++;
+
+            UnitOfWork.UserProfiles.Update(author);
+            await UnitOfWork.SaveChangesAsync();
             await UnitOfWork.Posts.CreateAsync(post);
             await UnitOfWork.SaveChangesAsync();
         }
@@ -76,5 +72,15 @@ namespace BLL.Infrastructure.Services
             await UnitOfWork.SaveChangesAsync();
         }
 
+        public async Task<IEnumerable<PostDto>> GetPostsByThreadTitle(int threadId)
+        {
+            var posts = await UnitOfWork.Posts.GetAllAsync();
+
+            var postsByThreadId = posts.Where(p => p.ThreadId == threadId);
+
+            var postDtos = Mapper.Map<IEnumerable<Post>, List<PostDto>>(postsByThreadId);
+
+            return postDtos;
+        }
     }
 }

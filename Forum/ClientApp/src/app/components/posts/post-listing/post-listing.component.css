@@ -1,0 +1,114 @@
+.thread-index-title{
+    font-size: 1.4em;
+}
+
+#thread-index-content{
+    background-color: white;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    border-right: 1px solid black;
+    margin-bottom: 15px;
+}
+
+.delete-post{
+    width: 15px;
+    height: 15px;
+    float: right;
+}
+
+.content-container{
+    color: #222;
+    padding: 22px;   
+    border-left: 1px solid #eee;
+}
+
+.thread-author-rating{
+    font-size: 0.9em;
+    color: #159;
+    font-family: 'Roboto Mono';
+}
+
+.thread-date{
+    color: #888;
+    font-family: 'Roboto Mono';
+    font-size: 0.8em;
+}
+
+.thread-heading {
+    color: white;
+    font-size: 1.2em;
+    font-family: 'Roboto';
+    padding: 16px 0 16px 0;
+}
+
+.thread-header {
+    background-color: #212121;
+    padding: 8px 0 24px 24px;
+}
+
+.thread-author-image{
+    height: 80px;
+    width: 80px;
+    display: block;
+}
+
+.post-content{
+    display: table;
+    background-color: white;
+    border-bottom: 1px solid #aaa;
+    width: inherit;
+    margin-bottom: 15px;
+}
+
+.author-container {
+    display: table-cell;
+    padding: 12px;
+    vertical-align: middle;
+}
+
+
+.profile-label {
+    margin-top: 2px;
+    display: inline-block;
+}
+
+.replied-content{
+    border-bottom: 1px solid #3F51B5;
+}
+
+.replied-to{
+    color: #3F51B5;
+    font-weight: 700;
+}
+
+.reply-to-post{
+    float: right;
+    margin: 5px 5px 0 0;
+}
+
+.btn-new-reply {
+    background-color: #5C6BC0! important;
+    color: #fff !important;
+    transition: ease-in 0.1s;
+    border-radius: 0px !important;
+}
+
+
+#close-thread-btn{
+    margin-right: 20px;
+    float: right; 
+    margin-top: 20px;
+    background-color: #c62828 !important;
+    color: white !important;
+    transition: ease-in 0.1s;
+    border-radius: 0px !important;
+}
+
+#close-thread-btn:hover {
+    transition: ease-in 0.1s;
+    background-color: #e53935 !important;
+    color: #fff !important;
+}
+
+.close-thread{
+    color: inherit;
+}

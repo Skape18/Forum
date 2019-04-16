@@ -1,9 +1,10 @@
 export interface SignedInUser{
-    profileImagePath: string,
-    rating: number,
-    isActive: boolean,
-    registrationDate: Date,
-    userName: string,    
-    email: string,
-    token: string
+    id: number;
+    profileImagePath: string;
+    rating: number;
+    isActive: boolean;
+    registrationDate: Date;
+    userName: string;    
+    email: string;
+    token: string;
 }

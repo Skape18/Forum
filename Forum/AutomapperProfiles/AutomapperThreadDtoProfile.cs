@@ -14,6 +14,7 @@ namespace Forum.AutomapperProfiles
         public AutomapperThreadDtoProfile()
         {
             CreateMap<ThreadDto, ThreadDisplayViewModel>()
+                .ForMember(dest => dest.PostsNumber, opt => opt.MapFrom(tdto => tdto.Posts.Count))
                 .ReverseMap();
 
             CreateMap<CreateThreadViewModel, CreateThreadViewModel>()

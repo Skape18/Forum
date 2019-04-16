@@ -28,7 +28,7 @@ namespace Forum.Controllers
         {
             var loginDto = _mapper.Map<LoginViewModel, LoginDto>(loginViewModel);
 
-            var signedInUser = await _userService.SignIn(loginDto, _configuration["Tokens:Key"],
+            var signedInUser = await _userService.SignInAsync(loginDto, _configuration["Tokens:Key"],
                 int.Parse(_configuration["Tokens:ExpiryMinutes"]),
                 _configuration["Token:Audience"], _configuration["Tokens:Issuer"]
             );
@@ -44,7 +44,7 @@ namespace Forum.Controllers
         {
             var registrationDto = _mapper.Map<RegistrationViewModel, RegistrationDto>(registrationViewModel);
 
-            var signedInUser = await _userService.SignUp(registrationDto, _configuration["Tokens:Key"],
+            var signedInUser = await _userService.SignUpAsync(registrationDto, _configuration["Tokens:Key"],
                 int.Parse(_configuration["Tokens:ExpiryMinutes"]),
                 _configuration["Token:Audience"], _configuration["Tokens:Issuer"]
             );
@@ -57,7 +57,7 @@ namespace Forum.Controllers
         [HttpGet("logout")]
         public async Task<IActionResult> Logout()
         {
-            await _userService.SignOut();
+            await _userService.SignOutAsync();
 
             return Ok();
         }
@@ -65,7 +65,7 @@ namespace Forum.Controllers
         [HttpGet("isAdmin")]
         public async Task<ActionResult<bool>> IsAdmin(string userName)
         {
-            var isAdmin = await _userService.IsUserInRole(userName, "admin");
+            var isAdmin = await _userService.IsUserInRoleAsync(userName, "admin");
 
             return Ok(isAdmin);
         }

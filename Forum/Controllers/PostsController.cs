@@ -34,7 +34,7 @@ namespace Forum.Controllers
         }
 
         // GET: api/Posts/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<PostDisplayViewModel>> Get(int id)
         {
             var postDto = await _postService.GetByIdAsync(id);
@@ -71,6 +71,20 @@ namespace Forum.Controllers
             await _postService.RemoveAsync(postDto);
 
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("~/api/threads/{threadId}/posts")]
+        public async Task<ActionResult<IEnumerable<PostDisplayViewModel>>> GetPostsByThreadTitle(int threadId)
+        {
+            var postDtos = await _postService.GetPostsByThreadTitle(threadId);
+
+            if (postDtos == null)
+                return BadRequest();
+
+            var postViewModels = _mapper.Map<IEnumerable<PostDto>, List<PostDisplayViewModel>>(postDtos);
+
+            return Ok(postViewModels);
         }
 
 

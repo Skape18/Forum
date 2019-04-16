@@ -31,7 +31,7 @@ namespace BLL.Infrastructure.Services
 
         
 
-        public async Task<bool> IsUserInRole(string userName, string role)
+        public async Task<bool> IsUserInRoleAsync(string userName, string role)
         {
             ApplicationUser user = null;
 
@@ -52,7 +52,7 @@ namespace BLL.Infrastructure.Services
             return false;
         }
 
-        public async Task<ICollection<string>> GetRoles(int userId)
+        public async Task<ICollection<string>> GetRolesAsync(int userId)
         {
             var user = await UnitOfWork.UserProfiles.GetByIdAsync(userId);
 
@@ -62,7 +62,7 @@ namespace BLL.Infrastructure.Services
             return null;
         }
 
-        public async Task<SignedInUserDto> SignIn(LoginDto loginDto, string tokenKey, int tokenLifetime, string tokenAudience, string tokenIssuer)
+        public async Task<SignedInUserDto> SignInAsync(LoginDto loginDto, string tokenKey, int tokenLifetime, string tokenAudience, string tokenIssuer)
         {
             if (loginDto == null)
                 return null;
@@ -87,7 +87,7 @@ namespace BLL.Infrastructure.Services
             return new SignedInUserDto(userDto, token);
         }
 
-        public async Task<SignedInUserDto> SignUp(RegistrationDto registrationDto, string tokenKey, int tokenLifetime, string tokenAudience, string tokenIssuer)
+        public async Task<SignedInUserDto> SignUpAsync(RegistrationDto registrationDto, string tokenKey, int tokenLifetime, string tokenAudience, string tokenIssuer)
         {
             if (registrationDto == null)
                 return null;
@@ -112,7 +112,6 @@ namespace BLL.Infrastructure.Services
             {
                 ApplicationUserId = applicationUser.Id,
                 IsActive = true,
-                Rating = 0,
                 RegistrationDate = DateTime.Now,
                 ProfileImagePath = registrationDto.ProfileImagePath ?? _defaultProfileImagePath
             };
@@ -131,12 +130,12 @@ namespace BLL.Infrastructure.Services
             return new SignedInUserDto(userDto, token);
         }
 
-        public async Task SignOut()
+        public async Task SignOutAsync()
         {
             await _signInManager.SignOutAsync();
         }
 
-        public async Task<UserDto> GetUserDetails(int userId)
+        public async Task<UserDto> GetUserDetailsAsync(int userId)
         {
             var userProfile = await UnitOfWork.UserProfiles.GetByIdAsync(userId);
 

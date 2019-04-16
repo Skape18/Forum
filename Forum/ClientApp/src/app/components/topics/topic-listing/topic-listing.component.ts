@@ -15,11 +15,11 @@ export class TopicListingComponent implements OnInit {
   currentUser: SignedInUser;
 
   constructor(private topicService: TopicService, private authenticationService: AuthenticationService) {
-    this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
   }
 
   ngOnInit() {
-    this.topicService.getAllTopics().pipe().subscribe(topics => {
+    this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+    this.topicService.getAllTopics().subscribe(topics => {
       this.topics = topics;
     });
   }

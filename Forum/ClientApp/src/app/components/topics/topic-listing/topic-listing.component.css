@@ -1,19 +1,5 @@
 /*Forum index*/
 
-#forum-index-table td {
-    background-color: rgba(255, 255, 255, 0.9);
-}
-
-#forum-index-table tr:hover {
-    background-color: rgba(0, 116, 238, 1);
-}
-
-#forum-index-content{
-    padding-bottom: 60px;
-    background-color: white;
-}
-
-
 
 .forum-data {
     display: inline-block;
@@ -25,25 +11,9 @@
     font-size: 1.1em;
 }
 
-.forum-subtitle {
-    color: #888;
-    font-family: 'Roboto Mono';
-    font-size: 0.8em;
-}
-
 .forum-description {
     color: #555;
     font-family: 'Roboto';
-}
-
-.forum-logo {
-    border-radius: 3px;
-    float:left;
-    margin-right: 20px;
-    height: 40px;
-    width: 40px;
-    background-color: #ddd;
-    border: 1px solid #555;
 }
 
 .forum-post-count{
@@ -53,5 +23,5 @@
 }
 
 td:first-child{
-    width: 20em;
+    width: 35%;
 }

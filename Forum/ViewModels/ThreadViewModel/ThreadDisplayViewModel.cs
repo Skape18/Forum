@@ -11,6 +11,7 @@ namespace Forum.ViewModels.ThreadViewModel
         public string Content { get; set; }
         public bool IsOpen { get; set; }
         public DateTime ThreadOpenedDate { get; set; }
+        public int PostsNumber { get; set; }
         public AuthorViewModel UserProfile { get; set; }
     }
 }

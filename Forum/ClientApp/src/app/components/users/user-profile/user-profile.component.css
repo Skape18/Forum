@@ -1,0 +1,25 @@
+.user-profile{
+    padding: 32px 0 64px 24px;
+    background-color: #fff;
+}
+
+#user-profile-image{
+    display: inline-block;
+    height: 200px;
+    width: 200px;
+    background-color: #ddd;
+}
+ 
+#user-email-label, #user-bio-label, #user-created-label, #user-rating, #user-active-label {
+    display: block;
+    color: #444;
+    font-family: 'Roboto';
+    padding-top: 3px;
+}
+
+#user-name{
+    display: block;
+    color: #2569d5;
+    font-family: 'Roboto';
+    font-size: 1.7em;
+}

@@ -7,6 +7,7 @@ namespace Forum.ViewModels.AccountViewModels
 {
     public class SignedInUserViewModel
     {
+        public int Id { get; set; }
         public string ProfileImagePath { get; set; }
         public int Rating { get; set; }
         public bool IsActive { get; set; }

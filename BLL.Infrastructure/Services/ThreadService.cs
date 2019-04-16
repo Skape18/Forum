@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BLL.DTO.DTOs;
@@ -21,16 +23,11 @@ namespace BLL.Infrastructure.Services
             return Mapper.Map<IEnumerable<Thread>, List<ThreadDto>>(threads);
         }
 
-        public async Task<IEnumerable<ThreadDto>> GetAllSortedByDate()
-        {
-            var threads = await UnitOfWork.Threads.GetWithPredicatesAsync(n => n.ThreadOpenedDate);
-
-            return Mapper.Map<IEnumerable<Thread>, List<ThreadDto>>(threads);
-        }
-
         public async Task<IEnumerable<ThreadDto>> GetOpened()
         {
-            var openedThreads = await UnitOfWork.Threads.GetWithPredicatesAsync(null, t => t.IsOpen);
+            var threads = await UnitOfWork.Threads.GetAllAsync();
+
+            var openedThreads = threads.Where(t => t.IsOpen);
 
             return Mapper.Map<IEnumerable<Thread>, List<ThreadDto>>(openedThreads);
         }
@@ -39,10 +36,26 @@ namespace BLL.Infrastructure.Services
         {
             var thread = await UnitOfWork.Threads.GetByIdAsync(id);
 
-            if (thread != null)
-                return Mapper.Map<Thread, ThreadDto>(thread);
+            if (thread == null)
+                return null;
 
-            return null;
+            var threadDto = Mapper.Map<Thread, ThreadDto>(thread);
+
+            return threadDto;
+        }
+
+        public async Task<ThreadDto> GetByTitleAsync(string title)
+        {
+            var threads = await UnitOfWork.Threads.GetAllAsync();
+
+            var thread = threads.FirstOrDefault(t => String.Equals(t.Title, title, StringComparison.CurrentCultureIgnoreCase));
+
+            if (thread == null)
+                return null;
+
+            var threadDto = Mapper.Map<Thread, ThreadDto>(thread);
+
+            return threadDto;
         }
 
         public async Task CreateAsync(ThreadDto threadDto)
@@ -90,6 +103,17 @@ namespace BLL.Infrastructure.Services
 
             UnitOfWork.Threads.Update(thread);
             await UnitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<ThreadDto>> GetThreadsByTopicId(int topicId)
+        {
+            var threads = await UnitOfWork.Threads.GetAllAsync();
+
+            var threadsByTopicTitle = threads.Where(t => t.TopicId == topicId);
+
+            var threadsByTopicTitleDtos = Mapper.Map<IEnumerable<Thread>, List<ThreadDto>>(threadsByTopicTitle);
+
+            return threadsByTopicTitleDtos;
         }
     }
 }

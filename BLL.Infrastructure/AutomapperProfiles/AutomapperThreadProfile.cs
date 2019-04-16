@@ -1,6 +1,6 @@
-﻿using System.Threading;
-using AutoMapper;
+﻿using AutoMapper;
 using BLL.DTO.DTOs;
+using DAL.Domain.Entities;
 
 namespace BLL.Infrastructure.AutomapperProfiles
 {
@@ -8,7 +8,8 @@ namespace BLL.Infrastructure.AutomapperProfiles
     {
         public AutomapperThreadProfile()
         {
-            CreateMap<Thread, ThreadDto>().ReverseMap();
+            CreateMap<Thread, ThreadDto>()
+                .ReverseMap();
         }
     }
 }

@@ -13,6 +13,9 @@ import { RegistrationComponent } from './components/authentication/registration/
 import { routing } from './app.routing';
 import { TopicListingComponent } from './components/topics/topic-listing/topic-listing.component';
 import { AuthenticationService } from './services/authentication/authentication.service';
+import { UserProfileComponent } from './components/users/user-profile/user-profile.component';
+import { ThreadListingComponent } from './components/threads/thread-listing/thread-listing.component';
+import { PostListingComponent } from './components/posts/post-listing/post-listing.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +23,10 @@ import { AuthenticationService } from './services/authentication/authentication.
     NavMenuComponent,
     LoginComponent,
     RegistrationComponent,
-    TopicListingComponent
+    TopicListingComponent,
+    UserProfileComponent,
+    ThreadListingComponent,
+    PostListingComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

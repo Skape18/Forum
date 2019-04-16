@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using BLL.DTO.DTOs;
@@ -22,19 +23,6 @@ namespace Forum.Controllers
             _mapper = mapper;
         }
         
-        [HttpGet("{topicId}/threads")]
-        public async Task<ActionResult<IEnumerable<ThreadDisplayViewModel>>> GetTopicThreads(int topicId)
-        {
-            var topicDto = await _topicService.GetByIdAsync(topicId);
-
-            if (topicDto == null)
-                return BadRequest();
-
-            var threadViewModels = _mapper.Map<IEnumerable<ThreadDto>, List<ThreadDisplayViewModel>>(topicDto.Threads);
-
-            return Ok(threadViewModels);
-        }
-
         // GET: api/Topics
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TopicViewModel>>> Get()
@@ -44,6 +32,21 @@ namespace Forum.Controllers
 
             return Ok(topicViewModels);
         }
+
+        // GET: api/Topics/1
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<IEnumerable<TopicViewModel>>> Get(int id)
+        {
+            var topicDto = await _topicService.GetByIdAsync(id);
+
+            if (topicDto == null)
+                return BadRequest();
+
+            var topicViewModel = _mapper.Map<TopicDto, TopicViewModel>(topicDto);
+
+            return Ok(topicViewModel);
+        }
+
 
         // POST: api/Topics
         [HttpPost]

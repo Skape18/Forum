@@ -14,6 +14,7 @@ namespace Forum.Controllers
     public class ThreadsController : ControllerBase
     {
         private readonly IThreadService _threadService;
+
         private readonly IMapper _mapper;
 
         public ThreadsController(IThreadService threadService, IMapper mapper)
@@ -22,18 +23,6 @@ namespace Forum.Controllers
             _mapper = mapper;
         }
         
-        [HttpGet("{threadId}/posts")]
-        public async Task<ActionResult<IEnumerable<PostDisplayViewModel>>> GetThreadPosts(int threadId)
-        {
-            var threadDto = await _threadService.GetByIdAsync(threadId);
-
-            if (threadDto == null)
-                return BadRequest();
-
-            var postViewModels = _mapper.Map<IEnumerable<PostDto>, List<PostDisplayViewModel>>(threadDto.Posts);
-
-            return Ok(postViewModels);
-        }
 
         // GET: api/Threads
         [HttpGet]
@@ -47,7 +36,7 @@ namespace Forum.Controllers
         }
         
         // GET: api/Threads/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<ThreadDisplayViewModel>> Get(int id)
         {
             var threadDto = await _threadService.GetByIdAsync(id);
@@ -72,7 +61,7 @@ namespace Forum.Controllers
         }
 
         // DELETE: api/Threads/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
             var threadDto = await _threadService.GetByIdAsync(id);
@@ -83,6 +72,19 @@ namespace Forum.Controllers
             await _threadService.RemoveAsync(threadDto);
 
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("~/api/topics/{topicId:int}/threads")]
+        public async Task<ActionResult<IEnumerable<ThreadDisplayViewModel>>> GetThreadsByTopicId(int topicId)
+        {
+            var threadDtos = await _threadService.GetThreadsByTopicId(topicId);
+
+            if (threadDtos == null)
+                return BadRequest();
+
+            var threadViewModels = _mapper.Map<IEnumerable<ThreadDto>, List<ThreadDisplayViewModel>>(threadDtos);
+            return Ok(threadViewModels);
         }
     }
 }

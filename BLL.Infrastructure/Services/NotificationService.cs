@@ -22,13 +22,6 @@ namespace BLL.Infrastructure.Services
             return Mapper.Map<IEnumerable<Notification>, List<NotificationDto>>(notifications);
         }
 
-        public async Task<IEnumerable<NotificationDto>> GetAllSortedByDate()
-        {
-            var notifications = await UnitOfWork.Notifications.GetWithPredicatesAsync(n => n.NotificationDate);
-
-            return Mapper.Map<IEnumerable<Notification>, List<NotificationDto>>(notifications);
-        }
-
         public async Task<NotificationDto> GetByIdAsync(int id)
         {
             var notification = await UnitOfWork.Notifications.GetByIdAsync(id);
