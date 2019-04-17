@@ -9,6 +9,7 @@ import { PostListingComponent } from './components/posts/post-listing/post-listi
 import { CreatePostComponent } from './components/posts/create-post/create-post.component';
 import { CreateTopicComponent } from './components/topics/create-topic/create-topic.component';
 import { AllErrorComponent } from './components/errors/all-error/all-error.component';
+import { AuthGuard } from './guards/auth.guard';
 
 
 const appRoutes: Routes = [
@@ -43,15 +44,18 @@ const appRoutes: Routes = [
     },
     {
         path: 'topics/:topicId/create-thread',
-        component: CreateThreadComponent
+        component: CreateThreadComponent,
+        canActivate: [AuthGuard]
     },
     {
         path: 'threads/:threadId/create-post',
-        component: CreatePostComponent
+        component: CreatePostComponent,
+        canActivate: [AuthGuard]
     },
     {
         path: 'topics/create-topic',
-        component: CreateTopicComponent
+        component: CreateTopicComponent,
+        canActivate: [AuthGuard]
     },
     {
         path: 'threads/:threadId/create-post/:repliedPostId',

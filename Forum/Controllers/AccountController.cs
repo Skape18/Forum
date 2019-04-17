@@ -62,10 +62,10 @@ namespace Forum.Controllers
             return Ok();
         }
 
-        [HttpGet("isAdmin")]
-        public async Task<ActionResult<bool>> IsAdmin(string userName)
+        [HttpGet("is-admin")]
+        public async Task<ActionResult<bool>> IsAdmin(int userId)
         {
-            var isAdmin = await _userService.IsUserInRoleAsync(userName, "admin");
+            var isAdmin = await _userService.IsUserInRoleAsync(userId, "admin");
 
             return Ok(isAdmin);
         }

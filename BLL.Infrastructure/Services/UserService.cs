@@ -31,23 +31,12 @@ namespace BLL.Infrastructure.Services
         }
 
         
-        public async Task<bool> IsUserInRoleAsync(string userName, string role)
+        public async Task<bool> IsUserInRoleAsync(int id, string role)
         {
-            ApplicationUser user = null;
-
-            var userProfiles = await UnitOfWork.UserProfiles.GetAllAsync();
-            
-            foreach (var userProfile in userProfiles)
-            {
-                if (userProfile.ApplicationUser.UserName == userName)
-                {
-                    user = userProfile.ApplicationUser;
-                    break;
-                }
-            }
+            var user = await UnitOfWork.UserProfiles.GetByIdAsync(id);
 
             if (user != null)
-                return await _userManager.IsInRoleAsync(user, role);
+                return await _userManager.IsInRoleAsync(user.ApplicationUser, role);
 
             return false;
         }

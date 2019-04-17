@@ -11,7 +11,7 @@ export class RoleCheckService {
   constructor(private http: HttpClient) {}
  
 
-  isAdminByUsername(username: string){
-      return this.http.get<boolean>('api/account/isadmin?userName=' + username);
+  isAdminByUsername(userId: number){
+      return this.http.get<boolean>('api/account/is-admin?userId=' + userId);
   }
 }

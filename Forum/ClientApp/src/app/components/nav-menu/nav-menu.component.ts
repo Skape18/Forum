@@ -31,7 +31,7 @@ export class NavMenuComponent implements OnInit {
 
     checkAdmin() {
         if (this.currentUser != null)
-            this.roleCheckService.isAdminByUsername(this.currentUser.userName).pipe(first()).subscribe(res => this.isAdmin = res);
+            this.roleCheckService.isAdminByUsername(this.currentUser.id).pipe(first()).subscribe(res => this.isAdmin = res);
     }
 
     logout() {

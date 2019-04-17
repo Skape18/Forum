@@ -38,7 +38,7 @@ export class UserProfileComponent implements OnInit {
       flatMap(params => this.userService.getUser(params.id))
     ).subscribe(user => {
       this.user = user;
-      this.roleCheckService.isAdminByUsername(user.userName).subscribe(isAdmin => this.isAdmin = isAdmin)
+      this.roleCheckService.isAdminByUsername(user.id).subscribe(isAdmin => this.isAdmin = isAdmin)
     });
 
     this.userForm = new FormGroup({
@@ -57,7 +57,7 @@ export class UserProfileComponent implements OnInit {
 
   checkAdmin() {
     if (this.currentUser)
-      this.roleCheckService.isAdminByUsername(this.currentUser.userName).pipe(first()).subscribe(res => this.isCurrentUserAdmin = res);
+      this.roleCheckService.isAdminByUsername(this.currentUser.id).pipe(first()).subscribe(res => this.isCurrentUserAdmin = res);
     else
       this.isCurrentUserAdmin = false;
   }

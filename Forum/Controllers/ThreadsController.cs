@@ -49,7 +49,7 @@ namespace Forum.Controllers
             return Ok(threadViewModel);
         }
 
-        //GET api/topics/4/threads"
+        //GET api/topics/4/threads
         [HttpGet]
         [Route("~/api/topics/{topicId:int}/threads")]
         public async Task<ActionResult<IEnumerable<ThreadDisplayViewModel>>> GetThreadsByTopicId(int topicId)

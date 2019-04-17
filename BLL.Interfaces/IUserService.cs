@@ -6,7 +6,7 @@ namespace BLL.Interfaces
 {
     public interface IUserService
     {
-        Task<bool> IsUserInRoleAsync(string userName, string role);
+        Task<bool> IsUserInRoleAsync(int id, string role);
 
         Task<ICollection<string>> GetRolesAsync(int userId);
 
