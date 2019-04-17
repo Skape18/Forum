@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BLL.DTO.DTOs;
+using BLL.Infrastructure.Exceptions;
 using BLL.Interfaces;
 using DAL.Domain.Entities;
 using DAL.Interfaces;
@@ -28,21 +29,8 @@ namespace BLL.Infrastructure.Services
             var thread = await UnitOfWork.Threads.GetByIdAsync(id);
 
             if (thread == null)
-                return null;
+                throw new DbQueryResultNullException("Db query result is null", "threads");
 
-            var threadDto = Mapper.Map<Thread, ThreadDto>(thread);
-
-            return threadDto;
-        }
-
-        public async Task<ThreadDto> GetByTitleAsync(string title)
-        {
-            var threads = await UnitOfWork.Threads.GetAllAsync();
-
-            var thread = threads.FirstOrDefault(t => String.Equals(t.Title, title, StringComparison.CurrentCultureIgnoreCase));
-
-            if (thread == null)
-                return null;
 
             var threadDto = Mapper.Map<Thread, ThreadDto>(thread);
 
@@ -52,7 +40,7 @@ namespace BLL.Infrastructure.Services
         public async Task CreateAsync(ThreadDto threadDto)
         {
             if (threadDto == null)
-                return;
+                throw new ArgumentNullException("threadDto", "Argument is null");
 
             var thread = Mapper.Map<ThreadDto, Thread>(threadDto);
 
@@ -63,7 +51,7 @@ namespace BLL.Infrastructure.Services
         public async Task UpdateAsync(ThreadDto threadDto)
         {
             if (threadDto == null)
-                return;
+                throw new ArgumentNullException("threadDto", "Argument is null");
 
             var thread = Mapper.Map<ThreadDto, Thread>(threadDto);
 
@@ -75,7 +63,7 @@ namespace BLL.Infrastructure.Services
         public async Task RemoveAsync(ThreadDto threadDto)
         {
             if (threadDto == null)
-                return;
+                throw new ArgumentNullException("threadDto", "Argument is null");
 
             var thread = Mapper.Map<ThreadDto, Thread>(threadDto);
 
@@ -88,7 +76,7 @@ namespace BLL.Infrastructure.Services
             var thread = await UnitOfWork.Threads.GetByIdAsync(threadId);
 
             if (thread == null)
-                return;
+                throw new DbQueryResultNullException("Db query result is null", "threads");
 
             thread.IsOpen = false;
 
@@ -100,9 +88,9 @@ namespace BLL.Infrastructure.Services
         {
             var threads = await UnitOfWork.Threads.GetAllAsync();
 
-            var threadsByTopicTitle = threads.Where(t => t.TopicId == topicId);
+            var threadsByTopicId = threads.Where(t => t.TopicId == topicId);
 
-            var threadsByTopicTitleDtos = Mapper.Map<IEnumerable<Thread>, List<ThreadDto>>(threadsByTopicTitle);
+            var threadsByTopicTitleDtos = Mapper.Map<IEnumerable<Thread>, List<ThreadDto>>(threadsByTopicId);
 
             return threadsByTopicTitleDtos;
         }
@@ -112,7 +100,7 @@ namespace BLL.Infrastructure.Services
             var thread = await UnitOfWork.Threads.GetByIdAsync(threadId);
 
             if (thread == null)
-                return false;
+                throw new DbQueryResultNullException("Db query result is null", "threads");
 
             thread.IsOpen = false;
             thread.ThreadClosedDate = DateTime.Now;

@@ -16,6 +16,6 @@ namespace BLL.Interfaces
 
         Task RemoveAsync(PostDto postDto);
 
-        Task<IEnumerable<PostDto>> GetPostsByThreadTitle(int threadId);
+        Task<IEnumerable<PostDto>> GetPostsByThreadId(int threadId);
     }
 }

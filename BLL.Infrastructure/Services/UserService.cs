@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BLL.DTO.DTOs;
 using BLL.Interfaces;
+using BLL.Infrastructure.Exceptions;
 using DAL.Domain.Entities;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -35,31 +36,31 @@ namespace BLL.Infrastructure.Services
         {
             var user = await UnitOfWork.UserProfiles.GetByIdAsync(id);
 
-            if (user != null)
-                return await _userManager.IsInRoleAsync(user.ApplicationUser, role);
+            if (user == null)
+                throw new DbQueryResultNullException("Db query result is null", "user profiles");
 
-            return false;
+            return await _userManager.IsInRoleAsync(user.ApplicationUser, role); 
         }
 
         public async Task<ICollection<string>> GetRolesAsync(int userId)
         {
             var user = await UnitOfWork.UserProfiles.GetByIdAsync(userId);
 
-            if (user != null)
-                return await _userManager.GetRolesAsync(user.ApplicationUser);
+            if (user == null)
+                throw new DbQueryResultNullException("Db query result is null", "user profiles");
 
-            return null;
+            return await _userManager.GetRolesAsync(user.ApplicationUser);
         }
 
         public async Task<SignedInUserDto> SignInAsync(LoginDto loginDto, string tokenKey, int tokenLifetime, string tokenAudience, string tokenIssuer)
         {
             if (loginDto == null)
-                return null;
+                throw new ArgumentNullException("loginDto", "Login dto argument is null");
 
             var result = await _signInManager.PasswordSignInAsync(loginDto.UserName, loginDto.Password, false, false);
 
             if (!result.Succeeded)
-                return null;
+                throw new UserLogInException("Failed to sign in user"); 
 
             var user = await _userManager.FindByNameAsync(loginDto.UserName);
 
@@ -69,8 +70,8 @@ namespace BLL.Infrastructure.Services
             var userProfile = userProfiles.FirstOrDefault(up => up.ApplicationUserId == user.Id);
 
             if (userProfile == null)
-                return null;
-            
+                throw new DbQueryResultNullException("Db query result is null", "user profiles");
+
             var userDto = Mapper.Map<UserProfile, UserDto>(userProfile);
 
             return new SignedInUserDto(userDto, token);
@@ -79,21 +80,14 @@ namespace BLL.Infrastructure.Services
         public async Task<SignedInUserDto> SignUpAsync(RegistrationDto registrationDto, string tokenKey, int tokenLifetime, string tokenAudience, string tokenIssuer)
         {
             if (registrationDto == null)
-                return null;
+                throw new ArgumentNullException();
 
             var applicationUser = Mapper.Map<RegistrationDto, ApplicationUser>(registrationDto);
             
             var result = await _userManager.CreateAsync(applicationUser, registrationDto.Password);
 
             if (!result.Succeeded)
-            {
-                string errors = "";
-                foreach (var identityError in result.Errors)
-                {
-                    errors += $"{identityError.Description}\n";
-                }
-                throw new Exception(errors);
-            }
+                throw new UserCreationException("Failed to create user");
 
             await UnitOfWork.SaveChangesAsync();
 
@@ -114,6 +108,7 @@ namespace BLL.Infrastructure.Services
             await _signInManager.SignInAsync(applicationUser, false);
           
             string token = await GenerateJWTToken(applicationUser, tokenKey, tokenLifetime, tokenAudience, tokenIssuer);
+
             var userDto = Mapper.Map<UserProfile, UserDto>(userProfile);
 
             return new SignedInUserDto(userDto, token);
@@ -129,7 +124,7 @@ namespace BLL.Infrastructure.Services
             var userProfile = await UnitOfWork.UserProfiles.GetByIdAsync(userId);
 
             if (userProfile == null)
-                return null;
+                throw new DbQueryResultNullException("Db query result is null", "user profiles");
 
             var userDto = Mapper.Map<UserProfile, UserDto>(userProfile);
 
@@ -141,7 +136,7 @@ namespace BLL.Infrastructure.Services
             var user = await UnitOfWork.UserProfiles.GetByIdAsync(userId);
 
             if (user == null)
-                return false;
+                throw new DbQueryResultNullException("Db query result is null", "user profiles");
 
             user.IsActive = false;
 

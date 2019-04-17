@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BLL.DTO.DTOs;
+using BLL.Infrastructure.Exceptions;
 using BLL.Interfaces;
 using DAL.Domain.Entities;
 using DAL.Interfaces;
@@ -27,16 +29,16 @@ namespace BLL.Infrastructure.Services
         {
             var post = await UnitOfWork.Posts.GetByIdAsync(id);
 
-            if (post != null)
-                return Mapper.Map<Post, PostDto>(post);
+            if (post == null)
+                throw new DbQueryResultNullException("Db query result is null", "posts");
 
-            return null;
+            return Mapper.Map<Post, PostDto>(post);
         }
 
         public async Task CreateAsync(PostDto postDto)
         {
             if (postDto == null)
-                return;
+                throw new DbQueryResultNullException("Db query result is null", "posts");
 
             var post = Mapper.Map<PostDto, Post>(postDto);
 
@@ -53,7 +55,7 @@ namespace BLL.Infrastructure.Services
         public async Task UpdateAsync(PostDto postDto)
         {
             if (postDto == null)
-                return;
+                throw new ArgumentNullException("postDto", "Argument is null");
 
             var post = Mapper.Map<PostDto, Post>(postDto);
 
@@ -65,13 +67,13 @@ namespace BLL.Infrastructure.Services
         public async Task RemoveAsync(PostDto postDto)
         {
             if (postDto == null)
-                return;
-
-            //var postToDelete = Mapper.Map<PostDto, Post>(postDto);
-
-  
+                throw new ArgumentNullException("postDto", "Argument is null");
+            
             var users = await UnitOfWork.UserProfiles.GetWithIncludesAsync();
             var user = users.FirstOrDefault(u => u.Id == postDto.UserProfileId);
+
+            if (user == null)
+                throw new DbQueryResultNullException("Db query result is null", "user profiles");
 
             user.Rating--;
 
@@ -91,7 +93,7 @@ namespace BLL.Infrastructure.Services
             await UnitOfWork.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<PostDto>> GetPostsByThreadTitle(int threadId)
+        public async Task<IEnumerable<PostDto>> GetPostsByThreadId(int threadId)
         {
             var posts = await UnitOfWork.Posts.GetAllAsync();
 

@@ -56,6 +56,9 @@ namespace Forum.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromForm] CreateTopicViewModel topicViewModel)
         {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
             var topicDto = _mapper.Map<CreateTopicViewModel, TopicDto>(topicViewModel);
 
             byte[] fileBytes;
@@ -76,6 +79,9 @@ namespace Forum.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Put(int id, [FromBody] TopicViewModel topicViewModel)
         {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
             var topicDto = await _topicService.GetByIdAsync(id);
 
             if (topicDto == null)

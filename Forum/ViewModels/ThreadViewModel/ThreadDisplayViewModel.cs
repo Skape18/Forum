@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using Forum.ViewModels.PostViewModels;
 
 namespace Forum.ViewModels.ThreadViewModel
 {

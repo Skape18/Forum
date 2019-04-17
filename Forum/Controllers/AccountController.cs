@@ -26,6 +26,9 @@ namespace Forum.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<SignedInUserViewModel>> Login([FromBody]LoginViewModel loginViewModel)
         {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
             var loginDto = _mapper.Map<LoginViewModel, LoginDto>(loginViewModel);
 
             var signedInUser = await _userService.SignInAsync(loginDto, _configuration["Tokens:Key"],
@@ -42,6 +45,9 @@ namespace Forum.Controllers
         [HttpPost("registration")]
         public async Task<ActionResult<SignedInUserViewModel>> Register([FromBody]RegistrationViewModel registrationViewModel)
         {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
             var registrationDto = _mapper.Map<RegistrationViewModel, RegistrationDto>(registrationViewModel);
 
             var signedInUser = await _userService.SignUpAsync(registrationDto, _configuration["Tokens:Key"],

@@ -68,6 +68,9 @@ namespace Forum.Controllers
         [Authorize]
         public async Task<ActionResult> Post([FromBody] CreateThreadViewModel threadViewModel)
         {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
             var threadDto = _mapper.Map<CreateThreadViewModel, ThreadDto>(threadViewModel);
 
             await _threadService.CreateAsync(threadDto);

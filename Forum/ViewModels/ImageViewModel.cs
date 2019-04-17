@@ -2,7 +2,6 @@
 
 namespace Forum.ViewModels
 {
-
     public class ImageViewModel
     {
         public IFormFile UserImage { get; set; }

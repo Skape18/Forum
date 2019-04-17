@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BLL.DTO.DTOs;
+using BLL.Infrastructure.Exceptions;
 using BLL.Interfaces;
 using DAL.Domain.Entities;
 using DAL.Interfaces;
@@ -13,7 +13,7 @@ namespace BLL.Infrastructure.Services
 {
     public class TopicService : BaseService, ITopicService
     {
-        private string _defaultTopicImagePath;
+        private readonly string _defaultTopicImagePath;
 
         public TopicService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
@@ -31,16 +31,16 @@ namespace BLL.Infrastructure.Services
         {
             var topic = await UnitOfWork.Topics.GetByIdAsync(id);
 
-            if (topic != null)
-                return Mapper.Map<Topic, TopicDto>(topic);
+            if (topic == null)
+                throw new DbQueryResultNullException("Db query result is null", "topics");
 
-            return null;
+            return Mapper.Map<Topic, TopicDto>(topic);
         }
 
         public async Task CreateAsync(TopicDto topicDto)
         {
             if (topicDto == null)
-                return;
+                throw new ArgumentNullException("topicDto", "Argument is null");
 
             if (topicDto.ImagePath == null)
                 topicDto.ImagePath = _defaultTopicImagePath;
@@ -57,7 +57,7 @@ namespace BLL.Infrastructure.Services
         public async Task UpdateAsync(TopicDto topicDto)
         {
             if (topicDto == null)
-                return;
+                throw new ArgumentNullException("topicDto", "Argument is null");
 
             var topic = Mapper.Map<TopicDto, Topic>(topicDto);
 
@@ -66,12 +66,12 @@ namespace BLL.Infrastructure.Services
             await UnitOfWork.SaveChangesAsync();
         }
 
-        public async Task RemoveAsync(TopicDto topicsDto)
+        public async Task RemoveAsync(TopicDto topicDto)
         {
-            if (topicsDto == null)
-                return;
+            if (topicDto == null)
+                throw new ArgumentNullException("topicDto", "Argument is null");
 
-            var topic = Mapper.Map<TopicDto, Topic>(topicsDto);
+            var topic = Mapper.Map<TopicDto, Topic>(topicDto);
 
             UnitOfWork.Topics.Remove(topic);
             await UnitOfWork.SaveChangesAsync();

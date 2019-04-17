@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using DAL.Domain.Base;
+using DAL.EntityFramework.Exceptions;
 using DAL.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,6 +23,11 @@ namespace DAL.EntityFramework.Repositories.Generic
         {
             var entity = await DbSetWithAllProperties().AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
 
+            if (entity == null)
+            {
+                throw new DbRecordNotFoundException("Record with parameter not found exception", id.ToString());
+            }
+
             return entity;
         }
 
@@ -36,20 +42,27 @@ namespace DAL.EntityFramework.Repositories.Generic
 
         public async Task CreateAsync(T entity)
         {
-            if (entity != null)
-                await DbSet.AddAsync(entity);
+            if (entity == null)
+                throw new RepositoryArgumentNullException("Error in repository with entity while executing create", "entity");
+
+            await DbSet.AddAsync(entity);
         }
 
         public void Remove(T entity)
         {
-            if (entity != null)
-                DbSet.Remove(entity);
+            if (entity == null)
+                throw new RepositoryArgumentNullException("Error in repository with entity while executing remove", "entity");
+
+
+            DbSet.Remove(entity);
         }
 
         public void Update(T entity)
         {
-            if (entity != null)
-                DbSet.Update(entity);
+            if (entity == null)
+                throw new RepositoryArgumentNullException("Error in repository with entity while executing update", "entity");
+
+            DbSet.Update(entity);
         }
 
         public async Task<IEnumerable<T>> GetWithIncludesAsync(params Expression<Func<T, object>>[] includeProperties)
@@ -65,8 +78,10 @@ namespace DAL.EntityFramework.Repositories.Generic
 
             foreach (var includeProperty in includeProperties)
             {
-                if (includeProperty != null)
-                    query = query.Include(includeProperty);
+                if (includeProperty == null)
+                        throw new IncludePropertyNullException("Include property is null");
+
+                query = query.Include(includeProperty);
             }
 
             return query;
