@@ -8,7 +8,11 @@ namespace BLL.Infrastructure.AutomapperProfiles
     {
         public AutomapperPostProfile()
         {
-            CreateMap<Post, PostDto>().ReverseMap();
+            CreateMap<Post, PostDto>()
+                .ReverseMap()
+                .ForMember(dest => dest.UserProfile, opt => opt.Ignore())
+                .ForMember(dest => dest.Thread, opt => opt.Ignore())
+                .ForMember(dest => dest.RepliedPost, opt => opt.Ignore());
         }
     }
 }

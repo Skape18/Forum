@@ -17,4 +17,8 @@ export class TopicService {
   getTopic(id: number){
     return this.http.get<Topic>('api/topics/' + id);
   }
+
+  createTopic(form: FormData){
+    return this.http.post('api/topics', form);
+  }
 }

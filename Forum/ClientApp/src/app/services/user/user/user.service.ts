@@ -14,4 +14,12 @@ export class UserService {
   getUser(id: number){ 
     return this.http.get<User>('api/user/' + id);
   }
+
+  deactivate(id: number){
+    return this.http.put('api/user/deactivate/' + id, null);
+  }
+
+  updateImage(userId: number, form: FormData){
+    return this.http.put('api/user/upload-image/' + userId, form);
+  }
 }

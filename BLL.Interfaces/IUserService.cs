@@ -17,5 +17,9 @@ namespace BLL.Interfaces
         Task<SignedInUserDto> SignUpAsync(RegistrationDto registrationDto, string tokenKey, int tokenLifetime,string tokenAudience, string tokenIssuer);
 
         Task<UserDto> GetUserDetailsAsync(int userId);
+
+        Task<bool> Deactivate(int userId);
+
+        Task UpdateImagePath(int userId, string profileImagePath);
     }
 }

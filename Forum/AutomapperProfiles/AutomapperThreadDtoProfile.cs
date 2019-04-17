@@ -17,8 +17,9 @@ namespace Forum.AutomapperProfiles
                 .ForMember(dest => dest.PostsNumber, opt => opt.MapFrom(tdto => tdto.Posts.Count))
                 .ReverseMap();
 
-            CreateMap<CreateThreadViewModel, CreateThreadViewModel>()
-                .ForMember(dest => dest.ThreadOpenedDate, opt => opt.MapFrom(ctvm => DateTime.Now));
+            CreateMap<CreateThreadViewModel, ThreadDto>()
+                .ForMember(dest => dest.ThreadOpenedDate, opt => opt.MapFrom(ctvm => DateTime.Now))
+                .ForMember(dest => dest.IsOpen, opt => opt.MapFrom(ctvm => true));
         }
     }
 }

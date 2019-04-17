@@ -17,7 +17,11 @@ namespace DAL.EntityFramework.Configurations
                 .WithMany(up => up.Posts)
                 .OnDelete(DeleteBehavior.Restrict);
 
-
+            builder
+                .HasOne(p => p.RepliedPost)
+                .WithMany(p => p.Replies)
+                .HasForeignKey(p => p.RepliedPostId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

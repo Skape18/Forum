@@ -18,6 +18,7 @@ export class TopicListingComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log("topic init");
     this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
     this.topicService.getAllTopics().subscribe(topics => {
       this.topics = topics;

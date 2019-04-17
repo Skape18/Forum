@@ -81,3 +81,24 @@ body{
 .smaller {
     font-size: 0.8em;
 }
+
+#heading-btn{
+    margin-right: 20px;
+    float: right; 
+    margin-top: 57px;
+}
+
+.btn-back {
+    background-color: #555;
+    color: #fff !important;
+    transition: ease-in 0.1s;
+    border-radius: 0px !important;
+}
+
+#img-input{
+    display: none;
+}
+
+.select-img-btn{
+    margin-top: 15px;
+}

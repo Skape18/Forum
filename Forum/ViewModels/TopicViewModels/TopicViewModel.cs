@@ -1,5 +1,5 @@
 ﻿
-namespace Forum.ViewModels
+namespace Forum.ViewModels.TopicViewModels
 {
     public class TopicViewModel
     {

@@ -7,10 +7,7 @@ namespace BLL.Interfaces
     public interface IThreadService
     {
         Task<IEnumerable<ThreadDto>> GetAllAsync();
-
-
-        Task<IEnumerable<ThreadDto>> GetOpened();
-
+        
         Task<ThreadDto> GetByIdAsync(int id);
         
         Task CreateAsync(ThreadDto threadDto);
@@ -20,5 +17,7 @@ namespace BLL.Interfaces
         Task RemoveAsync(ThreadDto threadDto);
 
         Task<IEnumerable<ThreadDto>> GetThreadsByTopicId(int topicId);
+
+        Task<bool> Deactivate(int threadId);
     }
 }

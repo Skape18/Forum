@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthenticationService } from '../../../services/authentication/authentication.service';
 import { first } from 'rxjs/operators';
 
@@ -19,7 +19,6 @@ export class RegistrationComponent implements OnInit {
 
   constructor(
       private formBuilder: FormBuilder,
-      private route: ActivatedRoute,
       private router: Router,
       private authenticationService: AuthenticationService
   ) { 
@@ -35,8 +34,6 @@ export class RegistrationComponent implements OnInit {
           password: ['', Validators.required],
           email: ['', Validators.required]
       });
-
-      this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   get formControls() { return this.registrationForm.controls; }
@@ -54,10 +51,7 @@ export class RegistrationComponent implements OnInit {
           .pipe(first())
           .subscribe(
               data => {
-                if (!data.isActive)
-                    this.authenticationService.logout();
-                    
-                this.router.navigate([this.returnUrl]);
+                this.router.navigate(['/']);
               },
               error => {
                   this.error = error;

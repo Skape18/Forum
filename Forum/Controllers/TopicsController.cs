@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
 using BLL.DTO.DTOs;
 using BLL.Interfaces;
-using Forum.ViewModels;
-using Forum.ViewModels.ThreadViewModel;
+using Forum.ViewModels.TopicViewModels;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Forum.Controllers
@@ -15,12 +16,14 @@ namespace Forum.Controllers
     public class TopicsController : ControllerBase
     {
         private readonly ITopicService _topicService;
-        private readonly IMapper _mapper;        
+        private readonly IMapper _mapper;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
-        public TopicsController(ITopicService topicService, IMapper mapper)
+        public TopicsController(ITopicService topicService, IMapper mapper, IHostingEnvironment hostingEnvironment)
         {
             _topicService = topicService;
             _mapper = mapper;
+            _hostingEnvironment = hostingEnvironment;
         }
         
         // GET: api/Topics
@@ -50,9 +53,29 @@ namespace Forum.Controllers
 
         // POST: api/Topics
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] TopicViewModel topicViewModel)
+        public async Task<IActionResult> Post([FromForm] CreateTopicViewModel topicViewModel)
         {
-            var topicDto = _mapper.Map<TopicViewModel, TopicDto>(topicViewModel);
+            if (topicViewModel == null)
+                throw new Exception("empty topic view model");
+
+            if (topicViewModel.Image == null)
+                throw new Exception("image is empty");
+
+
+            var topicDto = _mapper.Map<CreateTopicViewModel, TopicDto>(topicViewModel);
+
+            string imageName = Path.GetFileNameWithoutExtension(topicViewModel.Image.FileName) + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(topicViewModel.Image.FileName);
+
+            string imagePath = Path.Combine("topic_images", imageName);
+
+            string filePath = Path.Combine(_hostingEnvironment.WebRootPath, imagePath);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await topicViewModel.Image.CopyToAsync(stream);
+            }
+
+            topicDto.ImagePath = imagePath;
 
             await _topicService.CreateAsync(topicDto);
 

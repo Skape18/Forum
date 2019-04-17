@@ -30,7 +30,6 @@ namespace BLL.Infrastructure.Services
         }
 
         
-
         public async Task<bool> IsUserInRoleAsync(string userName, string role)
         {
             ApplicationUser user = null;
@@ -145,6 +144,32 @@ namespace BLL.Infrastructure.Services
             var userDto = Mapper.Map<UserProfile, UserDto>(userProfile);
 
             return userDto;
+        }
+
+        public async Task<bool> Deactivate(int userId)
+        {
+            var user = await UnitOfWork.UserProfiles.GetByIdAsync(userId);
+
+            if (user == null)
+                return false;
+
+            user.IsActive = false;
+
+            UnitOfWork.UserProfiles.Update(user);
+            await UnitOfWork.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task UpdateImagePath(int userId, string profileImagePath)
+        {
+            var user = await UnitOfWork.UserProfiles.GetByIdAsync(userId);
+
+            user.ProfileImagePath = profileImagePath;
+
+            UnitOfWork.UserProfiles.Update(user);
+
+            await UnitOfWork.SaveChangesAsync();
         }
 
         private string GenerateJWTToken(ApplicationUser user, string tokenKey, int tokenLifetime, string tokenAudience, string tokenIssuer)

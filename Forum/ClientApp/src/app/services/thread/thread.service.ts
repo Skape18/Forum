@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Thread } from '../../models/thread/Thread';
+import { ThreadCreate } from '../../models/thread/ThreadCreate';
 
 @Injectable({
   providedIn: 'root'
@@ -15,5 +16,13 @@ export class ThreadService {
 
   getThread(id: number){
     return this.http.get<Thread>('api/threads/' + id);
+  }
+
+  deactivate(id: number){
+    return this.http.put('api/threads/deactivate/' + id, null);
+  }
+
+  createThread(thread: ThreadCreate) {
+    return this.http.post('api/threads', thread);
   }
 }

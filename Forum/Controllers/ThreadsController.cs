@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BLL.DTO.DTOs;
 using BLL.Interfaces;
-using Forum.ViewModels.PostViewModels;
 using Forum.ViewModels.ThreadViewModel;
 using Microsoft.AspNetCore.Mvc;
 
@@ -85,6 +84,18 @@ namespace Forum.Controllers
 
             var threadViewModels = _mapper.Map<IEnumerable<ThreadDto>, List<ThreadDisplayViewModel>>(threadDtos);
             return Ok(threadViewModels);
+        }
+
+        // PUT: api/User/5
+        [HttpPut("deactivate/{threadId}")]
+        public async Task<IActionResult> Deactivate(int threadId)
+        {
+            var isSuccessful = await _threadService.Deactivate(threadId);
+
+            if (!isSuccessful)
+                return BadRequest();
+
+            return Ok(); 
         }
     }
 }

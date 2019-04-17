@@ -23,15 +23,6 @@ namespace BLL.Infrastructure.Services
             return Mapper.Map<IEnumerable<Thread>, List<ThreadDto>>(threads);
         }
 
-        public async Task<IEnumerable<ThreadDto>> GetOpened()
-        {
-            var threads = await UnitOfWork.Threads.GetAllAsync();
-
-            var openedThreads = threads.Where(t => t.IsOpen);
-
-            return Mapper.Map<IEnumerable<Thread>, List<ThreadDto>>(openedThreads);
-        }
-
         public async Task<ThreadDto> GetByIdAsync(int id)
         {
             var thread = await UnitOfWork.Threads.GetByIdAsync(id);
@@ -114,6 +105,22 @@ namespace BLL.Infrastructure.Services
             var threadsByTopicTitleDtos = Mapper.Map<IEnumerable<Thread>, List<ThreadDto>>(threadsByTopicTitle);
 
             return threadsByTopicTitleDtos;
+        }
+
+        public async Task<bool> Deactivate(int threadId)
+        {
+            var thread = await UnitOfWork.Threads.GetByIdAsync(threadId);
+
+            if (thread == null)
+                return false;
+
+            thread.IsOpen = false;
+            thread.ThreadClosedDate = DateTime.Now;
+            
+            UnitOfWork.Threads.Update(thread);
+            await UnitOfWork.SaveChangesAsync();
+
+            return true;
         }
     }
 }

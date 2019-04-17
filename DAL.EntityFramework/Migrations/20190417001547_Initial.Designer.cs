@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.EntityFramework.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20190415144049_Initial")]
+    [Migration("20190417001547_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -72,7 +72,7 @@ namespace DAL.EntityFramework.Migrations
                     b.ToTable("AspNetUsers");
 
                     b.HasData(
-                        new { Id = "7deb5400-a0f3-4725-88a1-214b7e0851bd", AccessFailedCount = 0, ConcurrencyStamp = "a2c4e98b-b781-43f9-bdb0-fcbb775ac97b", Email = "andrei.marinich@gmail.com", EmailConfirmed = true, LockoutEnabled = false, NormalizedEmail = "ANDREI.MARINICH@GMAIL.COM", NormalizedUserName = "ADMIN", PasswordHash = "AQAAAAEAACcQAAAAELS0DO3Z/bQnHk3qi5k+b0nUAgTUozlV54mQravmKQCTGQ2Ca5GJMVO8vhMQOeyERA==", PhoneNumberConfirmed = false, SecurityStamp = "3c5490eb-e954-4853-9513-f0e8636f0f39", TwoFactorEnabled = false, UserName = "admin" }
+                        new { Id = "75ea6112-8d79-4870-9ba4-ad241707e477", AccessFailedCount = 0, ConcurrencyStamp = "bc5b6e5e-cfbe-49af-8e98-bebe8f718178", Email = "andrei.marinich@gmail.com", EmailConfirmed = true, LockoutEnabled = false, NormalizedEmail = "ANDREI.MARINICH@GMAIL.COM", NormalizedUserName = "ADMIN", PasswordHash = "AQAAAAEAACcQAAAAEKGkkrFXQz1N7nVHcJW3zgYUarbMHc8bPIQR0Z+J6Y7VbFdrs/QRzE32jf70bXRLtw==", PhoneNumberConfirmed = false, SecurityStamp = "16eba243-9caf-4812-acfb-6d41aa739616", TwoFactorEnabled = false, UserName = "admin" }
                     );
                 });
 
@@ -126,9 +126,9 @@ namespace DAL.EntityFramework.Migrations
                     b.ToTable("Posts");
 
                     b.HasData(
-                        new { Id = 1, Content = "First reply to thread", PostDate = new DateTime(2019, 4, 15, 17, 40, 49, 199, DateTimeKind.Local), ThreadId = 1, UserProfileId = 1 },
-                        new { Id = 2, Content = "Reply to first reply to thread", PostDate = new DateTime(2019, 4, 15, 17, 40, 49, 199, DateTimeKind.Local), RepliedPostId = 1, ThreadId = 1, UserProfileId = 1 },
-                        new { Id = 3, Content = "Reply to second thread", PostDate = new DateTime(2019, 4, 15, 17, 40, 49, 199, DateTimeKind.Local), ThreadId = 2, UserProfileId = 1 }
+                        new { Id = 1, Content = "First reply to thread", PostDate = new DateTime(2019, 4, 17, 3, 15, 47, 310, DateTimeKind.Local), ThreadId = 1, UserProfileId = 1 },
+                        new { Id = 2, Content = "Reply to first reply to thread", PostDate = new DateTime(2019, 4, 17, 3, 15, 47, 310, DateTimeKind.Local), RepliedPostId = 1, ThreadId = 1, UserProfileId = 1 },
+                        new { Id = 3, Content = "Reply to second thread", PostDate = new DateTime(2019, 4, 17, 3, 15, 47, 311, DateTimeKind.Local), ThreadId = 2, UserProfileId = 1 }
                     );
                 });
 
@@ -165,8 +165,8 @@ namespace DAL.EntityFramework.Migrations
                     b.ToTable("Threads");
 
                     b.HasData(
-                        new { Id = 1, Content = "Some content one", IsOpen = true, ThreadOpenedDate = new DateTime(2019, 4, 15, 17, 40, 49, 199, DateTimeKind.Local), Title = "Test thread one", TopicId = 1, UserProfileId = 1 },
-                        new { Id = 2, Content = "Some content two", IsOpen = true, ThreadOpenedDate = new DateTime(2019, 4, 15, 17, 40, 49, 199, DateTimeKind.Local), Title = "Test thread two", TopicId = 1, UserProfileId = 1 }
+                        new { Id = 1, Content = "Some content one", IsOpen = true, ThreadOpenedDate = new DateTime(2019, 4, 17, 3, 15, 47, 310, DateTimeKind.Local), Title = "Test thread one", TopicId = 1, UserProfileId = 1 },
+                        new { Id = 2, Content = "Some content two", IsOpen = true, ThreadOpenedDate = new DateTime(2019, 4, 17, 3, 15, 47, 310, DateTimeKind.Local), Title = "Test thread two", TopicId = 1, UserProfileId = 1 }
                     );
                 });
 
@@ -222,7 +222,7 @@ namespace DAL.EntityFramework.Migrations
                     b.ToTable("UserProfiles");
 
                     b.HasData(
-                        new { Id = 1, ApplicationUserId = "7deb5400-a0f3-4725-88a1-214b7e0851bd", IsActive = true, ProfileImagePath = "profile_images/default_profile_image.png", Rating = 3, RegistrationDate = new DateTime(2019, 4, 15, 17, 40, 49, 196, DateTimeKind.Local) }
+                        new { Id = 1, ApplicationUserId = "75ea6112-8d79-4870-9ba4-ad241707e477", IsActive = true, ProfileImagePath = "profile_images/default_profile_image.png", Rating = 3, RegistrationDate = new DateTime(2019, 4, 17, 3, 15, 47, 306, DateTimeKind.Local) }
                     );
                 });
 
@@ -250,7 +250,7 @@ namespace DAL.EntityFramework.Migrations
                     b.ToTable("AspNetRoles");
 
                     b.HasData(
-                        new { Id = "3b981062-249d-410e-9215-73c63cc2416d", Name = "Admin", NormalizedName = "ADMIN" }
+                        new { Id = "dbe1c9bf-e0b1-445b-b6dc-19c7c1f6b586", Name = "Admin", NormalizedName = "ADMIN" }
                     );
                 });
 
@@ -325,7 +325,7 @@ namespace DAL.EntityFramework.Migrations
                     b.ToTable("AspNetUserRoles");
 
                     b.HasData(
-                        new { UserId = "7deb5400-a0f3-4725-88a1-214b7e0851bd", RoleId = "3b981062-249d-410e-9215-73c63cc2416d" }
+                        new { UserId = "75ea6112-8d79-4870-9ba4-ad241707e477", RoleId = "dbe1c9bf-e0b1-445b-b6dc-19c7c1f6b586" }
                     );
                 });
 
@@ -360,8 +360,9 @@ namespace DAL.EntityFramework.Migrations
             modelBuilder.Entity("DAL.Domain.Entities.Post", b =>
                 {
                     b.HasOne("DAL.Domain.Entities.Post", "RepliedPost")
-                        .WithMany()
-                        .HasForeignKey("RepliedPostId");
+                        .WithMany("Replies")
+                        .HasForeignKey("RepliedPostId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("DAL.Domain.Entities.Thread", "Thread")
                         .WithMany("Posts")

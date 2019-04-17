@@ -45,6 +45,7 @@ namespace BLL.Infrastructure.Services
 
             UnitOfWork.UserProfiles.Update(author);
             await UnitOfWork.SaveChangesAsync();
+
             await UnitOfWork.Posts.CreateAsync(post);
             await UnitOfWork.SaveChangesAsync();
         }
@@ -66,9 +67,27 @@ namespace BLL.Infrastructure.Services
             if (postDto == null)
                 return;
 
-            var post = Mapper.Map<PostDto, Post>(postDto);
+            //var postToDelete = Mapper.Map<PostDto, Post>(postDto);
+
+  
+            var users = await UnitOfWork.UserProfiles.GetWithIncludesAsync();
+            var user = users.FirstOrDefault(u => u.Id == postDto.UserProfileId);
+
+            user.Rating--;
+
+            var post = await UnitOfWork.Posts.GetByIdAsync(postDto.Id);
+            var replies = post.Replies;
+
+            foreach (var reply in replies)
+            {
+                reply.RepliedPostId = null;
+                UnitOfWork.Posts.Update(reply);
+            }
+
+            await UnitOfWork.SaveChangesAsync();
 
             UnitOfWork.Posts.Remove(post);
+            UnitOfWork.UserProfiles.Update(user);
             await UnitOfWork.SaveChangesAsync();
         }
 

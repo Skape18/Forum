@@ -17,8 +17,7 @@ namespace DAL.EntityFramework.Repositories
         {
             return DbSet
                 .Include(p => p.RepliedPost)
-                .ThenInclude(rp => rp.UserProfile)
-                .ThenInclude(up => up.ApplicationUser)
+                .Include(p => p.Replies)
                 .Include(p => p.Notifications)
                 .Include(p => p.Thread)
                 .Include(p => p.UserProfile)

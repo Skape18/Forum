@@ -4,8 +4,9 @@ import { AuthenticationService } from '../../../services/authentication/authenti
 import { RoleCheckService } from '../../../services/user/roleCheck/role-check.service';
 import { SignedInUser } from '../../../models/user/SignedInUser';
 import { User } from '../../../models/user/User';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { first, flatMap } from 'rxjs/operators';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-user-profile',
@@ -17,15 +18,15 @@ export class UserProfileComponent implements OnInit {
   isCurrentUserAdmin: boolean;
   isAdmin: boolean;
   user: User;
+  userForm: FormGroup;
 
   constructor(
     private userService: UserService,
     private authenticationService: AuthenticationService,
     private roleCheckService: RoleCheckService,
-    private activeRoute: ActivatedRoute
-  ) {
-
-  }
+    private activeRoute: ActivatedRoute,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.authenticationService.currentUser.subscribe(x => {
@@ -39,6 +40,10 @@ export class UserProfileComponent implements OnInit {
       this.user = user;
       this.roleCheckService.isAdminByUsername(user.userName).subscribe(isAdmin => this.isAdmin = isAdmin)
     });
+
+    this.userForm = new FormGroup({
+      userImage: new FormControl(null)
+    }, { updateOn: 'submit' });
   }
 
   get isSameUser(): boolean {
@@ -57,6 +62,35 @@ export class UserProfileComponent implements OnInit {
       this.isCurrentUserAdmin = false;
   }
 
+
+  deactivate(id: number) {
+    this.userService.deactivate(id).subscribe(res => this.ngOnInit());
+  }
+
+  //Image uploading
+  fileChange(files: FileList) {
+    if (files && files[0].size > 0) {
+      this.userForm.patchValue({
+        userImage: files[0]
+      });
+    }
+  }
+
+  onSubmit() {
+    if (this.userForm.valid) {
+      this.userService.updateImage(this.currentUser.id, this.prepareSaveUser()).subscribe();
+      this.router.navigate(['/'])
+    }
+  }
+
+  prepareSaveUser(): FormData {
+    const formModel = this.userForm.value;
+
+    let formData = new FormData();
+    formData.append("userImage", formModel.userImage);
+
+    return formData;
+  }
 }
 
 
