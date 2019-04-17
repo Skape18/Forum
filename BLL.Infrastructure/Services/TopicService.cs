@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -73,6 +74,24 @@ namespace BLL.Infrastructure.Services
             var topic = Mapper.Map<TopicDto, Topic>(topicsDto);
 
             UnitOfWork.Topics.Remove(topic);
+            await UnitOfWork.SaveChangesAsync();
+        }
+
+        public async Task CreateTopicWithImage(TopicDto topicDto, string fileName, string rootPath, byte[] image)
+        {
+            string imageName = Path.GetFileNameWithoutExtension(fileName) + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(fileName);
+
+            string imagePath = Path.Combine("topic_images", imageName);
+
+            string fullPath = Path.Combine(rootPath, imagePath);
+
+            File.WriteAllBytes(fullPath, image);
+  
+            topicDto.ImagePath = imagePath;
+
+            var topic = Mapper.Map<TopicDto, Topic>(topicDto);
+
+            await UnitOfWork.Topics.CreateAsync(topic);
             await UnitOfWork.SaveChangesAsync();
         }
     }

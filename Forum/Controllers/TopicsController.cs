@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -55,29 +54,17 @@ namespace Forum.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromForm] CreateTopicViewModel topicViewModel)
         {
-            if (topicViewModel == null)
-                throw new Exception("empty topic view model");
-
-            if (topicViewModel.Image == null)
-                throw new Exception("image is empty");
-
-
             var topicDto = _mapper.Map<CreateTopicViewModel, TopicDto>(topicViewModel);
 
-            string imageName = Path.GetFileNameWithoutExtension(topicViewModel.Image.FileName) + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(topicViewModel.Image.FileName);
+            byte[] fileBytes;
 
-            string imagePath = Path.Combine("topic_images", imageName);
-
-            string filePath = Path.Combine(_hostingEnvironment.WebRootPath, imagePath);
-
-            using (var stream = new FileStream(filePath, FileMode.Create))
+            using (var stream = new MemoryStream())
             {
                 await topicViewModel.Image.CopyToAsync(stream);
+                fileBytes = stream.ToArray();
             }
 
-            topicDto.ImagePath = imagePath;
-
-            await _topicService.CreateAsync(topicDto);
+            await _topicService.CreateTopicWithImage(topicDto, topicViewModel.Image.FileName, _hostingEnvironment.WebRootPath, fileBytes);
 
             return Ok();
         }

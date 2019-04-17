@@ -20,6 +20,6 @@ namespace BLL.Interfaces
 
         Task<bool> Deactivate(int userId);
 
-        Task UpdateImagePath(int userId, string profileImagePath);
+        Task UpdateImage(int userId, string profileImageName, string rootPath, byte[] image);
     }
 }

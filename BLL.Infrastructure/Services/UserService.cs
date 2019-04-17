@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -161,15 +162,28 @@ namespace BLL.Infrastructure.Services
             return true;
         }
 
-        public async Task UpdateImagePath(int userId, string profileImagePath)
+        public async Task UpdateImage(int userId, string fileName, string rootPath, byte[] image)
         {
             var user = await UnitOfWork.UserProfiles.GetByIdAsync(userId);
 
+            string imageName = Path.GetFileNameWithoutExtension(fileName) + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(fileName);
+
+            var profileImagePath = Path.Combine("profile_images", imageName);
+
             user.ProfileImagePath = profileImagePath;
+
+            var fullPath = Path.Combine(rootPath, profileImagePath);
+
+            File.WriteAllBytes(fullPath, image);
 
             UnitOfWork.UserProfiles.Update(user);
 
             await UnitOfWork.SaveChangesAsync();
+        }
+
+        public async Task UpdateImagePath(int userId, string profileImagePath)
+        {
+ 
         }
 
         private string GenerateJWTToken(ApplicationUser user, string tokenKey, int tokenLifetime, string tokenAudience, string tokenIssuer)

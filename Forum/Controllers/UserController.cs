@@ -56,18 +56,15 @@ namespace Forum.Controllers
         [Route("upload-image/{userId}")]
         public async Task<IActionResult> UploadImage([FromRoute]int userId, [FromForm] ImageViewModel userImage)
         {
-            string imageName = Path.GetFileNameWithoutExtension(userImage.UserImage.FileName) + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(userImage.UserImage.FileName);
+            byte[] fileBytes;
 
-            string imagePath = Path.Combine("profile_images", imageName);
-
-            string filePath = Path.Combine(_hostingEnvironment.WebRootPath, imagePath);
-
-            using (var stream = new FileStream(filePath, FileMode.Create))
+            using (var stream = new MemoryStream())
             {
                 await userImage.UserImage.CopyToAsync(stream);
+                fileBytes = stream.ToArray();
             }
-
-            await _userService.UpdateImagePath(userId, imagePath);
+            
+            await _userService.UpdateImage(userId, userImage.UserImage.FileName, _hostingEnvironment.WebRootPath, fileBytes);
 
             return Ok();
         }
