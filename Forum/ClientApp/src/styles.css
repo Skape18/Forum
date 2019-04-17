@@ -102,3 +102,8 @@ body{
 .select-img-btn{
     margin-top: 15px;
 }
+
+.not-registered{
+    text-align: center;
+    padding-top: 30px;
+}

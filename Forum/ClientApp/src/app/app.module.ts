@@ -19,6 +19,7 @@ import { PostListingComponent } from './components/posts/post-listing/post-listi
 import { CreateThreadComponent } from './components/threads/create-thread/create-thread.component';
 import { CreatePostComponent } from './components/posts/create-post/create-post.component';
 import { CreateTopicComponent } from './components/topics/create-topic/create-topic.component';
+import { AllErrorComponent } from './components/errors/all-error/all-error.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { CreateTopicComponent } from './components/topics/create-topic/create-to
     PostListingComponent,
     CreateThreadComponent,
     CreatePostComponent,
-    CreateTopicComponent
+    CreateTopicComponent,
+    AllErrorComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

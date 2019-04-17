@@ -8,6 +8,7 @@ import { CreateThreadComponent } from './components/threads/create-thread/create
 import { PostListingComponent } from './components/posts/post-listing/post-listing.component';
 import { CreatePostComponent } from './components/posts/create-post/create-post.component';
 import { CreateTopicComponent } from './components/topics/create-topic/create-topic.component';
+import { AllErrorComponent } from './components/errors/all-error/all-error.component';
 
 
 const appRoutes: Routes = [
@@ -56,7 +57,10 @@ const appRoutes: Routes = [
         path: 'threads/:threadId/create-post/:repliedPostId',
         component: CreatePostComponent
     },
-
+    {
+        path: 'error',
+        component: AllErrorComponent
+    },
     { 
         path: '**', 
         redirectTo: '' 

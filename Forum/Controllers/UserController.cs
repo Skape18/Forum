@@ -5,6 +5,7 @@ using AutoMapper;
 using BLL.DTO.DTOs;
 using BLL.Interfaces;
 using Forum.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,7 +41,7 @@ namespace Forum.Controllers
             return Ok(userViewModel);
         }
         
-
+        [Authorize(Roles = "Admin")]
         [HttpPut("deactivate/{userId}")]
         public async Task<IActionResult> Deactivate(int userId)
         {
@@ -52,6 +53,7 @@ namespace Forum.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpPut]
         [Route("upload-image/{userId}")]
         public async Task<IActionResult> UploadImage([FromRoute]int userId, [FromForm] ImageViewModel userImage)

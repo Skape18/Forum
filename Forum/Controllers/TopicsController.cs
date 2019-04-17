@@ -5,6 +5,7 @@ using AutoMapper;
 using BLL.DTO.DTOs;
 using BLL.Interfaces;
 using Forum.ViewModels.TopicViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
@@ -51,6 +52,7 @@ namespace Forum.Controllers
 
 
         // POST: api/Topics
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Post([FromForm] CreateTopicViewModel topicViewModel)
         {
@@ -71,6 +73,7 @@ namespace Forum.Controllers
 
         // PUT: api/Topics/5
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Put(int id, [FromBody] TopicViewModel topicViewModel)
         {
             var topicDto = await _topicService.GetByIdAsync(id);
@@ -86,6 +89,7 @@ namespace Forum.Controllers
 
         // DELETE: api/Topics/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var topicDto = await _topicService.GetByIdAsync(id);

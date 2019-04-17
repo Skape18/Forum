@@ -9,6 +9,7 @@ using DAL.EntityFramework.Contexts;
 using DAL.EntityFramework.Repositories;
 using DAL.Interfaces;
 using DAL.Interfaces.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -58,10 +59,10 @@ namespace Forum
             services.AddScoped<INotificationService, NotificationService>();
 
             services.AddAuthentication(options => {
-                    options.DefaultAuthenticateScheme = "JwtBearer";
-                    options.DefaultChallengeScheme = "JwtBearer";
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
-                .AddJwtBearer("JwtBearer", jwtBearerOptions =>
+                .AddJwtBearer(jwtBearerOptions =>
                 {
                     jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters
                     {
@@ -71,8 +72,8 @@ namespace Forum
                         ValidIssuer = Configuration["Tokens:Issuer"],
                         ValidateAudience = true,
                         ValidAudience = Configuration["Tokens:Audience"],
-                        ValidateLifetime = true, 
-                        ClockSkew = TimeSpan.FromMinutes(15)
+                        ValidateLifetime = bool.Parse(Configuration["Tokens:ValidateLifetime"]), 
+                        ClockSkew = TimeSpan.FromMinutes(int.Parse(Configuration["Tokens:ExpiryMinutes"]))
                     };
                 });
 

@@ -4,6 +4,7 @@ using AutoMapper;
 using BLL.DTO.DTOs;
 using BLL.Interfaces;
 using Forum.ViewModels.ThreadViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Forum.Controllers
@@ -48,8 +49,23 @@ namespace Forum.Controllers
             return Ok(threadViewModel);
         }
 
+        //GET api/topics/4/threads"
+        [HttpGet]
+        [Route("~/api/topics/{topicId:int}/threads")]
+        public async Task<ActionResult<IEnumerable<ThreadDisplayViewModel>>> GetThreadsByTopicId(int topicId)
+        {
+            var threadDtos = await _threadService.GetThreadsByTopicId(topicId);
+
+            if (threadDtos == null)
+                return BadRequest();
+
+            var threadViewModels = _mapper.Map<IEnumerable<ThreadDto>, List<ThreadDisplayViewModel>>(threadDtos);
+            return Ok(threadViewModels);
+        }
+
         // POST: api/Threads
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> Post([FromBody] CreateThreadViewModel threadViewModel)
         {
             var threadDto = _mapper.Map<CreateThreadViewModel, ThreadDto>(threadViewModel);
@@ -59,6 +75,7 @@ namespace Forum.Controllers
             return Ok();
         }
 
+        [Authorize]
         // DELETE: api/Threads/5
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
@@ -73,20 +90,9 @@ namespace Forum.Controllers
             return Ok();
         }
 
-        [HttpGet]
-        [Route("~/api/topics/{topicId:int}/threads")]
-        public async Task<ActionResult<IEnumerable<ThreadDisplayViewModel>>> GetThreadsByTopicId(int topicId)
-        {
-            var threadDtos = await _threadService.GetThreadsByTopicId(topicId);
-
-            if (threadDtos == null)
-                return BadRequest();
-
-            var threadViewModels = _mapper.Map<IEnumerable<ThreadDto>, List<ThreadDisplayViewModel>>(threadDtos);
-            return Ok(threadViewModels);
-        }
 
         // PUT: api/User/5
+        [Authorize(Roles = "Admin")]
         [HttpPut("deactivate/{threadId}")]
         public async Task<IActionResult> Deactivate(int threadId)
         {

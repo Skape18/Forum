@@ -30,7 +30,7 @@ namespace Forum.Controllers
 
             var signedInUser = await _userService.SignInAsync(loginDto, _configuration["Tokens:Key"],
                 int.Parse(_configuration["Tokens:ExpiryMinutes"]),
-                _configuration["Token:Audience"], _configuration["Tokens:Issuer"]
+                _configuration["Tokens:Audience"], _configuration["Tokens:Issuer"]
             );
 
             var signedInUserViewModel = _mapper.Map<SignedInUserDto, SignedInUserViewModel>(signedInUser);
@@ -46,7 +46,7 @@ namespace Forum.Controllers
 
             var signedInUser = await _userService.SignUpAsync(registrationDto, _configuration["Tokens:Key"],
                 int.Parse(_configuration["Tokens:ExpiryMinutes"]),
-                _configuration["Token:Audience"], _configuration["Tokens:Issuer"]
+                _configuration["Tokens:Audience"], _configuration["Tokens:Issuer"]
             );
 
             var signedInUserViewModel = _mapper.Map<SignedInUserDto, SignedInUserViewModel>(signedInUser);

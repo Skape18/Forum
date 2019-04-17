@@ -4,6 +4,7 @@ using AutoMapper;
 using BLL.DTO.DTOs;
 using BLL.Interfaces;
 using Forum.ViewModels.PostViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Forum.Controllers
@@ -47,35 +48,11 @@ namespace Forum.Controllers
             return Ok(postViewModel);
         }
 
-        // POST: api/Posts
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CreatePostViewModel createPostView)
-        {
-            var postDto = _mapper.Map<CreatePostViewModel, PostDto>(createPostView);
-            await _postService.CreateAsync(postDto);
 
-            return Ok();
-        }
-        
-
-        //DELETE: api/Posts/5
-        //[Authorize(Roles = "admin")]
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
-        {
-            var postDto = await _postService.GetByIdAsync(id);
-
-            if (postDto == null)
-                return BadRequest();
-
-            await _postService.RemoveAsync(postDto);
-
-            return Ok();
-        }
-
+        //GET: api/threads/4/posts
         [HttpGet]
         [Route("~/api/threads/{threadId}/posts")]
-        public async Task<ActionResult<IEnumerable<PostDisplayViewModel>>> GetPostsByThreadTitle(int threadId)
+        public async Task<ActionResult<IEnumerable<PostDisplayViewModel>>> GetPostsByThreadId(int threadId)
         {
             var postDtos = await _postService.GetPostsByThreadTitle(threadId);
 
@@ -88,5 +65,31 @@ namespace Forum.Controllers
         }
 
 
+        // POST: api/Posts
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Post([FromBody] CreatePostViewModel createPostView)
+        {
+            var postDto = _mapper.Map<CreatePostViewModel, PostDto>(createPostView);
+            await _postService.CreateAsync(postDto);
+
+            return Ok();
+        }
+        
+
+        //DELETE: api/Posts/5
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var postDto = await _postService.GetByIdAsync(id);
+
+            if (postDto == null)
+                return BadRequest();
+
+            await _postService.RemoveAsync(postDto);
+
+            return Ok();
+        }
     }
 }

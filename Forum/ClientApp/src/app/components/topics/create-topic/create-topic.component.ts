@@ -35,7 +35,7 @@ export class CreateTopicComponent implements OnInit {
 
   onSubmit() {
     if (this.topicForm.valid) {
-      this.topicService.createTopic(this.prepareSaveTopic()).subscribe(res =>  this.router.navigate(['/']));
+      this.topicService.createTopic(this.prepareSaveTopic()).subscribe(res =>  res/*this.router.navigate(['/'])*/);
     }
   }
 

@@ -74,7 +74,7 @@ namespace BLL.Infrastructure.Services
 
             var user = await _userManager.FindByNameAsync(loginDto.UserName);
 
-            string token = GenerateJWTToken(user, tokenKey, tokenLifetime, tokenAudience, tokenIssuer);
+            string token = await GenerateJWTToken(user, tokenKey, tokenLifetime, tokenAudience, tokenIssuer);
 
             var userProfiles = await UnitOfWork.UserProfiles.GetAllAsync();
             var userProfile = userProfiles.FirstOrDefault(up => up.ApplicationUserId == user.Id);
@@ -124,7 +124,7 @@ namespace BLL.Infrastructure.Services
 
             await _signInManager.SignInAsync(applicationUser, false);
           
-            string token = GenerateJWTToken(applicationUser, tokenKey, tokenLifetime, tokenAudience, tokenIssuer);
+            string token = await GenerateJWTToken(applicationUser, tokenKey, tokenLifetime, tokenAudience, tokenIssuer);
             var userDto = Mapper.Map<UserProfile, UserDto>(userProfile);
 
             return new SignedInUserDto(userDto, token);
@@ -181,12 +181,7 @@ namespace BLL.Infrastructure.Services
             await UnitOfWork.SaveChangesAsync();
         }
 
-        public async Task UpdateImagePath(int userId, string profileImagePath)
-        {
- 
-        }
-
-        private string GenerateJWTToken(ApplicationUser user, string tokenKey, int tokenLifetime, string tokenAudience, string tokenIssuer)
+        private async Task<string> GenerateJWTToken(ApplicationUser user, string tokenKey, int tokenLifetime, string tokenAudience, string tokenIssuer)
         {
             var utcNow = DateTime.UtcNow;
 
@@ -199,11 +194,17 @@ namespace BLL.Infrastructure.Services
                 new Claim(JwtRegisteredClaimNames.Iat, utcNow.ToString())
             };
 
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims);
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            claimsIdentity.AddClaims(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
             var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
             var jwt = new JwtSecurityToken(
                 signingCredentials: signingCredentials,
-                claims: claims,
+                claims: claimsIdentity.Claims,
                 notBefore: utcNow,
                 expires: utcNow.AddMinutes(tokenLifetime),
                 audience: tokenAudience,
