@@ -54,7 +54,7 @@ namespace Forum.Controllers
         [Route("~/api/threads/{threadId}/posts")]
         public async Task<ActionResult<IEnumerable<PostDisplayViewModel>>> GetPostsByThreadId(int threadId)
         {
-            var postDtos = await _postService.GetPostsByThreadTitle(threadId);
+            var postDtos = await _postService.GetPostsByThreadId(threadId);
 
             if (postDtos == null)
                 return BadRequest();

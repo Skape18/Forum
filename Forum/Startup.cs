@@ -79,13 +79,6 @@ namespace Forum
             app.UseAuthentication();
             app.ConfigureExceptionHandler();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Topic}/{action=Get}/{id?}");
-            });
-
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "ClientApp";
