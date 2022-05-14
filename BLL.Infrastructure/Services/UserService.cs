@@ -22,12 +22,14 @@ namespace BLL.Infrastructure.Services
         private UserManager<ApplicationUser> _userManager;
         private SignInManager<ApplicationUser> _signInManager;
         private string _defaultProfileImagePath;
+        private ITagService _tagService;
 
         public UserService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, 
-                            IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
+                            IUnitOfWork unitOfWork, IMapper mapper, ITagService tagService) : base(unitOfWork, mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _tagService = tagService;
             _defaultProfileImagePath = "profile_images/default_profile_image.png";
         }
 
@@ -158,10 +160,58 @@ namespace BLL.Infrastructure.Services
 
             var fullPath = Path.Combine(rootPath, profileImagePath);
 
-            File.WriteAllBytes(fullPath, image);
+            await File.WriteAllBytesAsync(fullPath, image);
 
             UnitOfWork.UserProfiles.Update(user);
 
+            await UnitOfWork.SaveChangesAsync();
+        }
+
+        public async Task UpdateTags(int userId, IEnumerable<int> tagIds)
+        {
+            var user = await UnitOfWork.UserProfiles.GetByIdAsync(userId);
+            var tags = await _tagService.GetAllAsync();
+
+            foreach (var tagId in tagIds)
+            {
+                if (user.Tags.All(t => t.Id != tagId))
+                {
+                    var tag = tags.First(t => t.Id == tagId);
+                    user.Tags.Add(tag);
+                }
+            }
+
+            UnitOfWork.UserProfiles.Update(user);
+            await UnitOfWork.SaveChangesAsync();
+        }
+
+        public async Task Unlike(int likeBy, int userId)
+        {
+            var user = await UnitOfWork.UserProfiles.GetByIdAsync(userId);
+
+            if (user.LikedBy.All(u => u.Id != likeBy))
+                return;
+
+            var likedByUser = await UnitOfWork.UserProfiles.GetByIdAsync(likeBy);
+            user.LikedBy.Remove(likedByUser);
+            user.Rating--;
+
+            UnitOfWork.UserProfiles.Update(user);
+            await UnitOfWork.SaveChangesAsync();
+        }
+
+        public async Task Like(int likeBy, int userId)
+        {
+            var user = await UnitOfWork.UserProfiles.GetByIdAsync(userId);
+
+            if (user.LikedBy.Any(u => u.Id == likeBy))
+                return;
+
+            var likedByUser = await UnitOfWork.UserProfiles.GetByIdAsync(likeBy);
+            user.LikedBy.Add(likedByUser);
+            user.Rating++;
+
+            UnitOfWork.UserProfiles.Update(user);
             await UnitOfWork.SaveChangesAsync();
         }
 

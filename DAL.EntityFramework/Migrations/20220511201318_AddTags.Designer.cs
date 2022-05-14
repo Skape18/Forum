@@ -4,14 +4,16 @@ using DAL.EntityFramework.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL.EntityFramework.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220511201318_AddTags")]
+    partial class AddTags
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,17 +88,17 @@ namespace DAL.EntityFramework.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "4fbf864b-958f-4eb2-ac2c-17c19498f507",
+                            Id = "23bd5e5b-6528-4f2c-960a-1466e705e75e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "450beb83-c72b-4234-9698-ef68c98d75fd",
+                            ConcurrencyStamp = "2200ba9c-c75e-4489-a5d0-750c6ae552bb",
                             Email = "andrei.marinich@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ANDREI.MARINICH@GMAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEP0BKfHypPI4z4YPC0O+h/D6T1SY8CAA87eTFvuvjAUjW1WCu4GRLpok9CSPK4PgVA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEN9verbcjkqo9Ed/J/3YyWakJUpVmXFDo8lgIHMd8C9JEUin9+1IfcVCogfa7RXMPw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e34b36cd-e983-4e42-b42d-018c9cd97d70",
+                            SecurityStamp = "49996aaa-a9fd-47d1-9265-b1e381d4f97b",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -166,7 +168,7 @@ namespace DAL.EntityFramework.Migrations
                         {
                             Id = 1,
                             Content = "First reply to thread",
-                            PostDate = new DateTime(2022, 5, 12, 0, 6, 24, 797, DateTimeKind.Local).AddTicks(3258),
+                            PostDate = new DateTime(2022, 5, 11, 23, 13, 17, 627, DateTimeKind.Local).AddTicks(8328),
                             ThreadId = 1,
                             UserProfileId = 1
                         },
@@ -174,7 +176,7 @@ namespace DAL.EntityFramework.Migrations
                         {
                             Id = 2,
                             Content = "Reply to first reply to thread",
-                            PostDate = new DateTime(2022, 5, 12, 0, 6, 24, 797, DateTimeKind.Local).AddTicks(3759),
+                            PostDate = new DateTime(2022, 5, 11, 23, 13, 17, 627, DateTimeKind.Local).AddTicks(8847),
                             RepliedPostId = 1,
                             ThreadId = 1,
                             UserProfileId = 1
@@ -183,7 +185,7 @@ namespace DAL.EntityFramework.Migrations
                         {
                             Id = 3,
                             Content = "Reply to second thread",
-                            PostDate = new DateTime(2022, 5, 12, 0, 6, 24, 797, DateTimeKind.Local).AddTicks(3904),
+                            PostDate = new DateTime(2022, 5, 11, 23, 13, 17, 627, DateTimeKind.Local).AddTicks(8993),
                             ThreadId = 2,
                             UserProfileId = 1
                         });
@@ -250,7 +252,7 @@ namespace DAL.EntityFramework.Migrations
                             Id = 1,
                             Content = "Some content one",
                             IsOpen = true,
-                            ThreadOpenedDate = new DateTime(2022, 5, 12, 0, 6, 24, 797, DateTimeKind.Local).AddTicks(2445),
+                            ThreadOpenedDate = new DateTime(2022, 5, 11, 23, 13, 17, 627, DateTimeKind.Local).AddTicks(7498),
                             Title = "Test thread one",
                             TopicId = 1,
                             UserProfileId = 1
@@ -260,7 +262,7 @@ namespace DAL.EntityFramework.Migrations
                             Id = 2,
                             Content = "Some content two",
                             IsOpen = true,
-                            ThreadOpenedDate = new DateTime(2022, 5, 12, 0, 6, 24, 797, DateTimeKind.Local).AddTicks(2837),
+                            ThreadOpenedDate = new DateTime(2022, 5, 11, 23, 13, 17, 627, DateTimeKind.Local).AddTicks(7891),
                             Title = "Test thread two",
                             TopicId = 1,
                             UserProfileId = 1
@@ -337,11 +339,11 @@ namespace DAL.EntityFramework.Migrations
                         new
                         {
                             Id = 1,
-                            ApplicationUserId = "4fbf864b-958f-4eb2-ac2c-17c19498f507",
+                            ApplicationUserId = "23bd5e5b-6528-4f2c-960a-1466e705e75e",
                             IsActive = true,
                             ProfileImagePath = "profile_images/default_profile_image.png",
                             Rating = 3,
-                            RegistrationDate = new DateTime(2022, 5, 12, 0, 6, 24, 795, DateTimeKind.Local).AddTicks(9878)
+                            RegistrationDate = new DateTime(2022, 5, 11, 23, 13, 17, 626, DateTimeKind.Local).AddTicks(455)
                         });
                 });
 
@@ -374,7 +376,7 @@ namespace DAL.EntityFramework.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "ec0f40ba-9c65-4917-a04b-d0628d073e66",
+                            Id = "625ef846-c80e-46e0-a363-884f2c99067e",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -467,8 +469,8 @@ namespace DAL.EntityFramework.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "4fbf864b-958f-4eb2-ac2c-17c19498f507",
-                            RoleId = "ec0f40ba-9c65-4917-a04b-d0628d073e66"
+                            UserId = "23bd5e5b-6528-4f2c-960a-1466e705e75e",
+                            RoleId = "625ef846-c80e-46e0-a363-884f2c99067e"
                         });
                 });
 
@@ -504,21 +506,6 @@ namespace DAL.EntityFramework.Migrations
                     b.HasIndex("UserProfilesId");
 
                     b.ToTable("TagUserProfile");
-                });
-
-            modelBuilder.Entity("UserProfileUserProfile", b =>
-                {
-                    b.Property<int>("LikedById")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LikedToId")
-                        .HasColumnType("int");
-
-                    b.HasKey("LikedById", "LikedToId");
-
-                    b.HasIndex("LikedToId");
-
-                    b.ToTable("UserProfileUserProfile");
                 });
 
             modelBuilder.Entity("DAL.Domain.Entities.Notification", b =>
@@ -659,21 +646,6 @@ namespace DAL.EntityFramework.Migrations
                         .WithMany()
                         .HasForeignKey("UserProfilesId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("UserProfileUserProfile", b =>
-                {
-                    b.HasOne("DAL.Domain.Entities.UserProfile", null)
-                        .WithMany()
-                        .HasForeignKey("LikedById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DAL.Domain.Entities.UserProfile", null)
-                        .WithMany()
-                        .HasForeignKey("LikedToId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
                 });
 

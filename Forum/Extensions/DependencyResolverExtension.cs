@@ -23,12 +23,14 @@ namespace Forum.Extensions
             services.AddScoped<IThreadRepository, ThreadRepository>();
             services.AddScoped<ITopicRepository, TopicRepository>();
             services.AddScoped<IUserProfileRepository, UserProfileRepository>();
+            services.AddScoped<ITagRepository, TagRepository>();
 
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IThreadService, ThreadService>();
             services.AddScoped<ITopicService, TopicService>();
             services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<ITagService, TagService>();
         }
     }
 }

@@ -40,15 +40,33 @@ namespace Forum.Controllers
 
             return Ok(userViewModel);
         }
-        
-        [Authorize(Roles = "Admin")]
-        [HttpPut("deactivate/{userId}")]
-        public async Task<IActionResult> Deactivate(int userId)
-        {
-            var isSuccessful = await _userService.Deactivate(userId);
 
-            if (!isSuccessful)
-                return BadRequest();
+        [HttpPut("{userId}/tags")]
+        public async Task<IActionResult> UpdateTags(
+            [FromRoute]int userId,
+            [FromBody] UserUpdateTagsViewModel updateTagsViewModel)
+        {
+            await _userService.UpdateTags(userId, updateTagsViewModel.TagIds);
+
+            return Ok();
+        }
+
+        [HttpPut("{userId}/likes/{likeBy}")]
+        public async Task<IActionResult> LikeUser(
+            [FromRoute]int userId,
+            [FromRoute]int likeBy)
+        {
+            await _userService.Like(likeBy, userId);
+
+            return Ok();
+        }
+
+        [HttpDelete("{userId}/likes")]
+        public async Task<IActionResult> RemoveLikeFromUser(
+            [FromRoute]int userId,
+            [FromRoute]int likeBy)
+        {
+            await _userService.Unlike(likeBy, userId);
 
             return Ok();
         }

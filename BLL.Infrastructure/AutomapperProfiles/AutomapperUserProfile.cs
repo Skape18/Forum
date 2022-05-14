@@ -14,7 +14,8 @@ namespace BLL.Infrastructure.AutomapperProfiles
                 .ReverseMap()
                 .ForMember(dest => dest.Posts, opt => opt.Ignore())
                 .ForMember(dest => dest.Threads, opt => opt.Ignore())
-                .ForMember(dest => dest.Notifications, opt => opt.Ignore());
+                .ForMember(dest => dest.Notifications, opt => opt.Ignore())
+                .ForMember(dest => dest.Tags, opt => opt.Ignore());
         }
     }
 }

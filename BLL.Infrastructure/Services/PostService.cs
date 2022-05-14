@@ -13,7 +13,6 @@ namespace BLL.Infrastructure.Services
 {
     public class PostService : BaseService, IPostService
     {
-
         public PostService(IUnitOfWork unitOfWork, IMapper mapper):base(unitOfWork, mapper)
         {
         }

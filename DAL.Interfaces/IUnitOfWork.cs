@@ -11,7 +11,8 @@ namespace DAL.Interfaces
             ITopicRepository Topics { get; }
             IUserProfileRepository UserProfiles { get; }
             INotificationRepository Notifications { get; }
-        
+            ITagRepository Tags { get; }
+
             Task SaveChangesAsync();    
     }
 }

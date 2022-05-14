@@ -17,6 +17,10 @@ namespace DAL.EntityFramework.Configurations
                 .WithOne()
                 .HasForeignKey<UserProfile>(up => up.ApplicationUserId)
                 .IsRequired();
+
+            builder
+                .HasMany(up => up.LikedBy)
+                .WithMany(up => up.LikedTo);
         }
     }
 }

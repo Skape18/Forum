@@ -16,5 +16,9 @@ namespace DAL.Domain.Entities
         public ICollection<Post> Posts { get; set; } = new List<Post>();
         public ICollection<Thread> Threads { get; set; } = new List<Thread>();
         public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
+        public ICollection<Tag> Tags { get; set; } = new List<Tag>();
+
+        public ICollection<UserProfile> LikedBy { get; set; } = new List<UserProfile>();
+        public ICollection<UserProfile> LikedTo { get; set; } = new List<UserProfile>();
     }
 }

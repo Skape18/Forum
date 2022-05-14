@@ -14,5 +14,6 @@ namespace Forum.ViewModels
         public DateTime RegistrationDate { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
+        public IEnumerable<TagViewModel> Tags { get; set; }
     }
 }

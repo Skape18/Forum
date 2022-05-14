@@ -13,7 +13,8 @@ namespace DAL.EntityFramework
 
         public UnitOfWork(DbContext context, IPostRepository postRepository,
             IThreadRepository threadRepository, INotificationRepository notificationRepository,
-            IUserProfileRepository userProfileRepository, ITopicRepository topicRepository)
+            IUserProfileRepository userProfileRepository, ITopicRepository topicRepository,
+            ITagRepository tagRepository)
         {
             _context = context;
             Posts = postRepository;
@@ -21,6 +22,7 @@ namespace DAL.EntityFramework
             Notifications = notificationRepository;
             UserProfiles = userProfileRepository;
             Topics = topicRepository;
+            Tags = tagRepository;
         }
 
 
@@ -53,5 +55,6 @@ namespace DAL.EntityFramework
         public ITopicRepository Topics { get; }
         public IUserProfileRepository UserProfiles { get; }
         public INotificationRepository Notifications { get; }
+        public ITagRepository Tags { get; }
     }
 }

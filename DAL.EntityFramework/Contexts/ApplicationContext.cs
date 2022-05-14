@@ -18,6 +18,7 @@ namespace DAL.EntityFramework.Contexts
         public DbSet<Topic> Topics { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<Tag> Tags { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,6 +29,7 @@ namespace DAL.EntityFramework.Contexts
             modelBuilder.ApplyConfiguration(new PostConfiguration());
             modelBuilder.ApplyConfiguration(new NotificationConfiguration());
             modelBuilder.ApplyConfiguration(new UserProfileConfiguration());
+            modelBuilder.ApplyConfiguration(new TagConfiguration());
 
             DbSeeder.SeedDatabase(modelBuilder);
         }

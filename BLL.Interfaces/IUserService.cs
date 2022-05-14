@@ -21,5 +21,11 @@ namespace BLL.Interfaces
         Task<bool> Deactivate(int userId);
 
         Task UpdateImage(int userId, string profileImageName, string rootPath, byte[] image);
+
+        Task UpdateTags(int userId, IEnumerable<int> tagIds);
+
+        Task Unlike(int likeBy, int userId);
+
+        Task Like(int likeBy, int userId);
     }
 }

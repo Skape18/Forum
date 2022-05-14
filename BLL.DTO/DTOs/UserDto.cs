@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DAL.Domain.Entities;
 
 namespace BLL.DTO.DTOs
 {
@@ -16,5 +17,6 @@ namespace BLL.DTO.DTOs
         public ICollection<PostDto> Posts { get; set; }
         public ICollection<ThreadDto> Threads { get; set; }
         public ICollection<NotificationDto> Notifications { get; set; }
+        public ICollection<Tag> Tags { get; set; }
     }
 }

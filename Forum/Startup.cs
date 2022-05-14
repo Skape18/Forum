@@ -1,4 +1,5 @@
 using AutoMapper;
+using BLL.Infrastructure.AutomapperProfiles;
 using DAL.Domain.Entities;
 using DAL.EntityFramework.Contexts;
 using Forum.Extensions;
@@ -25,14 +26,15 @@ namespace Forum
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Application")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationContext>();
 
-            services.AddAutoMapper();
+            services.AddAutoMapper(
+                typeof(Startup).Assembly,
+                typeof(AutomapperPostProfile).Assembly);
 
             services.ResolveApplicationDependencies();
 
@@ -49,7 +51,12 @@ namespace Forum
                 options.Password.RequiredUniqueChars = 1;
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddMvcOptions(o =>
+                {
+                    o.EnableEndpointRouting = false;
+                });
 
 
             // In production, the Angular files will be served from this directory
@@ -78,6 +85,13 @@ namespace Forum
 
             app.UseAuthentication();
             app.ConfigureExceptionHandler();
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Topic}/{action=Get}/{id?}");
+            });
 
             app.UseSpa(spa =>
             {
