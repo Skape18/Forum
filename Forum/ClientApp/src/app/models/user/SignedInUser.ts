@@ -7,4 +7,6 @@ export interface SignedInUser{
     userName: string;    
     email: string;
     token: string;
+    likedToIds: number[];
+    dislikedToIds: number[];
 }

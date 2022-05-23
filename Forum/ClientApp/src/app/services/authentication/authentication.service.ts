@@ -47,7 +47,7 @@ export class AuthenticationService {
         }));
   }
 
-    private addUserToLocalStorage(signedInUser: SignedInUser){
+    addUserToLocalStorage(signedInUser: SignedInUser){
         if (signedInUser && signedInUser.token) {
             localStorage.setItem('currentUser', JSON.stringify(signedInUser));
             this.currentUserSubject.next(signedInUser);

@@ -12,5 +12,8 @@ namespace Forum.ViewModels.AccountViewModels
         public string UserName { get; set; }
         public string Email { get; set; }
         public string Token { get; set; }
+        public int[] LikedToIds { get; set; }
+        
+        public int[] DislikedToIds { get; set; }
     }
 }

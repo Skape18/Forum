@@ -13,6 +13,7 @@ using BLL.Infrastructure.Exceptions;
 using DAL.Domain.Entities;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace BLL.Infrastructure.Services
@@ -68,15 +69,19 @@ namespace BLL.Infrastructure.Services
 
             string token = await GenerateJWTToken(user, tokenKey, tokenLifetime, tokenAudience, tokenIssuer);
 
-            var userProfiles = await UnitOfWork.UserProfiles.GetAllAsync();
-            var userProfile = userProfiles.FirstOrDefault(up => up.ApplicationUserId == user.Id);
+            var userProfiles = UnitOfWork.UserProfiles.GetAllAsync();
+            var userProfile = await userProfiles.FirstOrDefaultAsync(up => up.ApplicationUserId == user.Id);
 
             if (userProfile == null)
                 throw new DbQueryResultNullException("Db query result is null", "user profiles");
 
             var userDto = Mapper.Map<UserProfile, UserDto>(userProfile);
 
-            return new SignedInUserDto(userDto, token);
+            return new SignedInUserDto(
+                userDto,
+                token,
+                userProfile.LikedTo.Select(up => up.Id).ToArray(),
+                userProfile.DislikedTo.Select(up => up.Id).ToArray());
         }
 
         public async Task<SignedInUserDto> SignUpAsync(RegistrationDto registrationDto, string tokenKey, int tokenLifetime, string tokenAudience, string tokenIssuer)
@@ -113,7 +118,11 @@ namespace BLL.Infrastructure.Services
 
             var userDto = Mapper.Map<UserProfile, UserDto>(userProfile);
 
-            return new SignedInUserDto(userDto, token);
+            return new SignedInUserDto(
+                userDto,
+                token,
+                userProfile.LikedTo.Select(up => up.Id).ToArray(),
+                userProfile.DislikedTo.Select(up => up.Id).ToArray());
         }
 
         public async Task SignOutAsync()
@@ -188,13 +197,27 @@ namespace BLL.Infrastructure.Services
         public async Task Unlike(int likeBy, int userId)
         {
             var user = await UnitOfWork.UserProfiles.GetByIdAsync(userId);
-
-            if (user.LikedBy.All(u => u.Id != likeBy))
-                return;
-
             var likedByUser = await UnitOfWork.UserProfiles.GetByIdAsync(likeBy);
-            user.LikedBy.Remove(likedByUser);
-            user.Rating--;
+
+            if (user.DislikedBy.Any(u => u.Id == likeBy))
+            {
+                UnitOfWork.UserProfiles.GetDbSet().Attach(user.DislikedBy.First(u => u.Id == likeBy));
+                user.DislikedBy.Remove(user.DislikedBy.First(u => u.Id == likeBy));
+                user.Rating++;
+            }
+            else if (user.LikedBy.Any(u => u.Id == likeBy))
+            {
+                var likedUser = user.LikedBy.First(u => u.Id == likeBy);
+                UnitOfWork.UserProfiles.GetDbSet().Attach(likedUser);
+                user.LikedBy.Remove(likedUser);
+                user.DislikedBy.Add(likedUser);
+                user.Rating -= 2;
+            }
+            else
+            {
+                user.DislikedBy.Add(likedByUser);
+                user.Rating--;
+            }
 
             UnitOfWork.UserProfiles.Update(user);
             await UnitOfWork.SaveChangesAsync();
@@ -203,13 +226,27 @@ namespace BLL.Infrastructure.Services
         public async Task Like(int likeBy, int userId)
         {
             var user = await UnitOfWork.UserProfiles.GetByIdAsync(userId);
+            var likedByUser = await UnitOfWork.UserProfiles.GetByIdAsync(likeBy);
 
             if (user.LikedBy.Any(u => u.Id == likeBy))
-                return;
-
-            var likedByUser = await UnitOfWork.UserProfiles.GetByIdAsync(likeBy);
-            user.LikedBy.Add(likedByUser);
-            user.Rating++;
+            {
+                UnitOfWork.UserProfiles.GetDbSet().Attach(user.LikedBy.First(u => u.Id == likeBy));
+                user.LikedBy.Remove(user.LikedBy.First(u => u.Id == likeBy));
+                user.Rating--;
+            }
+            else if (user.DislikedBy.Any(u => u.Id == likeBy))
+            {
+                var dislikedUser = user.DislikedBy.First(u => u.Id == likeBy);
+                UnitOfWork.UserProfiles.GetDbSet().Attach(dislikedUser);
+                user.DislikedBy.Remove(dislikedUser);
+                user.LikedBy.Add(dislikedUser);
+                user.Rating += 2;
+            }
+            else
+            {
+                user.LikedBy.Add(likedByUser);
+                user.Rating++;
+            }
 
             UnitOfWork.UserProfiles.Update(user);
             await UnitOfWork.SaveChangesAsync();

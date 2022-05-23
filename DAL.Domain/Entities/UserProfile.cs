@@ -20,5 +20,8 @@ namespace DAL.Domain.Entities
 
         public ICollection<UserProfile> LikedBy { get; set; } = new List<UserProfile>();
         public ICollection<UserProfile> LikedTo { get; set; } = new List<UserProfile>();
+
+        public ICollection<UserProfile> DislikedBy { get; set; } = new List<UserProfile>();
+        public ICollection<UserProfile> DislikedTo { get; set; } = new List<UserProfile>();
     }
 }

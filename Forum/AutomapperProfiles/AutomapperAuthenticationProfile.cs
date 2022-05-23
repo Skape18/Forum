@@ -19,7 +19,9 @@ namespace Forum.AutomapperProfiles
                 .ForMember(dest => dest.IsActive, opt => opt.MapFrom(siudto => siudto.User.IsActive))
                 .ForMember(dest => dest.ProfileImagePath, opt => opt.MapFrom(siudto => siudto.User.ProfileImagePath))
                 .ForMember(dest => dest.Rating, opt => opt.MapFrom(siudto => siudto.User.Rating))
-                .ForMember(dest => dest.ProfileImagePath, opt => opt.MapFrom(siudto => siudto.User.ProfileImagePath));
+                .ForMember(dest => dest.ProfileImagePath, opt => opt.MapFrom(siudto => siudto.User.ProfileImagePath))
+                .ForMember(dest => dest.LikedToIds, opt => opt.MapFrom(siudto => siudto.LikedToUserIds))
+                .ForMember(dest => dest.DislikedToIds, opt => opt.MapFrom(siudto => siudto.DislikedToUserIds));
         }
     }
 }

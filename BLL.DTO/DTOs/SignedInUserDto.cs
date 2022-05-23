@@ -8,10 +8,14 @@ namespace BLL.DTO.DTOs
     {
         public UserDto User { get; set; }
         public string Token { get; set; }
-        public SignedInUserDto(UserDto user, string token)
+        public int[] LikedToUserIds { get; set; }
+        public int[] DislikedToUserIds { get; set; }
+        public SignedInUserDto(UserDto user, string token, int[] likedToUserIds, int[] dislikedToUserIds)
         {
             User = user;
             Token = token;
+            LikedToUserIds = likedToUserIds;
+            DislikedToUserIds = dislikedToUserIds;
         }
     }
 }

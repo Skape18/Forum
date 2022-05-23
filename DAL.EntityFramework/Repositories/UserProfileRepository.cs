@@ -20,7 +20,10 @@ namespace DAL.EntityFramework.Repositories
                 .Include(up => up.Notifications)
                 .Include(up => up.ApplicationUser)
                 .Include(up => up.Tags)
-                .Include(up => up.LikedBy);
+                .Include(up => up.LikedTo)
+                .Include(up => up.LikedBy)
+                .Include(up => up.DislikedTo)
+                .Include(up => up.DislikedBy);
         }
     }
 }

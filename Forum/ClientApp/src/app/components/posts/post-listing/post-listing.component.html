@@ -41,7 +41,21 @@
                 <a routerLink="/userprofile/{{post.userProfile.id}}">
                     <strong>{{post.userProfile.userName}}</strong>
                 </a> (<span class="thread-author-rating">{{post.userProfile.rating}}</span>) <br />
-
+                <ng-container *ngIf="currentUser.id !== post.userProfile.id">
+                    <button
+                        class="mat-icon-button" mat-icon-button [disableRipple]="true"
+                        [ngClass]="{'green': isLikedUser(post.userProfile.id)}"
+                        (click)="like(post.userProfile.id)">
+                        <mat-icon class="mat-icon-rtl-mirror">thumb_up</mat-icon>
+                    </button>
+                    <button
+                        class="mat-icon-button" mat-icon-button [disableRipple]="true"
+                        [ngClass]="{'red': isDislikedUser(post.userProfile.id)}"
+                        (click)="unlike(post.userProfile.id)">
+                        <mat-icon>thumb_down</mat-icon>
+                    </button>
+                    <br />
+                </ng-container>
                 <span class="thread-date">{{post.postDate | date:'medium'}}</span>
                 <ng-container *ngIf="currentUser">
                     <div class="reply-to-post" *ngIf="currentUser && thread.isOpen && (currentUser.id !== post.userProfile.id)">

@@ -14,7 +14,6 @@ namespace Forum.ViewModels.AccountViewModels
         [Required]
         public string Password { get; set; }
 
-        [Required]
         public string ProfileImagePath { get; set; }
     }
 }

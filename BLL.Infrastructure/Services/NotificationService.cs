@@ -5,6 +5,7 @@ using BLL.DTO.DTOs;
 using BLL.Interfaces;
 using DAL.Domain.Entities;
 using DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace BLL.Infrastructure.Services
 {
@@ -17,7 +18,7 @@ namespace BLL.Infrastructure.Services
 
         public async Task<IEnumerable<NotificationDto>> GetAllAsync()
         {
-            var notifications = await UnitOfWork.Notifications.GetAllAsync();
+            var notifications = await UnitOfWork.Notifications.GetAllAsync().ToListAsync();
 
             return Mapper.Map<IEnumerable<Notification>, List<NotificationDto>>(notifications);
         }

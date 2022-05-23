@@ -22,4 +22,12 @@ export class UserService {
   updateImage(userId: number, form: FormData){
     return this.http.put('api/user/upload-image/' + userId, form);
   }
+
+  like(userId: number, likeBy: number){
+    return this.http.put('api/user/' + userId + '/likes/' + likeBy, null);
+  }
+
+  unlike(userId: number, likeBy: number){
+    return this.http.delete('api/user/' + userId + '/likes/' + likeBy);
+  }
 }

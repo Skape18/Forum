@@ -61,7 +61,7 @@ namespace Forum.Controllers
             return Ok();
         }
 
-        [HttpDelete("{userId}/likes")]
+        [HttpDelete("{userId}/likes/{likeBy}")]
         public async Task<IActionResult> RemoveLikeFromUser(
             [FromRoute]int userId,
             [FromRoute]int likeBy)

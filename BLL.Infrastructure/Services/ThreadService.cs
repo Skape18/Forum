@@ -8,6 +8,7 @@ using BLL.Infrastructure.Exceptions;
 using BLL.Interfaces;
 using DAL.Domain.Entities;
 using DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace BLL.Infrastructure.Services
 {
@@ -19,7 +20,7 @@ namespace BLL.Infrastructure.Services
 
         public async Task<IEnumerable<ThreadDto>> GetAllAsync()
         {
-            var threads = await UnitOfWork.Threads.GetAllAsync();
+            var threads = await UnitOfWork.Threads.GetAllAsync().ToListAsync();
 
             return Mapper.Map<IEnumerable<Thread>, List<ThreadDto>>(threads);
         }
@@ -86,7 +87,7 @@ namespace BLL.Infrastructure.Services
 
         public async Task<IEnumerable<ThreadDto>> GetThreadsByTopicId(int topicId)
         {
-            var threads = await UnitOfWork.Threads.GetAllAsync();
+            var threads = await UnitOfWork.Threads.GetAllAsync().ToListAsync();
 
             var threadsByTopicId = threads.Where(t => t.TopicId == topicId);
 

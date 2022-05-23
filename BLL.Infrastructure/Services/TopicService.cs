@@ -8,6 +8,7 @@ using BLL.Infrastructure.Exceptions;
 using BLL.Interfaces;
 using DAL.Domain.Entities;
 using DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace BLL.Infrastructure.Services
 {
@@ -22,7 +23,7 @@ namespace BLL.Infrastructure.Services
 
         public async Task<IEnumerable<TopicDto>> GetAllAsync()
         {
-            var topics = await UnitOfWork.Topics.GetAllAsync();
+            var topics = await UnitOfWork.Topics.GetAllAsync().ToListAsync();
 
             return Mapper.Map<IEnumerable<Topic>, List<TopicDto>>(topics);
         }

@@ -19,6 +19,8 @@ namespace DAL.EntityFramework.Repositories.Generic
             DbSet = context.Set<T>();
         }
 
+        public DbSet<T> GetDbSet() => DbSet;
+
         public async Task<T> GetByIdAsync(int id)
         {
             var entity = await DbSetWithAllProperties().AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
@@ -31,11 +33,9 @@ namespace DAL.EntityFramework.Repositories.Generic
             return entity;
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public IQueryable<T> GetAllAsync()
         {
-            var entities = await DbSetWithAllProperties()
-                .AsNoTracking()
-                .ToListAsync();
+            var entities = DbSetWithAllProperties().AsNoTracking();
             
             return entities;
         }
@@ -53,7 +53,6 @@ namespace DAL.EntityFramework.Repositories.Generic
             if (entity == null)
                 throw new RepositoryArgumentNullException("Error in repository with entity while executing remove", "entity");
 
-
             DbSet.Remove(entity);
         }
 
@@ -63,11 +62,6 @@ namespace DAL.EntityFramework.Repositories.Generic
                 throw new RepositoryArgumentNullException("Error in repository with entity while executing update", "entity");
 
             DbSet.Update(entity);
-        }
-
-        public async Task<IEnumerable<T>> GetWithIncludesAsync(params Expression<Func<T, object>>[] includeProperties)
-        {
-            return await IncludeProperties(includeProperties).ToListAsync();
         }
 
         protected abstract IQueryable<T> DbSetWithAllProperties();

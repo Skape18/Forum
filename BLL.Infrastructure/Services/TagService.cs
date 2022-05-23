@@ -4,6 +4,7 @@ using AutoMapper;
 using BLL.Interfaces;
 using DAL.Domain.Entities;
 using DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace BLL.Infrastructure.Services
 {
@@ -15,7 +16,7 @@ namespace BLL.Infrastructure.Services
         
         public async Task<IEnumerable<Tag>> GetAllAsync()
         {
-            return await UnitOfWork.Tags.GetAllAsync();
+            return await UnitOfWork.Tags.GetAllAsync().ToListAsync();
         }
     }
 }

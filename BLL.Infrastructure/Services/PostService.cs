@@ -8,6 +8,7 @@ using BLL.Infrastructure.Exceptions;
 using BLL.Interfaces;
 using DAL.Domain.Entities;
 using DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace BLL.Infrastructure.Services
 {
@@ -19,7 +20,7 @@ namespace BLL.Infrastructure.Services
 
         public async Task<IEnumerable<PostDto>> GetAllAsync()
         {
-            var posts = await UnitOfWork.Posts.GetAllAsync();
+            var posts = await UnitOfWork.Posts.GetAllAsync().ToListAsync();
 
             return Mapper.Map<IEnumerable<Post>, List<PostDto>>(posts);
         }
@@ -67,9 +68,8 @@ namespace BLL.Infrastructure.Services
         {
             if (postDto == null)
                 throw new ArgumentNullException("postDto", "Argument is null");
-            
-            var users = await UnitOfWork.UserProfiles.GetWithIncludesAsync();
-            var user = users.FirstOrDefault(u => u.Id == postDto.UserProfileId);
+
+            var user = await UnitOfWork.UserProfiles.GetAllAsync().FirstOrDefaultAsync(u => u.Id == postDto.UserProfileId);
 
             if (user == null)
                 throw new DbQueryResultNullException("Db query result is null", "user profiles");
@@ -94,9 +94,9 @@ namespace BLL.Infrastructure.Services
 
         public async Task<IEnumerable<PostDto>> GetPostsByThreadId(int threadId)
         {
-            var posts = await UnitOfWork.Posts.GetAllAsync();
+            var posts = UnitOfWork.Posts.GetAllAsync();
 
-            var postsByThreadId = posts.Where(p => p.ThreadId == threadId);
+            var postsByThreadId = await posts.Where(p => p.ThreadId == threadId).ToListAsync();
 
             var postDtos = Mapper.Map<IEnumerable<Post>, List<PostDto>>(postsByThreadId);
 

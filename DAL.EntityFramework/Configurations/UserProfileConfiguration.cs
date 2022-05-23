@@ -21,6 +21,10 @@ namespace DAL.EntityFramework.Configurations
             builder
                 .HasMany(up => up.LikedBy)
                 .WithMany(up => up.LikedTo);
+
+            builder
+                .HasMany(up => up.DislikedBy)
+                .WithMany(up => up.DislikedTo);
         }
     }
 }
