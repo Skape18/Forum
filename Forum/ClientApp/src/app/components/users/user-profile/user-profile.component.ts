@@ -7,6 +7,8 @@ import { User } from '../../../models/user/User';
 import { ActivatedRoute, Router } from '@angular/router';
 import { first, flatMap } from 'rxjs/operators';
 import { FormGroup, FormControl } from '@angular/forms';
+import { Tag } from '../../../models/tag/Tag';
+import { TagService } from 'src/app/services/tags/tag.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -15,6 +17,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 })
 export class UserProfileComponent implements OnInit {
   currentUser: SignedInUser;
+  tags: Tag[];
   isCurrentUserAdmin: boolean;
   isAdmin: boolean;
   user: User;
@@ -24,6 +27,7 @@ export class UserProfileComponent implements OnInit {
     private userService: UserService,
     private authenticationService: AuthenticationService,
     private roleCheckService: RoleCheckService,
+    private tagService: TagService,
     private activeRoute: ActivatedRoute,
     private router: Router
   ) { }
@@ -41,6 +45,7 @@ export class UserProfileComponent implements OnInit {
       this.roleCheckService.isAdminByUsername(user.id).subscribe(isAdmin => this.isAdmin = isAdmin)
     });
 
+    this.tagService.getAll().subscribe(tags => this.tags = tags);
     this.userForm = new FormGroup({
       userImage: new FormControl(null)
     }, { updateOn: 'submit' });

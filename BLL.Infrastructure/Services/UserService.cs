@@ -194,6 +194,16 @@ namespace BLL.Infrastructure.Services
             await UnitOfWork.SaveChangesAsync();
         }
 
+        public async Task UpdateDescription(int userId, string description)
+        {
+            var user = await UnitOfWork.UserProfiles.GetByIdAsync(userId);
+
+            user.Description = description;
+
+            UnitOfWork.UserProfiles.Update(user);
+            await UnitOfWork.SaveChangesAsync();
+        }
+
         public async Task Unlike(int likeBy, int userId)
         {
             var user = await UnitOfWork.UserProfiles.GetByIdAsync(userId);
@@ -250,6 +260,25 @@ namespace BLL.Infrastructure.Services
 
             UnitOfWork.UserProfiles.Update(user);
             await UnitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<UserDto>> Search(string[] searchTerms)
+        {
+            var tagIds = (await UnitOfWork.Tags
+                    .GetAllAsync()
+                    .ToListAsync())
+                .Where(t => searchTerms.Any(st => string.Equals(st, t.Name, StringComparison.OrdinalIgnoreCase)))
+                .Select(t => t.Id)
+                .ToArray();
+
+            var userProfiles = await UnitOfWork.UserProfiles
+                .GetAllAsync()
+                .Where(u => u.Tags.Any(t => tagIds.Contains(t.Id)))
+                .Where(u => searchTerms.Any(st => EF.Functions.FreeText(u.Description, st)))
+                .ToListAsync();
+
+            var userDtos = Mapper.Map<IEnumerable<UserProfile>, IEnumerable<UserDto>>(userProfiles);
+            return userDtos;
         }
 
         private async Task<string> GenerateJWTToken(ApplicationUser user, string tokenKey, int tokenLifetime, string tokenAudience, string tokenIssuer)

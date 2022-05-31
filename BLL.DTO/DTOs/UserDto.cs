@@ -13,6 +13,7 @@ namespace BLL.DTO.DTOs
         public DateTime RegistrationDate { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
+        public string Description { get; set; }
 
         public ICollection<PostDto> Posts { get; set; }
         public ICollection<ThreadDto> Threads { get; set; }

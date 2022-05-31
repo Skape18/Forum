@@ -17,7 +17,7 @@ namespace DAL.EntityFramework.Repositories
             return DbSet
                 .Include(up => up.Threads)
                 .Include(up => up.Posts)
-                .Include(up => up.Notifications)
+                //.Include(up => up.Notifications)
                 .Include(up => up.ApplicationUser)
                 .Include(up => up.Tags)
                 .Include(up => up.LikedTo)

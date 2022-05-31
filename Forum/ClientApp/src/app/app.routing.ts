@@ -19,6 +19,11 @@ const appRoutes: Routes = [
         pathMatch: 'full'
     },
     { 
+        path: 'search', 
+        component: TopicListingComponent,
+        canActivate: [AuthGuard]
+    },
+    { 
         path: 'topics', 
         component: TopicListingComponent
     },

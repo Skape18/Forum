@@ -10,7 +10,7 @@
     background-color: #ddd;
 }
  
-#user-email-label, #user-bio-label, #user-created-label, #user-rating, #user-active-label {
+#user-email-label, #user-bio-label, #user-created-label, #user-rating, #user-active-label, #user-tags-label, #user-description-label {
     display: block;
     color: #444;
     font-family: 'Roboto';

@@ -18,7 +18,7 @@ namespace DAL.Domain.Entities
         public int? RepliedPostId { get; set; }
         public Post RepliedPost { get; set; }
 
-        public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
+        //public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
         public ICollection<Post> Replies { get; set; } = new List<Post>();
     }
 }

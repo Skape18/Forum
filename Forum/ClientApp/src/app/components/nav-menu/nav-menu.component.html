@@ -23,6 +23,9 @@
        
         <ul class="nav navbar-nav navbar-right" *ngIf="currentUser; else isNotSignedIn">
             <li>
+                <a routerLink="/search">Search</a>
+            </li>
+            <li>
                 <a routerLink="/userprofile/{{currentUser.id}}">Hello {{currentUser.userName}}</a>
             </li>
             <li>

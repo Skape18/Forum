@@ -10,37 +10,48 @@
         </ng-container>
     </div>
     <div class="row user-profile" *ngIf="user">
-        <div class="col-md-4">
-            <img id="user-profile-image" [src]="user.profileImagePath">
-            <ng-container *ngIf="isSameUser">
-                <form [formGroup]="userForm" (ngSubmit)="onSubmit()" novalidate>
-                    <div class="form-group">
-                        <input id="img-input" type="file" accept="image/*" #uploader class="form-control" (change)="fileChange(uploader.files)"
-                            placeholder="Upload user image"/>
-                            
-                        <button type="button" class="btn btn-default select-img-btn" (click)="uploader.click()">Select File</button>
-                    </div>  
-                    <button type="submit" id="btn-profile" class="btn btn-default">Submit</button>
-                      
-                </form>
-            </ng-container>
-        </div>
-        <div class="col-md-8">
-            <span id="user-name">{{user.userName}}</span>
-            <ng-container *ngIf="isAdmin">
-                <span class="is-admin">Admin</span>
-            </ng-container>
-            <span id="user-rating">Current Rating: {{user.rating}}</span>
-            <span id="user-email-label">Email: {{user.email}}</span>
-            <span id="user-created-label">Member Since: {{user.registrationDate | date }}</span>
-            <span id="user-active-label">Status:
-                <ng-container *ngIf="!user.isActive; else active">
-                    <span class="inactive-user">Inactive</span>
+        <form [formGroup]="userForm" (ngSubmit)="onSubmit()" novalidate>
+            <div class="col-md-4">
+                <img id="user-profile-image" [src]="user.profileImagePath">
+                <ng-container *ngIf="isSameUser">
+                        <div class="form-group">
+                            <input id="img-input" type="file" accept="image/*" #uploader class="form-control" (change)="fileChange(uploader.files)"
+                                placeholder="Upload user image"/>
+                                
+                            <button type="button" class="btn btn-default select-img-btn" (click)="uploader.click()">Select File</button>
+                        </div>  
+                        <button type="submit" id="btn-profile" class="btn btn-default">Submit</button>                      
                 </ng-container>
-                <ng-template #active>
-                    <span>Active</span>
+            </div>
+            <div class="col-md-8">
+                <span id="user-name">{{user.userName}}</span>
+                <ng-container *ngIf="isAdmin">
+                    <span class="is-admin">Admin</span>
+                </ng-container>
+                <span id="user-rating">Current Rating: {{user.rating}}</span>
+                <span id="user-email-label">Email: {{user.email}}</span>
+                <span id="user-created-label">Member Since: {{user.registrationDate | date }}</span>
+                <span id="user-active-label">Status:
+                    <ng-container *ngIf="!user.isActive; else active">
+                        <span class="inactive-user">Inactive</span>
+                    </ng-container>
+                    <ng-template #active>
+                        <span>Active</span>
+                    </ng-template>
+                </span>
+                <span id="user-tags-label">Tags</span>
+                <div *ngIf="isSameUser; else tagsTemplate">
+                    <textarea></textarea>
+                </div>
+                <ng-template #tagsTemplate>
+                    <div><textarea [readonly]="!isSameUser">kek</textarea></div>
                 </ng-template>
-            </span>
-        </div>
+                <span id="user-description-label">Tags</span>
+                <ng-container>
+                    <textarea [readonly]="!isSameUser"></textarea>
+                </ng-container>
+            </div>
+        </form>
+
     </div>
 </div>

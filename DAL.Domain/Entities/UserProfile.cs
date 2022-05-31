@@ -10,12 +10,13 @@ namespace DAL.Domain.Entities
         public int Rating { get; set; }
         public bool IsActive { get; set; }
         public DateTime RegistrationDate { get; set; }
+        public string Description { get; set; }
 
         public string ApplicationUserId  { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
         public ICollection<Post> Posts { get; set; } = new List<Post>();
         public ICollection<Thread> Threads { get; set; } = new List<Thread>();
-        public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
+        //public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
         public ICollection<Tag> Tags { get; set; } = new List<Tag>();
 
         public ICollection<UserProfile> LikedBy { get; set; } = new List<UserProfile>();

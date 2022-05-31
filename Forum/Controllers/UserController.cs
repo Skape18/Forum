@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -51,6 +52,16 @@ namespace Forum.Controllers
             return Ok();
         }
 
+        [HttpPut("{userId}/description")]
+        public async Task<IActionResult> UpdateDescription(
+            [FromRoute]int userId,
+            [FromBody] UserUpdateDescriptionViewModel updateDescriptionViewModel)
+        {
+            await _userService.UpdateDescription(userId, updateDescriptionViewModel.Description);
+
+            return Ok();
+        }
+
         [HttpPut("{userId}/likes/{likeBy}")]
         public async Task<IActionResult> LikeUser(
             [FromRoute]int userId,
@@ -87,6 +98,18 @@ namespace Forum.Controllers
             await _userService.UpdateImage(userId, userImage.UserImage.FileName, _hostingEnvironment.WebRootPath, fileBytes);
 
             return Ok();
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("search")]
+        public async Task<ActionResult<IEnumerable<UserViewModel>>> Search(
+            [FromQuery] string[] searchTerms)
+        {
+            var userDtos = await _userService.Search(searchTerms);
+            var userViewModel = _mapper.Map<IEnumerable<UserDto>, IEnumerable<UserViewModel>>(userDtos);
+
+            return Ok(userViewModel);
         }
     }
 }

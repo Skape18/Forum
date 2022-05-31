@@ -24,8 +24,12 @@ namespace BLL.Interfaces
 
         Task UpdateTags(int userId, IEnumerable<int> tagIds);
 
+        Task UpdateDescription(int userId, string tagIds);
+
         Task Unlike(int likeBy, int userId);
 
         Task Like(int likeBy, int userId);
+
+        Task<IEnumerable<UserDto>> Search(string[] searchTerms);
     }
 }
