@@ -8,7 +8,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { first, flatMap } from 'rxjs/operators';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Tag } from '../../../models/tag/Tag';
-import { TagService } from 'src/app/services/tags/tag.service';
+import { TagService } from '../../../services/tags/tag.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-user-profile',
@@ -22,6 +23,9 @@ export class UserProfileComponent implements OnInit {
   isAdmin: boolean;
   user: User;
   userForm: FormGroup;
+
+  dropdownSettings: any = {};
+  selectedTags = [];
 
   constructor(
     private userService: UserService,
@@ -45,9 +49,19 @@ export class UserProfileComponent implements OnInit {
       this.roleCheckService.isAdminByUsername(user.id).subscribe(isAdmin => this.isAdmin = isAdmin)
     });
 
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'name',
+      enableCheckAll: false,
+      itemsShowLimit: 20,
+      allowSearchFilter: true
+  };
     this.tagService.getAll().subscribe(tags => this.tags = tags);
     this.userForm = new FormGroup({
-      userImage: new FormControl(null)
+      userImage: new FormControl(null),
+      tag: new FormControl(this.tags),
+      description: new FormControl(this.user.description)
     }, { updateOn: 'submit' });
   }
 
@@ -60,13 +74,19 @@ export class UserProfileComponent implements OnInit {
     return false;
   }
 
+  get userDescription(): string {
+    if (this.user.description == null || this.user.description == undefined){
+      return "";
+    }
+    return this.user.description;
+  }
+
   checkAdmin() {
     if (this.currentUser)
       this.roleCheckService.isAdminByUsername(this.currentUser.id).pipe(first()).subscribe(res => this.isCurrentUserAdmin = res);
     else
       this.isCurrentUserAdmin = false;
   }
-
 
   deactivate(id: number) {
     this.userService.deactivate(id).subscribe(res => this.ngOnInit());
@@ -83,8 +103,14 @@ export class UserProfileComponent implements OnInit {
 
   onSubmit() {
     if (this.userForm.valid) {
-      this.userService.updateImage(this.currentUser.id, this.prepareSaveUser()).subscribe();
-      this.router.navigate(['/'])
+      forkJoin(
+        [
+          this.userService.updateImage(this.currentUser.id, this.prepareSaveUser()),
+          this.userService.updateTags(this.currentUser.id, this.userForm.value.tag.map(t => t.id)),
+          this.userService.updateDescription(this.currentUser.id, this.user.description)
+        ]
+      )
+      .subscribe(r => this.router.navigate(['/']));      
     }
   }
 
@@ -97,6 +123,3 @@ export class UserProfileComponent implements OnInit {
     return formData;
   }
 }
-
-
-

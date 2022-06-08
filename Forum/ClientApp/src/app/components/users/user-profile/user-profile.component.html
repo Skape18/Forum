@@ -20,7 +20,6 @@
                                 
                             <button type="button" class="btn btn-default select-img-btn" (click)="uploader.click()">Select File</button>
                         </div>  
-                        <button type="submit" id="btn-profile" class="btn btn-default">Submit</button>                      
                 </ng-container>
             </div>
             <div class="col-md-8">
@@ -39,18 +38,23 @@
                         <span>Active</span>
                     </ng-template>
                 </span>
-                <span id="user-tags-label">Tags</span>
-                <div *ngIf="isSameUser; else tagsTemplate">
-                    <textarea></textarea>
-                </div>
-                <ng-template #tagsTemplate>
-                    <div><textarea [readonly]="!isSameUser">kek</textarea></div>
-                </ng-template>
-                <span id="user-description-label">Tags</span>
-                <ng-container>
-                    <textarea [readonly]="!isSameUser"></textarea>
-                </ng-container>
+                <span id="user-tags-label">Tags: </span>
+                    <ng-multiselect-dropdown
+                        name="tag"
+                        [placeholder]="'Select Tags'"
+                        [data]="tags"
+                        formControlName="tag"
+                        [disabled]="!isSameUser"
+                        [settings]="dropdownSettings">
+                    </ng-multiselect-dropdown>
+                <span id="user-description-label">Description: </span>
+                <textarea
+                    formControlName="description"
+                    class="user-description"
+                    rows="10"
+                    [readonly]="!isSameUser">{{userDescription}}</textarea>
             </div>
+            <button type="submit" id="btn-profile" class="btn btn-default">Submit</button>                      
         </form>
 
     </div>

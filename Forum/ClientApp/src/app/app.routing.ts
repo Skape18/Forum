@@ -10,6 +10,7 @@ import { CreatePostComponent } from './components/posts/create-post/create-post.
 import { CreateTopicComponent } from './components/topics/create-topic/create-topic.component';
 import { AllErrorComponent } from './components/errors/all-error/all-error.component';
 import { AuthGuard } from './guards/auth.guard';
+import { SearchComponent } from './components/search/search.component';
 
 
 const appRoutes: Routes = [
@@ -20,7 +21,7 @@ const appRoutes: Routes = [
     },
     { 
         path: 'search', 
-        component: TopicListingComponent,
+        component: SearchComponent,
         canActivate: [AuthGuard]
     },
     { 

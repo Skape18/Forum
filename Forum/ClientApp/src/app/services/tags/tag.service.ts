@@ -11,6 +11,6 @@ export class TagService {
   constructor(private http: HttpClient) {}
 
   getAll(){ 
-    return this.http.get<Tag[]>('api/tag');
+    return this.http.get<Tag[]>('api/tags');
   }
 }

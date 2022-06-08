@@ -14,7 +14,7 @@
     display: block;
     color: #444;
     font-family: 'Roboto';
-    padding-top: 3px;
+    padding-top: 5px;
 }
 
 #user-name{
@@ -22,4 +22,20 @@
     color: #2569d5;
     font-family: 'Roboto';
     font-size: 1.7em;
+}
+
+.user-description {
+    width: 70%;
+}
+
+:host ::ng-deep .multiselect-dropdown {
+    width: 70% !important;
+}
+
+:host ::ng-deep .selected-item {
+    margin-top: 4px;
+}
+
+:host ::ng-deep .dropdown-btn {
+    padding-top: 2px !important;
 }

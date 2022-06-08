@@ -5,5 +5,6 @@ export interface User{
     isActive: boolean;
     registrationDate: Date;
     userName: string;
+    description: string;
     email: string;
 }

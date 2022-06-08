@@ -4,6 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule, MatIconModule } from '@angular/material';
+import { MatChipsModule } from '@angular/material/chips';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 import { AppComponent } from './app.component';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
@@ -22,6 +24,7 @@ import { CreateThreadComponent } from './components/threads/create-thread/create
 import { CreatePostComponent } from './components/posts/create-post/create-post.component';
 import { CreateTopicComponent } from './components/topics/create-topic/create-topic.component';
 import { AllErrorComponent } from './components/errors/all-error/all-error.component';
+import { SearchComponent } from './components/search/search.component';
 
 @NgModule({
   declarations: [
@@ -36,16 +39,19 @@ import { AllErrorComponent } from './components/errors/all-error/all-error.compo
     CreateThreadComponent,
     CreatePostComponent,
     CreateTopicComponent,
-    AllErrorComponent
+    AllErrorComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    NgMultiSelectDropDownModule.forRoot(),
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MatButtonModule,
     MatIconModule,
+    MatChipsModule,
     routing
   ],
   providers: [
