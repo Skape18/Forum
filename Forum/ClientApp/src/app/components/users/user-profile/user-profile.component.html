@@ -12,14 +12,15 @@
     <div class="row user-profile" *ngIf="user">
         <form [formGroup]="userForm" (ngSubmit)="onSubmit()" novalidate>
             <div class="col-md-4">
-                <img id="user-profile-image" [src]="user.profileImagePath">
+                <img id="user-profile-image" [src]="imageUrl">
                 <ng-container *ngIf="isSameUser">
                         <div class="form-group">
-                            <input id="img-input" type="file" accept="image/*" #uploader class="form-control" (change)="fileChange(uploader.files)"
+                            <input id="img-input" type="file" accept="image/*" #uploader class="form-control"
+                                   (change)="fileChange(uploader.files)"
                                 placeholder="Upload user image"/>
-                                
+
                             <button type="button" class="btn btn-default select-img-btn" (click)="uploader.click()">Select File</button>
-                        </div>  
+                        </div>
                 </ng-container>
             </div>
             <div class="col-md-8">
@@ -39,14 +40,17 @@
                     </ng-template>
                 </span>
                 <span id="user-tags-label">Tags: </span>
-                    <ng-multiselect-dropdown
-                        name="tag"
-                        [placeholder]="'Select Tags'"
-                        [data]="tags"
-                        formControlName="tag"
-                        [disabled]="!isSameUser"
-                        [settings]="dropdownSettings">
-                    </ng-multiselect-dropdown>
+                  <ng-multiselect-dropdown
+                    *ngIf="isSameUser; else otherUser"
+                    name="tag"
+                    [placeholder]="'Select Tags'"
+                    [data]="tags"
+                    formControlName="tag"
+                    [settings]="dropdownSettings">
+                  </ng-multiselect-dropdown>
+                <ng-template #otherUser>
+                  <span> {{tagList()}}</span>
+                </ng-template>
                 <span id="user-description-label">Description: </span>
                 <textarea
                     formControlName="description"
@@ -54,7 +58,7 @@
                     rows="10"
                     [readonly]="!isSameUser">{{userDescription}}</textarea>
             </div>
-            <button type="submit" id="btn-profile" class="btn btn-default">Submit</button>                      
+            <button *ngIf="isSameUser" type="submit" id="btn-profile" class="btn btn-default">Submit</button>
         </form>
 
     </div>

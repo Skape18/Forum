@@ -42,22 +42,12 @@ namespace Forum.Controllers
             return Ok(userViewModel);
         }
 
-        [HttpPut("{userId}/tags")]
-        public async Task<IActionResult> UpdateTags(
+        [HttpPut("{userId}")]
+        public async Task<IActionResult> Update(
             [FromRoute]int userId,
-            [FromBody] UserUpdateTagsViewModel updateTagsViewModel)
+            [FromBody] UserUpdateViewModel updateViewModel)
         {
-            await _userService.UpdateTags(userId, updateTagsViewModel.TagIds);
-
-            return Ok();
-        }
-
-        [HttpPut("{userId}/description")]
-        public async Task<IActionResult> UpdateDescription(
-            [FromRoute]int userId,
-            [FromBody] UserUpdateDescriptionViewModel updateDescriptionViewModel)
-        {
-            await _userService.UpdateDescription(userId, updateDescriptionViewModel.Description);
+            await _userService.Update(userId, updateViewModel.TagIds, updateViewModel.Description);
 
             return Ok();
         }
@@ -104,9 +94,9 @@ namespace Forum.Controllers
         [HttpGet]
         [Route("search")]
         public async Task<ActionResult<IEnumerable<UserViewModel>>> Search(
-            [FromQuery] string[] searchTerms)
+            [FromQuery(Name = "searchTerm")] string search)
         {
-            var userDtos = await _userService.Search(searchTerms);
+            var userDtos = await _userService.Search(search);
             var userViewModel = _mapper.Map<IEnumerable<UserDto>, IEnumerable<UserViewModel>>(userDtos);
 
             return Ok(userViewModel);

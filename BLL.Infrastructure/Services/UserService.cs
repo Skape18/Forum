@@ -159,7 +159,7 @@ namespace BLL.Infrastructure.Services
 
         public async Task UpdateImage(int userId, string fileName, string rootPath, byte[] image)
         {
-            var user = await UnitOfWork.UserProfiles.GetByIdAsync(userId);
+            var user = await UnitOfWork.UserProfiles.GetDbSet().FirstOrDefaultAsync(u => u.Id == userId);
 
             string imageName = Path.GetFileNameWithoutExtension(fileName) + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(fileName);
 
@@ -171,34 +171,30 @@ namespace BLL.Infrastructure.Services
 
             await File.WriteAllBytesAsync(fullPath, image);
 
-            UnitOfWork.UserProfiles.Update(user);
-
             await UnitOfWork.SaveChangesAsync();
         }
 
-        public async Task UpdateTags(int userId, IEnumerable<int> tagIds)
+        public async Task Update(int userId, IEnumerable<int> tagIds, string description)
         {
-            var user = await UnitOfWork.UserProfiles.GetByIdAsync(userId);
+            var user = await UnitOfWork.UserProfiles
+                .GetDbSet()
+                .Include(u => u.Tags)
+                .FirstOrDefaultAsync(u => u.Id == userId);
             var tags = await _tagService.GetAllAsync();
 
-            foreach (var tagId in tagIds)
-            {
-                if (user.Tags.All(t => t.Id != tagId))
-                {
-                    var tag = tags.First(t => t.Id == tagId);
-                    user.Tags.Add(tag);
-                }
-            }
-
-            UnitOfWork.UserProfiles.Update(user);
-            await UnitOfWork.SaveChangesAsync();
-        }
-
-        public async Task UpdateDescription(int userId, string description)
-        {
-            var user = await UnitOfWork.UserProfiles.GetByIdAsync(userId);
-
             user.Description = description;
+
+            var tagIdsToAdd = tagIds.Where(id => user.Tags.All(t => t.Id != id)).ToArray();
+            var tagsToRemove = user.Tags.Where(t => tagIds.All(ti => ti != t.Id)).ToArray();
+            foreach (var tagId in tagIdsToAdd)
+            {
+                var tag = tags.First(t => t.Id == tagId);
+                user.Tags.Add(tag);
+            }
+            foreach (var tag in tagsToRemove)
+            {
+                user.Tags.Remove(tag);
+            }
 
             UnitOfWork.UserProfiles.Update(user);
             await UnitOfWork.SaveChangesAsync();
@@ -206,12 +202,13 @@ namespace BLL.Infrastructure.Services
 
         public async Task Unlike(int likeBy, int userId)
         {
-            var user = await UnitOfWork.UserProfiles.GetByIdAsync(userId);
-            var likedByUser = await UnitOfWork.UserProfiles.GetByIdAsync(likeBy);
+            var user = await UnitOfWork.UserProfiles.GetDbSet()
+                .Include(u => u.LikedBy)
+                .Include(u => u.DislikedBy)
+                .FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user.DislikedBy.Any(u => u.Id == likeBy))
             {
-                UnitOfWork.UserProfiles.GetDbSet().Attach(user.DislikedBy.First(u => u.Id == likeBy));
                 user.DislikedBy.Remove(user.DislikedBy.First(u => u.Id == likeBy));
                 user.Rating++;
             }
@@ -225,7 +222,10 @@ namespace BLL.Infrastructure.Services
             }
             else
             {
-                user.DislikedBy.Add(likedByUser);
+                var dislikedByUser = await UnitOfWork.UserProfiles
+                    .GetDbSet()
+                    .FirstOrDefaultAsync(u => u.Id == likeBy);
+                user.DislikedBy.Add(dislikedByUser);
                 user.Rating--;
             }
 
@@ -235,25 +235,28 @@ namespace BLL.Infrastructure.Services
 
         public async Task Like(int likeBy, int userId)
         {
-            var user = await UnitOfWork.UserProfiles.GetByIdAsync(userId);
-            var likedByUser = await UnitOfWork.UserProfiles.GetByIdAsync(likeBy);
+            var user = await UnitOfWork.UserProfiles.GetDbSet()
+                .Include(u => u.LikedBy)
+                .Include(u => u.DislikedBy)
+                .FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user.LikedBy.Any(u => u.Id == likeBy))
             {
-                UnitOfWork.UserProfiles.GetDbSet().Attach(user.LikedBy.First(u => u.Id == likeBy));
                 user.LikedBy.Remove(user.LikedBy.First(u => u.Id == likeBy));
                 user.Rating--;
             }
             else if (user.DislikedBy.Any(u => u.Id == likeBy))
             {
                 var dislikedUser = user.DislikedBy.First(u => u.Id == likeBy);
-                UnitOfWork.UserProfiles.GetDbSet().Attach(dislikedUser);
                 user.DislikedBy.Remove(dislikedUser);
                 user.LikedBy.Add(dislikedUser);
                 user.Rating += 2;
             }
             else
             {
+                var likedByUser = await UnitOfWork.UserProfiles
+                    .GetDbSet()
+                    .FirstOrDefaultAsync(u => u.Id == likeBy);
                 user.LikedBy.Add(likedByUser);
                 user.Rating++;
             }
@@ -262,19 +265,17 @@ namespace BLL.Infrastructure.Services
             await UnitOfWork.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<UserDto>> Search(string[] searchTerms)
+        public async Task<IEnumerable<UserDto>> Search(string search)
         {
-            var tagIds = (await UnitOfWork.Tags
-                    .GetAllAsync()
-                    .ToListAsync())
-                .Where(t => searchTerms.Any(st => string.Equals(st, t.Name, StringComparison.OrdinalIgnoreCase)))
-                .Select(t => t.Id)
-                .ToArray();
-
+            var searchToLower = search.ToLower();
             var userProfiles = await UnitOfWork.UserProfiles
-                .GetAllAsync()
-                .Where(u => u.Tags.Any(t => tagIds.Contains(t.Id)))
-                .Where(u => searchTerms.Any(st => EF.Functions.FreeText(u.Description, st)))
+                .GetDbSet()
+                .Include(u => u.ApplicationUser)
+                .Include(u => u.Tags)
+                .Where(u =>
+                    EF.Functions.FreeText(u.Description, searchToLower) ||
+                               u.Tags.Any(t => searchToLower.Contains(t.Name.ToLower())))
+                .OrderByDescending(u => u.Rating)
                 .ToListAsync();
 
             var userDtos = Mapper.Map<IEnumerable<UserProfile>, IEnumerable<UserDto>>(userProfiles);

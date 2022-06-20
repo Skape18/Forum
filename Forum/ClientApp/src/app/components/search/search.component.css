@@ -1,0 +1,69 @@
+.search-index-title{
+    font-size: 1.4em;
+}
+
+.search-heading {
+    color: white;
+    font-size: 1.2em;
+    font-family: 'Roboto';
+    padding: 16px 0 16px 0;
+}
+
+.search-header {
+    background-color: #212121;
+    padding: 8px 0 24px 24px;
+    margin-bottom: 20px;
+}
+
+.no-results{
+    text-align: center;
+    padding-top: 30px;
+    font-family: 'Roboto Mono'
+}
+
+.user-content{
+    display: table;
+    background-color: white;
+    border-bottom: 1px solid #aaa;
+    width: inherit;
+    margin-bottom: 15px;
+}
+
+.user-container {
+    display: table-cell;
+    padding: 12px;
+    vertical-align: middle;
+}
+
+.user-image{
+    height: 80px;
+    width: 80px;
+    display: block;
+}
+
+.user-rating{
+    font-size: 0.9em;
+    color: #159;
+    font-family: 'Roboto Mono';
+}
+
+.user-registration-date{
+    color: #888;
+    font-family: 'Roboto Mono';
+    font-size: 0.8em;
+}
+
+.content-container{
+    color: #222;
+    padding: 22px;
+    border-left: 1px solid #eee;
+}
+
+input {
+  width: 150px;
+  height: 30px;
+}
+
+button {
+  margin-left: 5px;
+}

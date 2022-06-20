@@ -2,8 +2,10 @@
 
 namespace Forum.ViewModels
 {
-    public class UserUpdateTagsViewModel
+    public class UserUpdateViewModel
     {
         public IEnumerable<int> TagIds { get; set; }
+
+        public string Description { get; set; }
     }
 }

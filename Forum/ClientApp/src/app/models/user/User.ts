@@ -1,3 +1,5 @@
+import { Tag } from "../tag/Tag";
+
 export interface User{
     id: number;
     profileImagePath: string;
@@ -7,4 +9,5 @@ export interface User{
     userName: string;
     description: string;
     email: string;
+    tags: Tag[];
 }

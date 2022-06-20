@@ -1,3 +1,41 @@
-<p>
-  search works!
-</p>
+<div class="container body-content">
+  <div class="row search-header ">
+    <div class="search-heading">
+        <span class="search-index-title">
+            Search page
+        </span>
+    </div>
+    <div class="search-index-content">
+      <input #searchInput> <button (click)="search()"> Search </button>
+    </div>
+  </div>
+
+
+    <ng-container *ngIf="searchResult.length > 0; else searchEmpty">
+      <div class="row user-content" *ngFor="let user of searchResult">
+          <div class="col-md-3 user-container">
+              <img class="user-image" [src]="user.profileImagePath">
+              <a routerLink="/userprofile/{{user.id}}">
+                  <strong>{{user.userName}}</strong>
+              </a> (<span class="user-rating">{{user.rating}}</span>) <br />
+              <span class="user-registration-date">{{user.registrationDate | date:'medium'}}</span>
+          </div>
+          <div class="col-md-9 content-container">
+              <div class="user-info-content">
+                  <span>Tags: </span> <span>{{getUserTags(user)}}</span>
+                <br/>
+                <br/>
+                  <span>Description: </span> <span> {{user.description}}.</span>
+              </div>
+          </div>
+      </div>
+
+    </ng-container>
+    <ng-template #searchEmpty>
+        <div class="no-results">
+            <h3>
+                Use the search to get results.<br />
+            </h3>
+        </div>
+    </ng-template>
+</div>

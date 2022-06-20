@@ -16,7 +16,7 @@ namespace BLL.Infrastructure.Services
         
         public async Task<IEnumerable<Tag>> GetAllAsync()
         {
-            return await UnitOfWork.Tags.GetAllAsync().ToListAsync();
+            return await UnitOfWork.Tags.GetDbSet().ToListAsync();
         }
     }
 }

@@ -22,14 +22,12 @@ namespace BLL.Interfaces
 
         Task UpdateImage(int userId, string profileImageName, string rootPath, byte[] image);
 
-        Task UpdateTags(int userId, IEnumerable<int> tagIds);
-
-        Task UpdateDescription(int userId, string tagIds);
+        Task Update(int userId, IEnumerable<int> tagIds, string description);
 
         Task Unlike(int likeBy, int userId);
 
         Task Like(int likeBy, int userId);
 
-        Task<IEnumerable<UserDto>> Search(string[] searchTerms);
+        Task<IEnumerable<UserDto>> Search(string search);
     }
 }
